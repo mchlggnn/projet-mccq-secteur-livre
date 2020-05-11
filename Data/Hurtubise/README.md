@@ -4,4 +4,4 @@
 
 2) Dans le fichier txt, remplacer les tabulations par le code <>
 
-3) Utilisation du script Python pour nettoyer les donneés (qui, essentiellement, élimine les lignes vides)
+3) Utilisation du script Python pour nettoyer les données (qui, essentiellement, élimine les lignes vides)

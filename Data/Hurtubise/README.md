@@ -1,5 +1,5 @@
 # Méthode d'extraction utilisée
 
-Copier-coller des données du fichier Excel dans un fichier txt
+1) Copier-coller des données du fichier Excel dans un fichier txt
 
-Utilisation du script Python pour nettoyer les donneés
+2) Utilisation du script Python pour nettoyer les donneés

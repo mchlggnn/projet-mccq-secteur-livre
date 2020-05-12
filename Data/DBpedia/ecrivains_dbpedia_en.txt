@@ -1,0 +1,784 @@
+http://dbpedia.org/resource/Isidore_Gordon_Ascher ; Isidore Gordon Ascher
+http://dbpedia.org/resource/Louis_Émond ; Louis Émond
+http://dbpedia.org/resource/José_Acquelin ; José Acquelin
+http://dbpedia.org/resource/Suzanne_Lebeau ; Suzanne Lebeau
+http://dbpedia.org/resource/Dominique_Jolin ; Dominique Jolin
+http://dbpedia.org/resource/Edward_Greenspon ; Edward Greenspon
+http://dbpedia.org/resource/Carole_Massé ; Carole Massé
+http://dbpedia.org/resource/Carolyn_Zonailo ; Carolyn Zonailo
+http://dbpedia.org/resource/Léo-Paul_Desrosiers ; Léo-Paul Desrosiers
+http://dbpedia.org/resource/Rosanna_Eleanor_Leprohon ; Rosanna Eleanor Leprohon
+http://dbpedia.org/resource/Michel_Basilières ; Michel Basilières
+http://dbpedia.org/resource/Robert_Stanley_Weir ; Robert Stanley Weir
+http://dbpedia.org/resource/Neil_Bissoondath ; Neil Bissoondath
+http://dbpedia.org/resource/Norman_Spector ; Norman Spector
+http://dbpedia.org/resource/Anne_Legault ; Anne Legault
+http://dbpedia.org/resource/Roswell_George_Mills ; Roswell George Mills
+http://dbpedia.org/resource/Walter_Bruno ; Walter Bruno
+http://dbpedia.org/resource/Julia_Scott ; Julia Scott
+http://dbpedia.org/resource/Elaine_Kalman_Naves ; Elaine Kalman Naves
+http://dbpedia.org/resource/Victor_Barbeau ; Victor Barbeau
+http://dbpedia.org/resource/Peter_Feldstein_(translator) ; Peter Feldstein
+http://dbpedia.org/resource/Bertrand_Vac ; Bertrand Vac
+http://dbpedia.org/resource/Marie-Francine_Hébert ; Marie-Francine Hébert
+http://dbpedia.org/resource/Oren_Safdie ; Oren Safdie
+http://dbpedia.org/resource/Samuel_O._Freedman ; Samuel O. Freedman
+http://dbpedia.org/resource/Ellen_Roseman ; Ellen Roseman
+http://dbpedia.org/resource/Daniel_Allen_Cox ; Daniel Allen Cox
+http://dbpedia.org/resource/Rachel_Korn ; Rachel Korn
+http://dbpedia.org/resource/Julie_Keith ; Julie Keith
+http://dbpedia.org/resource/Michel_Venne ; Michel Venne
+http://dbpedia.org/resource/André_Roy_(writer) ; André Roy
+http://dbpedia.org/resource/Évelyne_de_la_Chenelière ; Évelyne de la Chenelière
+http://dbpedia.org/resource/Pauline_Harvey ; Pauline Harvey
+http://dbpedia.org/resource/Édouard_Montpetit ; Édouard Montpetit
+http://dbpedia.org/resource/Johanna_Skibsrud ; Johanna Skibsrud
+http://dbpedia.org/resource/Charles_Gill_(artist) ; Charles Gill
+http://dbpedia.org/resource/Gabriel_Nadeau-Dubois ; Gabriel Nadeau-Dubois
+http://dbpedia.org/resource/Jason_Camlot ; Jason Camlot
+http://dbpedia.org/resource/Hirsch_Wolofsky ; Hirsch Wolofsky
+http://dbpedia.org/resource/Gerald_Cohen ; Gerald Cohen
+http://dbpedia.org/resource/Miriam_Berkowitz ; Miriam Berkowitz
+http://dbpedia.org/resource/John_Kennett_Starnes ; John Kennett Starnes
+http://dbpedia.org/resource/Mary_Soderstrom ; Mary Soderstrom
+http://dbpedia.org/resource/Daniel_Sloate ; Daniel Sloate
+http://dbpedia.org/resource/John_Summerskill ; John Summerskill
+http://dbpedia.org/resource/Andrew_Godefroy ; Andrew Godefroy
+http://dbpedia.org/resource/Henriette_Valium ; Henriette Valium
+http://dbpedia.org/resource/Peter_Cureton ; Peter Cureton
+http://dbpedia.org/resource/Claire_Martin_(writer) ; Claire Martin
+http://dbpedia.org/resource/Erica_Ehm ; Erica Ehm
+http://dbpedia.org/resource/Timothy_Naftali ; Timothy Naftali
+http://dbpedia.org/resource/Cécile_Cloutier ; Cécile Cloutier
+http://dbpedia.org/resource/Régine_Robin ; Régine Robin
+http://dbpedia.org/resource/Simon_Harel ; Simon Harel
+http://dbpedia.org/resource/Henriette_Tassé ; Henriette Tassé
+http://dbpedia.org/resource/Normand_Chaurette ; Normand Chaurette
+http://dbpedia.org/resource/Hubert_Aquin ; Hubert Aquin
+http://dbpedia.org/resource/Jean_Hébert ; Jean Hébert
+http://dbpedia.org/resource/Michel_Pleau ; Michel Pleau
+http://dbpedia.org/resource/Christian_Mistral ; Christian Mistral
+http://dbpedia.org/resource/Lise_Tremblay ; Lise Tremblay
+http://dbpedia.org/resource/Sheila_Watt-Cloutier ; Sheila Watt-Cloutier
+http://dbpedia.org/resource/Colin_McAdam_(novelist) ; Colin McAdam
+http://dbpedia.org/resource/François_Boulay ; François Boulay
+http://dbpedia.org/resource/Lise_Vaillancourt ; Lise Vaillancourt
+http://dbpedia.org/resource/Daniel_Richler ; Daniel Richler
+http://dbpedia.org/resource/Carl_Johan_De_Geer ; Carl Johan De Geer
+http://dbpedia.org/resource/Christiane_Frenette ; Christiane Frenette
+http://dbpedia.org/resource/Pierre_Yergeau ; Pierre Yergeau
+http://dbpedia.org/resource/Jean-Benoît_Nadeau ; Jean-Benoît Nadeau
+http://dbpedia.org/resource/Daniel_Danis ; Daniel Danis
+http://dbpedia.org/resource/Louky_Bersianik ; Louky Bersianik
+http://dbpedia.org/resource/Guy-André_Kieffer ; Guy-André Kieffer
+http://dbpedia.org/resource/Nigel_Spencer ; Nigel Spencer
+http://dbpedia.org/resource/Alain_Grandbois ; Alain Grandbois
+http://dbpedia.org/resource/Jean-Baptiste-Antoine_Ferland ; Jean-Baptiste-Antoine Ferland
+http://dbpedia.org/resource/Éva_Circé-Côté ; Éva Circé-Côté
+http://dbpedia.org/resource/Victor-Alphonse_Huard ; Victor-Alphonse Huard
+http://dbpedia.org/resource/Angèle_Delaunois ; Angèle Delaunois
+http://dbpedia.org/resource/Madeleine_Monette ; Madeleine Monette
+http://dbpedia.org/resource/Winnifred_Eaton_(writer) ; Winnifred Eaton
+http://dbpedia.org/resource/Paul_Bloom_(psychologist) ; Paul Bloom
+http://dbpedia.org/resource/Guillaume_Vigneault ; Guillaume Vigneault
+http://dbpedia.org/resource/Pierre_Gang ; Pierre Gang
+http://dbpedia.org/resource/Lynda_Bellingham ; Lynda Bellingham
+http://dbpedia.org/resource/Jonathan_Goldstein_(author) ; Jonathan Goldstein
+http://dbpedia.org/resource/Laurent_Poliquin ; Laurent Poliquin
+http://dbpedia.org/resource/Alain_Deneault ; Alain Deneault
+http://dbpedia.org/resource/Raôul_Duguay ; Raôul Duguay
+http://dbpedia.org/resource/William_Henry_Drummond ; William Henry Drummond
+http://dbpedia.org/resource/Mitch_Joel ; Mitch Joel
+http://dbpedia.org/resource/Anne-Marie_Cadieux ; Anne-Marie Cadieux
+http://dbpedia.org/resource/Suzanne_Martel ; Suzanne Martel
+http://dbpedia.org/resource/Larry_Bevand ; Larry Bevand
+http://dbpedia.org/resource/Louis_Hamelin ; Louis Hamelin
+http://dbpedia.org/resource/Martine_Audet ; Martine Audet
+http://dbpedia.org/resource/Martin_Bronstein ; Martin Bronstein
+http://dbpedia.org/resource/Martin_Petit ; Martin Petit
+http://dbpedia.org/resource/Anne_Élaine_Cliche ; Anne Élaine Cliche
+http://dbpedia.org/resource/Basil_Papademos ; Basil Papademos
+http://dbpedia.org/resource/Nicole_Brossard ; Nicole Brossard
+http://dbpedia.org/resource/Françoise_Bujold ; Françoise Bujold
+http://dbpedia.org/resource/Gratien_Gélinas ; Gratien Gélinas
+http://dbpedia.org/resource/Paul_Almond ; Paul Almond
+http://dbpedia.org/resource/Geneviève_Côté ; Geneviève Côté
+http://dbpedia.org/resource/Don_Ferguson_(actor) ; Don Ferguson
+http://dbpedia.org/resource/Jean-Philippe_Bergeron ; Jean-Philippe Bergeron
+http://dbpedia.org/resource/John_Glassco ; John Glassco
+http://dbpedia.org/resource/Louis_Dantin ; Louis Dantin
+http://dbpedia.org/resource/Marie_José_Thériault ; Marie José Thériault
+http://dbpedia.org/resource/Tasha_Kheiriddin ; Tasha Kheiriddin
+http://dbpedia.org/resource/David_Fennario ; David Fennario
+http://dbpedia.org/resource/Dacre_Stoker ; Dacre Stoker
+http://dbpedia.org/resource/William_P._Byers ; William P. Byers
+http://dbpedia.org/resource/Joseph_Mallozzi ; Joseph Mallozzi
+http://dbpedia.org/resource/Lionel_Tiger ; Lionel Tiger
+http://dbpedia.org/resource/Jacques_Godbout ; Jacques Godbout
+http://dbpedia.org/resource/Ook_Chung ; Ook Chung
+http://dbpedia.org/resource/David_McGimpsey ; David McGimpsey
+http://dbpedia.org/resource/Allan_Moyle ; Allan Moyle
+http://dbpedia.org/resource/Frederick_George_Scott ; Frederick George Scott
+http://dbpedia.org/resource/Michael_E._Rose ; Michael E. Rose
+http://dbpedia.org/resource/Lise_Blouin ; Lise Blouin
+http://dbpedia.org/resource/Robert_Choquette ; Robert Choquette
+http://dbpedia.org/resource/Chantal_Ringuet ; Chantal Ringuet
+http://dbpedia.org/resource/Jean-François_Roberge ; Jean-François Roberge
+http://dbpedia.org/resource/Lee_Mellor ; Lee Mellor
+http://dbpedia.org/resource/Arleen_Paré ; Arleen Paré
+http://dbpedia.org/resource/Jonathan_Kay ; Jonathan Kay
+http://dbpedia.org/resource/Louis_Bélanger ; Louis Bélanger
+http://dbpedia.org/resource/Jeffrey_Moore ; Jeffrey Moore
+http://dbpedia.org/resource/Charlotte_Boisjoli ; Charlotte Boisjoli
+http://dbpedia.org/resource/Richard_Arès ; Richard Arès
+http://dbpedia.org/resource/Aaron_Cohen_(counterterrorist) ; Aaron Cohen
+http://dbpedia.org/resource/Margaret_Murray_Robertson ; Margaret Murray Robertson
+http://dbpedia.org/resource/Marcel_Labine ; Marcel Labine
+http://dbpedia.org/resource/Anne-Marie_Sicotte ; Anne-Marie Sicotte
+http://dbpedia.org/resource/Charles_Krauthammer ; Charles Krauthammer
+http://dbpedia.org/resource/Richard_Joy ; Richard Joy
+http://dbpedia.org/resource/Howard_Galganov ; Howard Galganov
+http://dbpedia.org/resource/Mark_Camacho ; Mark Camacho
+http://dbpedia.org/resource/Alejandro_Saravia_(writer) ; Alejandro Saravia
+http://dbpedia.org/resource/Anique_Poitras ; Anique Poitras
+http://dbpedia.org/resource/Gaétan_Soucy ; Gaétan Soucy
+http://dbpedia.org/resource/Jaclyn_Moriarty ; Jaclyn Moriarty
+http://dbpedia.org/resource/Antonio_D'Alfonso ; Antonio D'Alfonso
+http://dbpedia.org/resource/Louise_Simard_(writer) ; Louise Simard
+http://dbpedia.org/resource/Hélène_Rioux ; Hélène Rioux
+http://dbpedia.org/resource/Geneviève_Billette ; Geneviève Billette
+http://dbpedia.org/resource/Yves_Meynard ; Yves Meynard
+http://dbpedia.org/resource/Phil_Bronstein ; Phil Bronstein
+http://dbpedia.org/resource/Félix-Antoine_Savard ; Félix-Antoine Savard
+http://dbpedia.org/resource/List_of_Quebec_writers ; List of Quebec writers
+http://dbpedia.org/resource/Joël_Champetier ; Joël Champetier
+http://dbpedia.org/resource/Mairuth_Sarsfield ; Mairuth Sarsfield
+http://dbpedia.org/resource/Jean-Pierre_Ferland ; Jean-Pierre Ferland
+http://dbpedia.org/resource/Arlette_Cousture ; Arlette Cousture
+http://dbpedia.org/resource/Geneviève_Pettersen ; Geneviève Pettersen
+http://dbpedia.org/resource/Maxim_Mazumdar ; Maxim Mazumdar
+http://dbpedia.org/resource/Gloria_Escomel ; Gloria Escomel
+http://dbpedia.org/resource/Madeleine_Ouellette-Michalska ; Madeleine Ouellette-Michalska
+http://dbpedia.org/resource/Max_Nemni ; Max Nemni
+http://dbpedia.org/resource/Gill_Deacon ; Gill Deacon
+http://dbpedia.org/resource/André_Duval ; André Duval
+http://dbpedia.org/resource/Roger_Lemelin ; Roger Lemelin
+http://dbpedia.org/resource/Joel_Yanofsky ; Joel Yanofsky
+http://dbpedia.org/resource/Louise_Dupré ; Louise Dupré
+http://dbpedia.org/resource/Diane_Hébert ; Diane Hébert
+http://dbpedia.org/resource/Nicolas_Billon ; Nicolas Billon
+http://dbpedia.org/resource/Sacvan_Bercovitch ; Sacvan Bercovitch
+http://dbpedia.org/resource/Jean-Guy_Allard ; Jean-Guy Allard
+http://dbpedia.org/resource/Susan_Pinker ; Susan Pinker
+http://dbpedia.org/resource/Kaie_Kellough ; Kaie Kellough
+http://dbpedia.org/resource/Jean-Marc_Desgent ; Jean-Marc Desgent
+http://dbpedia.org/resource/Jean_Le_Moyne ; Jean Le Moyne
+http://dbpedia.org/resource/Monique_LaRue ; Monique LaRue
+http://dbpedia.org/resource/Leo_Kennedy ; Leo Kennedy
+http://dbpedia.org/resource/Colleen_Curran ; Colleen Curran
+http://dbpedia.org/resource/Diane-Monique_Daviau ; Diane-Monique Daviau
+http://dbpedia.org/resource/Pierre_Vallières ; Pierre Vallières
+http://dbpedia.org/resource/Eric_Holmes_(videogame_designer) ; Eric Holmes
+http://dbpedia.org/resource/Émile-Dostaler_O'Leary ; Dostaler O'Leary
+http://dbpedia.org/resource/Marla_Shapiro ; Marla Shapiro
+http://dbpedia.org/resource/Andrée_Laberge ; Andrée Laberge
+http://dbpedia.org/resource/Winifred_Bambrick ; Winifred Bambrick
+http://dbpedia.org/resource/Beryl_Wajsman ; Beryl Wajsman
+http://dbpedia.org/resource/Zoe_Whittall ; Zoe Whittall
+http://dbpedia.org/resource/Cordelia_Strube ; Cordelia Strube
+http://dbpedia.org/resource/Alain_Farah ; Alain Farah
+http://dbpedia.org/resource/Arthur_Holden ; Arthur Holden
+http://dbpedia.org/resource/Michel_Brunet_(historian) ; Michel Brunet
+http://dbpedia.org/resource/Maureen_Judge ; Maureen Judge
+http://dbpedia.org/resource/Robert_A._Rosenstone ; Robert A. Rosenstone
+http://dbpedia.org/resource/Claudine_Bertrand ; Claudine Bertrand
+http://dbpedia.org/resource/Jason_C._McLean ; Jason C. McLean
+http://dbpedia.org/resource/Hélène_Dorion ; Hélène Dorion
+http://dbpedia.org/resource/Daniel_Castillo_Durante ; Daniel Castillo Durante
+http://dbpedia.org/resource/Nadya_Larouche ; Nadya Larouche
+http://dbpedia.org/resource/Robert_van_Voren ; Robert van Voren
+http://dbpedia.org/resource/Geoffrey_Bruun ; Geoffrey Bruun
+http://dbpedia.org/resource/Irving_Layton ; Irving Layton
+http://dbpedia.org/resource/Anne_Hébert ; Anne Hébert
+http://dbpedia.org/resource/Anaïs_Barbeau-Lavalette ; Anaïs Barbeau-Lavalette
+http://dbpedia.org/resource/René_Balcer ; René Balcer
+http://dbpedia.org/resource/Jovette_Marchessault ; Jovette Marchessault
+http://dbpedia.org/resource/Carole_Fréchette ; Carole Fréchette
+http://dbpedia.org/resource/Angeline_Hango ; Angeline Hango
+http://dbpedia.org/resource/Eric_Berne ; Eric Berne
+http://dbpedia.org/resource/Faucher_de_Saint-Maurice ; Narcisse-Henri-Édouard Faucher de Saint-Maurice
+http://dbpedia.org/resource/Alfred_Garneau ; Alfred Garneau
+http://dbpedia.org/resource/Philippe_Lesage ; Philippe Lesage
+http://dbpedia.org/resource/Pierre_Anctil ; Pierre Anctil
+http://dbpedia.org/resource/Marie_Uguay ; Marie Uguay
+http://dbpedia.org/resource/Barry_Avrich ; Barry Avrich
+http://dbpedia.org/resource/Tara_Hunt ; Tara Hunt
+http://dbpedia.org/resource/James_Cummins_(author) ; James Cummins
+http://dbpedia.org/resource/Jean_Basile ; Jean Basile
+http://dbpedia.org/resource/James_MacPherson_Le_Moine ; James MacPherson Le Moine
+http://dbpedia.org/resource/Danielle_Simard ; Danielle Simard
+http://dbpedia.org/resource/Jacques_Hébert_(Canadian_politician) ; Jacques Hébert
+http://dbpedia.org/resource/Aimee_Louw ; Aimee Louw
+http://dbpedia.org/resource/Taras_Grescoe ; Taras Grescoe
+http://dbpedia.org/resource/Brian_Meeks ; Brian Meeks
+http://dbpedia.org/resource/Mireille_Silcoff ; Mireille Silcoff
+http://dbpedia.org/resource/Yvette_Naubert ; Yvette Naubert
+http://dbpedia.org/resource/Brian_Busby ; Brian Busby
+http://dbpedia.org/resource/Robert_Lalonde ; Robert Lalonde
+http://dbpedia.org/resource/Heather_O'Neill ; Heather O'Neill
+http://dbpedia.org/resource/Mark_Kenneth_Woods ; Mark Kenneth Woods
+http://dbpedia.org/resource/Tess_Fragoulis ; Tess Fragoulis
+http://dbpedia.org/resource/Julia_Grace_Wales ; Julia Grace Wales
+http://dbpedia.org/resource/Jeanie_Riddle_(artist) ; Jeanie Riddle
+http://dbpedia.org/resource/Alice_Zorn ; Alice Zorn
+http://dbpedia.org/resource/Richard_Appignanesi ; Richard Appignanesi
+http://dbpedia.org/resource/Mark_David_Gerson ; Mark David Gerson
+http://dbpedia.org/resource/David_Feuerwerker ; David Feuerwerker
+http://dbpedia.org/resource/Élise_Turcotte ; Élise Turcotte
+http://dbpedia.org/resource/François_Avard ; François Avard
+http://dbpedia.org/resource/Ian_Stephens_(poet) ; Ian Stephens
+http://dbpedia.org/resource/Hélène_Monette ; Hélène Monette
+http://dbpedia.org/resource/Jean-Louis_Trudel ; Jean-Louis Trudel
+http://dbpedia.org/resource/Claude_Jutra ; Claude Jutra
+http://dbpedia.org/resource/Suzanne_Jacob ; Suzanne Jacob
+http://dbpedia.org/resource/Louis-Edmond_Hamelin ; Louis-Edmond Hamelin
+http://dbpedia.org/resource/Joan_Walker ; Joan Walker
+http://dbpedia.org/resource/Dick_Pound ; Dick Pound
+http://dbpedia.org/resource/Henriette_Major ; Henriette Major
+http://dbpedia.org/resource/Jean-Paul_Pinsonneault ; Jean-Paul Pinsonneault
+http://dbpedia.org/resource/Gabriel_Pelletier ; Gabriel Pelletier
+http://dbpedia.org/resource/Gilles_Proulx ; Gilles Proulx
+http://dbpedia.org/resource/Josh_Freed ; Josh Freed
+http://dbpedia.org/resource/Sean_Michaels_(writer) ; Sean Michaels
+http://dbpedia.org/resource/Laura_Sabia ; Laura Sabia
+http://dbpedia.org/resource/Esther_Delisle ; Esther Delisle
+http://dbpedia.org/resource/Gabrielle_Roy ; Gabrielle Roy
+http://dbpedia.org/resource/Fernand_Dumont ; Fernand Dumont
+http://dbpedia.org/resource/Claude_Péloquin ; Claude Péloquin
+http://dbpedia.org/resource/Jon_Paul_Fiorentino ; Jon Paul Fiorentino
+http://dbpedia.org/resource/Carmine_Starnino ; Carmine Starnino
+http://dbpedia.org/resource/Heward_Grafftey ; Heward Grafftey
+http://dbpedia.org/resource/Monique_Proulx ; Monique Proulx
+http://dbpedia.org/resource/Ann_Lambert ; Ann Lambert
+http://dbpedia.org/resource/Carolyn_Marie_Souaid ; Carolyn Marie Souaid
+http://dbpedia.org/resource/Elyse_Gasco ; Elyse Gasco
+http://dbpedia.org/resource/Raymond_Barbeau ; Raymond Barbeau
+http://dbpedia.org/resource/Kim_Thúy ; Kim Thúy
+http://dbpedia.org/resource/Nancy_Richler ; Nancy Richler
+http://dbpedia.org/resource/Samuel_Archibald_(writer) ; Samuel Archibald
+http://dbpedia.org/resource/Jill_Ciment ; Jill Ciment
+http://dbpedia.org/resource/Anne_Villeneuve ; Anne Villeneuve
+http://dbpedia.org/resource/David_Rakoff ; David Rakoff
+http://dbpedia.org/resource/Peter_M._Lenkov ; Peter M. Lenkov
+http://dbpedia.org/resource/Saul_Bellow ; Saul Bellow
+http://dbpedia.org/resource/Michel_Marc_Bouchard ; Michel Marc Bouchard
+http://dbpedia.org/resource/Larry_Tremblay ; Larry Tremblay
+http://dbpedia.org/resource/Kaya_(Canadian_singer) ; Kaya
+http://dbpedia.org/resource/Judith_Thompson ; Judith Thompson
+http://dbpedia.org/resource/David_G._Roskies ; David G. Roskies
+http://dbpedia.org/resource/Marie-Hélène_Poitras ; Marie Hélène Poitras
+http://dbpedia.org/resource/Paul_Bouchard ; Paul Bouchard
+http://dbpedia.org/resource/Faucher_de_Saint-Maurice ; Faucher de Saint-Maurice
+http://dbpedia.org/resource/Yolande_Villemaire ; Yolande Villemaire
+http://dbpedia.org/resource/Jocelyne_Saucier ; Jocelyne Saucier
+http://dbpedia.org/resource/Eric_Kokish ; Eric Kokish
+http://dbpedia.org/resource/Louise_Filion ; Louise Filion
+http://dbpedia.org/resource/Stéphane_Lapointe ; Stéphane Lapointe
+http://dbpedia.org/resource/Liam_Durcan ; Liam Durcan
+http://dbpedia.org/resource/Jacques_Brault ; Jacques Brault
+http://dbpedia.org/resource/Andrée_Maillet ; Andrée Maillet
+http://dbpedia.org/resource/John_Lazarus ; John Lazarus
+http://dbpedia.org/resource/Marianne_Ackerman ; Marianne Ackerman
+http://dbpedia.org/resource/Lazer_Lederhendler ; Lazer Lederhendler
+http://dbpedia.org/resource/François_Ricard ; François Ricard
+http://dbpedia.org/resource/Linda_Gaboriau ; Linda Gaboriau
+http://dbpedia.org/resource/Paul_Chanel_Malenfant ; Paul Chanel Malenfant
+http://dbpedia.org/resource/Jean_Basile ; Jean Basile Bezroudnoff
+http://dbpedia.org/resource/Yves_Engler ; Yves Engler
+http://dbpedia.org/resource/Colleen_Murphy ; Colleen Murphy
+http://dbpedia.org/resource/Hélène_Vachon ; Hélène Vachon
+http://dbpedia.org/resource/Dominique_Robert ; Dominique Robert
+http://dbpedia.org/resource/John_McCallum ; John McCallum
+http://dbpedia.org/resource/Kristian_Gravenor ; Kristian Gravenor
+http://dbpedia.org/resource/David_J._Mitchell ; David J. Mitchell
+http://dbpedia.org/resource/Frank_Oliver_Call ; Frank Oliver Call
+http://dbpedia.org/resource/Noah_Richler ; Noah Richler
+http://dbpedia.org/resource/Yves_Thériault ; Yves Thériault
+http://dbpedia.org/resource/Robert_Melançon ; Robert Melançon
+http://dbpedia.org/resource/Don_Macpherson_(journalist) ; Don Macpherson
+http://dbpedia.org/resource/Martin_Villeneuve ; Martin Villeneuve
+http://dbpedia.org/resource/Steven_Pinker ; Steven Pinker
+http://dbpedia.org/resource/Jean_Charbonneau ; Jean Charbonneau
+http://dbpedia.org/resource/Wade_Davis_(anthropologist) ; Wade Davis
+http://dbpedia.org/resource/Monique_Bosco ; Monique Bosco
+http://dbpedia.org/resource/Philippe_Panneton ; Philippe Panneton
+http://dbpedia.org/resource/Roman_Jarymowycz ; Roman Jarymowycz
+http://dbpedia.org/resource/Emmanuel_Aquin ; Emmanuel Aquin
+http://dbpedia.org/resource/Hubert_Reeves ; Hubert Reeves
+http://dbpedia.org/resource/André_Brochu ; André Brochu
+http://dbpedia.org/resource/Michael_Harris_(poet) ; Michael Harris
+http://dbpedia.org/resource/Wajdi_Mouawad ; Wajdi Mouawad
+http://dbpedia.org/resource/Marie-Hélène_Poitras ; Marie-Hélène Poitras
+http://dbpedia.org/resource/Edeet_Ravel ; Edeet Ravel
+http://dbpedia.org/resource/Jean-Claude_Germain ; Jean-Claude Germain
+http://dbpedia.org/resource/Pierre_Petitclair ; Pierre Petitclair
+http://dbpedia.org/resource/M.A._Fortin ; M.A. Fortin
+http://dbpedia.org/resource/William_Tetley ; William Tetley
+http://dbpedia.org/resource/Pierre_DesRuisseaux ; Pierre Desruisseaux
+http://dbpedia.org/resource/Jocelyne_Felx ; Jocelyne Felx
+http://dbpedia.org/resource/Nathanaël ; Nathanaël
+http://dbpedia.org/resource/Navid_Khonsari ; Navid Khonsari
+http://dbpedia.org/resource/Louise_Leblanc ; Louise Leblanc
+http://dbpedia.org/resource/Robyn_Sarah ; Robyn Sarah
+http://dbpedia.org/resource/Catherine_Chandler ; Catherine Chandler
+http://dbpedia.org/resource/André_D'Allemagne ; André D'Allemagne
+http://dbpedia.org/resource/Dany_Laferrière ; Dany Laferrière
+http://dbpedia.org/resource/Suzanne_Aubry ; Suzanne Aubry
+http://dbpedia.org/resource/Bernard_Avishai ; Bernard Avishai
+http://dbpedia.org/resource/Roger_Morneau ; Roger Morneau
+http://dbpedia.org/resource/Solange_Chaput-Rolland ; Solange Chaput-Rolland
+http://dbpedia.org/resource/John_Reade ; John Reade
+http://dbpedia.org/resource/Richard_Garneau ; Richard Garneau
+http://dbpedia.org/resource/Elsa_Gidlow ; Elsa Gidlow
+http://dbpedia.org/resource/Joseph_A._Schwarcz ; Joseph Schwarcz
+http://dbpedia.org/resource/Gérard_Bessette ; Gérard Bessette
+http://dbpedia.org/resource/Bob_Blumer ; Bob Blumer
+http://dbpedia.org/resource/Frederick_Arthur_McKenzie ; Frederick Arthur McKenzie
+http://dbpedia.org/resource/Anne-Marie_Alonzo ; Anne-Marie Alonzo
+http://dbpedia.org/resource/Judith_Flanders ; Judith Flanders
+http://dbpedia.org/resource/Mélanie_Watt ; Mélanie Watt
+http://dbpedia.org/resource/Jacob_Richler ; Jacob Richler
+http://dbpedia.org/resource/Claude_Lalumière ; Claude Lalumière
+http://dbpedia.org/resource/David_Bensoussan ; David Bensoussan
+http://dbpedia.org/resource/Marie-Louise_Gay ; Marie-Louise Gay
+http://dbpedia.org/resource/Victor_Barbeau ; Victor Barbeau
+http://dbpedia.org/resource/Abraham_de_Sola ; Abraham de Sola
+http://dbpedia.org/resource/Natalee_Caple ; Natalee Caple
+http://dbpedia.org/resource/Nathalie_Elgrably-Lévy ; Nathalie Elgrably-Lévy
+http://dbpedia.org/resource/Andrée_A._Michaud ; Andrée A. Michaud
+http://dbpedia.org/resource/Suzanne_Robert ; Suzanne Robert
+http://dbpedia.org/resource/Gérard_Bouchard ; Gérard Bouchard
+http://dbpedia.org/resource/David_Paquet ; David Paquet
+http://dbpedia.org/resource/David_O'Keefe_(historian) ; David O'Keefe
+http://dbpedia.org/resource/Chrystine_Brouillet ; Chrystine Brouillet
+http://dbpedia.org/resource/Joséphine_Marchand ; Joséphine Marchand
+http://dbpedia.org/resource/Jovette_Bernier ; Jovette Bernier
+http://dbpedia.org/resource/Neil_Smith_(writer) ; Neil Smith
+http://dbpedia.org/resource/André_Major ; André Major
+http://dbpedia.org/resource/Colin_McDougall ; Colin McDougall
+http://dbpedia.org/resource/Jacques_Lanctôt ; Jacques Lanctôt
+http://dbpedia.org/resource/Sonja_Skarstedt ; Sonja Skarstedt
+http://dbpedia.org/resource/Jacques_Poulin ; Jacques Poulin
+http://dbpedia.org/resource/Ernest_Choquette ; Ernest Choquette
+http://dbpedia.org/resource/Claude-Henri_Grignon ; Claude-Henri Grignon
+http://dbpedia.org/resource/Jack_Todd_(journalist) ; Jack Todd
+http://dbpedia.org/resource/Pauline_Michel ; Pauline Michel
+http://dbpedia.org/resource/France_Mongeau ; France Mongeau
+http://dbpedia.org/resource/Mordecai_Richler ; Mordecai Richler
+http://dbpedia.org/resource/Duncan_Weller ; Duncan Weller
+http://dbpedia.org/resource/Léo_Lévesque ; Léo Lévesque
+http://dbpedia.org/resource/Deborah_Cher ; Deborah Cher
+http://dbpedia.org/resource/Jean-Marc_Vallée ; Jean-Marc Vallée
+http://dbpedia.org/resource/Linda_Leith ; Linda Leith
+http://dbpedia.org/resource/John_Sutherland_(Canadian_writer) ; John Sutherland
+http://dbpedia.org/resource/Gérald_Godin ; Gérald Godin
+http://dbpedia.org/resource/Jean-Jacques_Pelletier ; Jean-Jacques Pelletier
+http://dbpedia.org/resource/Frank_Baylis ; Frank Baylis
+http://dbpedia.org/resource/Marcel_Dubé ; Marcel Dubé
+http://dbpedia.org/resource/Yves_Préfontaine ; Yves Préfontaine
+http://dbpedia.org/resource/Lorraine_Pintal ; Lorraine Pintal
+http://dbpedia.org/resource/Michel_Choquette ; Michel Choquette
+http://dbpedia.org/resource/Daphna_Kastner ; Daphna Kastner
+http://dbpedia.org/resource/Yves_Beauchemin ; Yves Beauchemin
+http://dbpedia.org/resource/Kevin_O'Leary ; Kevin O'Leary
+http://dbpedia.org/resource/Robert_Gravel ; Robert Gravel
+http://dbpedia.org/resource/Jean-Rock_Gaudreault ; Jean-Rock Gaudreault
+http://dbpedia.org/resource/Sylvie_Bérard ; Sylvie Bérard
+http://dbpedia.org/resource/Tanya_Maria_Geritsidou ; Tanya Maria Geritsidou
+http://dbpedia.org/resource/Alice_Lemieux-Lévesque ; Alice Lemieux-Lévesque
+http://dbpedia.org/resource/George_Aaron_Barton ; George Aaron Barton
+http://dbpedia.org/resource/George_T._Lanigan ; George T. Lanigan
+http://dbpedia.org/resource/Włodzimierz_Steyer ; Włodzimierz Steyer
+http://dbpedia.org/resource/Dahvi_Waller ; Dahvi Waller
+http://dbpedia.org/resource/Aki_Shimazaki ; Aki Shimazaki
+http://dbpedia.org/resource/Witold_Rybczynski ; Witold Rybczynski
+http://dbpedia.org/resource/Frederic_Marcotte ; Frederic Marcotte
+http://dbpedia.org/resource/Carole_Corbeil ; Carole Corbeil
+http://dbpedia.org/resource/Alexander_Henry_the_elder ; Alexander Henry
+http://dbpedia.org/resource/Kim_Yaroshevskaya ; Kim Yaroshevskaya
+http://dbpedia.org/resource/Mavis_Gallant ; Mavis Gallant
+http://dbpedia.org/resource/Lake_Sagaris ; Lake Sagaris
+http://dbpedia.org/resource/Sui_Sin_Far ; Sui Sin Far
+http://dbpedia.org/resource/Naomi_Klein ; Naomi Klein
+http://dbpedia.org/resource/Ysabel_Viau ; Ysabel Viau
+http://dbpedia.org/resource/Rawi_Hage ; Rawi Hage
+http://dbpedia.org/resource/Monique_Nemni ; Monique Nemni
+http://dbpedia.org/resource/Tony_Tremblay ; Tony Tremblay
+http://dbpedia.org/resource/Stefan_Psenak ; Stefan Psenak
+http://dbpedia.org/resource/Donald_Alarie ; Donald Alarie
+http://dbpedia.org/resource/Patricia_Alice_Shaw ; Patricia Alice Shaw
+http://dbpedia.org/resource/Marlène_Belley ; Marlène Belley
+http://dbpedia.org/resource/Nérée_Beauchemin ; Nérée Beauchemin
+http://dbpedia.org/resource/Mona_Awad ; Mona Awad
+http://dbpedia.org/resource/Chloe_Bellande ; Chloe Bellande
+http://dbpedia.org/resource/Marie-Sissi_Labrèche ; Marie-Sissi Labrèche
+http://dbpedia.org/resource/Pierre_Billon ; Pierre Billon
+http://dbpedia.org/resource/Françoise_Loranger ; Françoise Loranger
+http://dbpedia.org/resource/Claude_Meunier ; Claude Meunier
+http://dbpedia.org/resource/Gerald_Wexler ; Gerald Wexler
+http://dbpedia.org/resource/Michael_Goldbloom ; Michael Goldbloom
+http://dbpedia.org/resource/Andrea_Beck ; Andrea Beck
+http://dbpedia.org/resource/Jerzy_Adamuszek ; Jerzy Adamuszek
+http://dbpedia.org/resource/Andrew_Cohen_(journalist) ; Andrew Cohen
+http://dbpedia.org/resource/Guillaume_Morissette ; Guillaume Morissette
+http://dbpedia.org/resource/Bernadette_Renaud ; Bernadette Renaud
+http://dbpedia.org/resource/Perrine_Leblanc ; Perrine Leblanc
+http://dbpedia.org/resource/Jean-François_Lisée ; Jean-François Lisée
+http://dbpedia.org/resource/David_Newman_(marketer) ; David Newman
+http://dbpedia.org/resource/Lise_Bissonnette ; Lise Bissonnette
+http://dbpedia.org/resource/Maureen_Bradley ; Maureen Bradley
+http://dbpedia.org/resource/Jacinthe_Bouchard ; Jacinthe Bouchard
+http://dbpedia.org/resource/William_Weintraub ; William Weintraub
+http://dbpedia.org/resource/William_Chapman_(poet) ; William Chapman
+http://dbpedia.org/resource/Bernard_Assiniwi ; Bernard Assiniwi
+http://dbpedia.org/resource/Joyce_Marshall ; Joyce Marshall
+http://dbpedia.org/resource/Louise_Abbott ; Louise Abbott
+http://dbpedia.org/resource/Pierre_Morency ; Pierre Morency
+http://dbpedia.org/resource/Lorenzo_Cadieux ; Lorenzo Cadieux
+http://dbpedia.org/resource/Xavier_Dolan ; Xavier Dolan
+http://dbpedia.org/resource/Jaspreet_Singh ; Jaspreet Singh
+http://dbpedia.org/resource/J._Gordon_Edwards ; J. Gordon Edwards
+http://dbpedia.org/resource/Rina_Lasnier ; Rina Lasnier
+http://dbpedia.org/resource/Claude_Marc_Bourget ; Claude Marc Bourget
+http://dbpedia.org/resource/Antoine_Gérin-Lajoie ; Antoine Gérin-Lajoie
+http://dbpedia.org/resource/Stéphane_Poulin ; Stéphane Poulin
+http://dbpedia.org/resource/Louis_Hémon ; Louis Hémon
+http://dbpedia.org/resource/Aziz_Motazedi ; Aziz Motazedi
+http://dbpedia.org/resource/Michel_Désautels ; Michel Désautels
+http://dbpedia.org/resource/List_of_Quebec_writers ; Liste d'auteurs québécois par ordre chronologique
+http://dbpedia.org/resource/Nicole_Houde ; Nicole Houde
+http://dbpedia.org/resource/Jules-Paul_Tardivel ; Jules-Paul Tardivel
+http://dbpedia.org/resource/Francine_Allard ; Francine Allard
+http://dbpedia.org/resource/Rae_Spoon ; Rae Spoon
+http://dbpedia.org/resource/Henriette_Dessaulles ; Henriette Dessaulles
+http://dbpedia.org/resource/Dane_Lanken ; Dane Lanken
+http://dbpedia.org/resource/Esther_Croft ; Esther Croft
+http://dbpedia.org/resource/Michel_Beaulieu ; Michel Beaulieu
+http://dbpedia.org/resource/Émile_Martel_(writer) ; Émile Martel
+http://dbpedia.org/resource/John_Asfour ; John Asfour
+http://dbpedia.org/resource/David_Julian_Hirsh ; David Julian Hirsh
+http://dbpedia.org/resource/Jacob_Viner ; Jacob Viner
+http://dbpedia.org/resource/Sylvain_Trudel ; Sylvain Trudel
+http://dbpedia.org/resource/Frank_L._Packard ; Frank L. Packard
+http://dbpedia.org/resource/Élise_Desaulniers ; Élise Desaulniers
+http://dbpedia.org/resource/Kitty_Empire ; Kitty Empire
+http://dbpedia.org/resource/Michèle_Marineau ; Michèle Marineau
+http://dbpedia.org/resource/Lyne_Charlebois ; Lyne Charlebois
+http://dbpedia.org/resource/Gaétan_Brulotte ; Gaëtan Brulotte
+http://dbpedia.org/resource/Alan_Sullivan ; Alan Sullivan
+http://dbpedia.org/resource/Hélène_Desputeaux ; Hélène Desputeaux
+http://dbpedia.org/resource/Moez_Surani ; Moez Surani
+http://dbpedia.org/resource/Edem_Awumey ; Edem Awumey
+http://dbpedia.org/resource/Steve_Requin ; Steve Requin
+http://dbpedia.org/resource/Frank_O'Dea ; Frank O'Dea
+http://dbpedia.org/resource/Peter_Desbarats ; Peter Desbarats
+http://dbpedia.org/resource/Phillipe-Ignace_François_Aubert_de_Gaspé ; Phillipe-Ignace François Aubert de Gaspé
+http://dbpedia.org/resource/Catherine_Mavrikakis ; Catherine Mavrikakis
+http://dbpedia.org/resource/Norm_Hiscock ; Norm Hiscock
+http://dbpedia.org/resource/Yvan_Bienvenue ; Yvan Bienvenue
+http://dbpedia.org/resource/Philippe-Joseph_Aubert_de_Gaspé ; Philippe-Joseph Aubert de Gaspé
+http://dbpedia.org/resource/Fabien_Cloutier ; Fabien Cloutier
+http://dbpedia.org/resource/Edward_Everett_Rose ; Edward Everett Rose
+http://dbpedia.org/resource/Michel_Tremblay ; Michel Tremblay
+http://dbpedia.org/resource/Octave_Crémazie ; Octave Crémazie
+http://dbpedia.org/resource/Joceline_Sanschagrin ; Joceline Sanschagrin
+http://dbpedia.org/resource/A._M._Klein ; A. M. Klein
+http://dbpedia.org/resource/Michael_Konyves ; Michael Konyves
+http://dbpedia.org/resource/Dan_Bilefsky ; Dan Bilefsky
+http://dbpedia.org/resource/Jon_Tucker ; Jon Tucker
+http://dbpedia.org/resource/Monique_Deland ; Monique Deland
+http://dbpedia.org/resource/François_Bouvier ; François Bouvier
+http://dbpedia.org/resource/Robert_MacNeil ; Robert MacNeil
+http://dbpedia.org/resource/Marie-Claire_Blais ; Marie-Claire Blais
+http://dbpedia.org/resource/Jocelyn_Coulon ; Jocelyn Coulon
+http://dbpedia.org/resource/Fred_Kaufman ; Fred Kaufman
+http://dbpedia.org/resource/Jean-Paul_Desbiens ; Jean-Paul Desbiens
+http://dbpedia.org/resource/Michel_Bibaud ; Michel Bibaud
+http://dbpedia.org/resource/Matthew_Mather ; Matthew Mather
+http://dbpedia.org/resource/Jérôme_Demers ; Jérôme Demers
+http://dbpedia.org/resource/Ian_Halperin ; Ian Halperin
+http://dbpedia.org/resource/Louis-Honoré_Fréchette ; Louis-Honoré Fréchette
+http://dbpedia.org/resource/André_Turpin ; André Turpin
+http://dbpedia.org/resource/Layla_AbdelRahim ; Layla AbdelRahim
+http://dbpedia.org/resource/André-François_Bourbeau ; André-François Bourbeau
+http://dbpedia.org/resource/Michel_Langlois ; Michel Langlois
+http://dbpedia.org/resource/Janette_Bertrand ; Janette Bertrand
+http://dbpedia.org/resource/Serge_Mongeau ; Serge Mongeau
+http://dbpedia.org/resource/Stephanie_Nolen ; Stephanie Nolen
+http://dbpedia.org/resource/Kaya_(Canadian_singer) ; Francis Martin
+http://dbpedia.org/resource/A._M._Klein ; Abraham Moses Klein
+http://dbpedia.org/resource/Jean-Louis_Millette ; Jean-Louis Millette
+http://dbpedia.org/resource/Émile-Dostaler_O'Leary ; Émile-Dostaler O'Leary
+http://dbpedia.org/resource/Shauna_Singh_Baldwin ; Shauna Singh Baldwin
+http://dbpedia.org/resource/Norah_McClintock ; Norah McClintock
+http://dbpedia.org/resource/Sergio_Kokis ; Sergio Kokis
+http://dbpedia.org/resource/Léandre_Dion ; Léandre Dion
+http://dbpedia.org/resource/Brigitte_Sauriol ; Brigitte Sauriol
+http://dbpedia.org/resource/Geneviève_Amyot ; Geneviève Amyot
+http://dbpedia.org/resource/Tim_McAuliffe ; Tim McAuliffe
+http://dbpedia.org/resource/Richard_Burnett ; Richard Burnett
+http://dbpedia.org/resource/Monique_Polak ; Monique Polak
+http://dbpedia.org/resource/Mathyas_Lefebure ; Mathyas Lefebure
+http://dbpedia.org/resource/André_Brassard ; André Brassard
+http://dbpedia.org/resource/Roslyn_Schwartz ; Roslyn Schwartz
+http://dbpedia.org/resource/Alphonse_Piché ; Alphonse Piché
+http://dbpedia.org/resource/Lionel_Shapiro ; Lionel Shapiro
+http://dbpedia.org/resource/Caitlin_Rother ; Caitlin Rother
+http://dbpedia.org/resource/Phillipe-Ignace_François_Aubert_de_Gaspé ; Philippe Aubert de Gaspé, fils
+http://dbpedia.org/resource/Germaine_Guèvremont ; Germaine Guèvremont
+http://dbpedia.org/resource/Jacques_Davidts ; Jacques Davidts
+http://dbpedia.org/resource/Michèle_Mailhot ; Michèle Mailhot
+http://dbpedia.org/resource/Louis_Dudek ; Louis Dudek
+http://dbpedia.org/resource/Kate_Sterns ; Kate Sterns
+http://dbpedia.org/resource/Henry_Beckles_Willson ; Henry Beckles Willson
+http://dbpedia.org/resource/Anne_Renaud ; Anne Renaud
+http://dbpedia.org/resource/Pan_Bouyoucas ; Pan Bouyoucas
+http://dbpedia.org/resource/Artie_Gold ; Artie Gold
+http://dbpedia.org/resource/Philippe_Béha ; Philippe Béha
+http://dbpedia.org/resource/Hector_de_Saint-Denys_Garneau ; Hector de Saint-Denys Garneau
+http://dbpedia.org/resource/Jean_de_Brabant ; Jean de Brabant
+http://dbpedia.org/resource/Marie-Lynn_Hammond ; Marie-Lynn Hammond
+http://dbpedia.org/resource/Merrily_Weisbord ; Merrily Weisbord
+http://dbpedia.org/resource/Henri_Wittmann ; Henri Wittmann
+http://dbpedia.org/resource/Arjun_Basu ; Arjun Basu
+http://dbpedia.org/resource/Paul_Paquet ; Paul Paquet
+http://dbpedia.org/resource/Eugène_Lapierre ; Eugène Lapierre
+http://dbpedia.org/resource/Christiane_Duchesne ; Christiane Duchesne
+http://dbpedia.org/resource/Catherine_Leroux ; Catherine Leroux
+http://dbpedia.org/resource/Carole_David ; Carole David
+http://dbpedia.org/resource/Richard_Martineau ; Richard Martineau
+http://dbpedia.org/resource/XSDTRK ; XSDTRK
+http://dbpedia.org/resource/Pierre_Nepveu ; Pierre Nepveu
+http://dbpedia.org/resource/Constance_Beresford-Howe ; Constance Beresford-Howe
+http://dbpedia.org/resource/Charlotte_Gingras ; Charlotte Gingras
+http://dbpedia.org/resource/Mark_Shainblum ; Mark Shainblum
+http://dbpedia.org/resource/Erin_Mouré ; Erin Mouré
+http://dbpedia.org/resource/Ted_Allan ; Ted Allan
+http://dbpedia.org/resource/Stéphane_Lafleur ; Stéphane Lafleur
+http://dbpedia.org/resource/Kevin_Spraggett ; Kevin Spraggett
+http://dbpedia.org/resource/Howard_Chackowicz ; Howard Chackowicz
+http://dbpedia.org/resource/Sébastien_Pilote ; Sébastien Pilote
+http://dbpedia.org/resource/Jean-Guy_Pilon ; Jean-Guy Pilon
+http://dbpedia.org/resource/Claude_Cossette ; Claude Cossette
+http://dbpedia.org/resource/Michael_Delisle ; Michael Delisle
+http://dbpedia.org/resource/May_Cutler ; May Cutler
+http://dbpedia.org/resource/Steve_Galluccio ; Steve Galluccio
+http://dbpedia.org/resource/Patrick_Senécal ; Patrick Senécal
+http://dbpedia.org/resource/Billy_Mavreas ; Billy Mavreas
+http://dbpedia.org/resource/Andrée_Ferretti ; Andrée Ferretti
+http://dbpedia.org/resource/Suzanne_Paradis ; Suzanne Paradis
+http://dbpedia.org/resource/Nicolas_Dickner ; Nicolas Dickner
+http://dbpedia.org/resource/Darren_Wershler ; Darren Wershler
+http://dbpedia.org/resource/Lauren_B._Davis ; Lauren B. Davis
+http://dbpedia.org/resource/Lisa_Appignanesi ; Lisa Appignanesi
+http://dbpedia.org/resource/Kenneth_Radu ; Kenneth Radu
+http://dbpedia.org/resource/Frédéric_Bastien ; Frédéric Bastien
+http://dbpedia.org/resource/Donna_McFarlane ; Donna McFarlane
+http://dbpedia.org/resource/Will_Aitken ; Will Aitken
+http://dbpedia.org/resource/France_Boisvert ; France Boisvert
+http://dbpedia.org/resource/Joël_Pourbaix ; Joël Pourbaix
+http://dbpedia.org/resource/Robert_Barsky ; Robert Barsky
+http://dbpedia.org/resource/Eldon_Pattyson_Black ; Eldon Pattyson Black
+http://dbpedia.org/resource/Jan_Wong ; Jan Wong
+http://dbpedia.org/resource/Vladimir_De_Thézier ; Vladimir De Thézier
+http://dbpedia.org/resource/Lise_Thouin ; Lise Thouin
+http://dbpedia.org/resource/Pierre_Ouellet ; Pierre Ouellet
+http://dbpedia.org/resource/Red_Fisher_(journalist) ; Red Fisher
+http://dbpedia.org/resource/Victor-Lévy_Beaulieu ; Victor-Lévy Beaulieu
+http://dbpedia.org/resource/Francine_D'Amour ; Francine D'Amour
+http://dbpedia.org/resource/Anne_Stone ; Anne Stone
+http://dbpedia.org/resource/Kevin_Tierney ; Kevin Tierney
+http://dbpedia.org/resource/Hélène_Harbec ; Hélène Harbec
+http://dbpedia.org/resource/Madeleine_Gagnon ; Madeleine Gagnon
+http://dbpedia.org/resource/Yvon_Deschamps ; Yvon Deschamps
+http://dbpedia.org/resource/Alice_Parizeau ; Alice Parizeau
+http://dbpedia.org/resource/Patrick_Anderson_(poet) ; Patrick Anderson
+http://dbpedia.org/resource/Joseph_Laurent ; Joseph Laurent
+http://dbpedia.org/resource/Robert_Lepage ; Robert Lepage
+http://dbpedia.org/resource/Plume_Latraverse ; Plume Latraverse
+http://dbpedia.org/resource/J._Torres ; J. Torres
+http://dbpedia.org/resource/Robert_Majzels ; Robert Majzels
+http://dbpedia.org/resource/Nelly_Arcan ; Nelly Arcan
+http://dbpedia.org/resource/Élisabeth_Vonarburg ; Élisabeth Vonarburg
+http://dbpedia.org/resource/Réjean_Ducharme ; Réjean Ducharme
+http://dbpedia.org/resource/Danielle_Fournier ; Danielle Fournier
+http://dbpedia.org/resource/Julie_Barlow ; Julie Barlow
+http://dbpedia.org/resource/Philippe-Joseph_Aubert_de_Gaspé ; Philippe Aubert de Gaspé
+http://dbpedia.org/resource/André_Giroux_(writer) ; André Giroux
+http://dbpedia.org/resource/Vittorio_Rossi ; Vittorio Rossi
+http://dbpedia.org/resource/Lawrence_Ytzhak_Braithwaite ; Lawrence Ytzhak Braithwaite
+http://dbpedia.org/resource/Maude_Smith_Gagnon ; Maude Smith Gagnon
+http://dbpedia.org/resource/John_Bell_(historian) ; John Bell
+http://dbpedia.org/resource/Gabriella_Goliger ; Gabriella Goliger
+http://dbpedia.org/resource/Félix_Leclerc ; Félix Leclerc
+http://dbpedia.org/resource/Roméo_Dallaire ; Roméo Dallaire
+http://dbpedia.org/resource/Adjutor_Rivard ; Adjutor Rivard
+http://dbpedia.org/resource/François_Rousseau_(researcher) ; François Rousseau
+http://dbpedia.org/resource/Claire_Holden_Rothman ; Claire Holden Rothman
+http://dbpedia.org/resource/William_Shatner ; William Shatner
+http://dbpedia.org/resource/Émile_Nelligan ; Émile Nelligan
+http://dbpedia.org/resource/F._R._Scott ; F. R. Scott
+http://dbpedia.org/resource/François-Xavier_Garneau ; François-Xavier Garneau
+http://dbpedia.org/resource/Marie_Laberge ; Marie Laberge
+http://dbpedia.org/resource/Michael_Mando ; Michael Mando
+http://dbpedia.org/resource/George_Anthony_(journalist) ; George Anthony
+http://dbpedia.org/resource/Louis_Paradis ; Louis Paradis
+http://dbpedia.org/resource/Angeline_Hango ; Angeline Hango
+http://dbpedia.org/resource/Richard_Blaimert ; Richard Blaimert
+http://dbpedia.org/resource/Seymour_Blicker ; Seymour Blicker
+http://dbpedia.org/resource/Frederic_Marcotte ; Frédéric Marcotte
+http://dbpedia.org/resource/Madeleine_Ferron ; Madeleine Ferron
+http://dbpedia.org/resource/Susan_Elmslie ; Susan Elmslie
+http://dbpedia.org/resource/Louise_Lanctôt ; Louise Lanctôt
+http://dbpedia.org/resource/Louisette_Dussault ; Louisette Dussault
+http://dbpedia.org/resource/L._Ian_MacDonald ; L. Ian MacDonald
+http://dbpedia.org/resource/Denis_Thériault ; Denis Thériault
+http://dbpedia.org/resource/Alain_Stanké ; Alain Stanké
+http://dbpedia.org/resource/Frans_Ben_Callado ; Frans Ben Callado
+http://dbpedia.org/resource/Jack_Layton ; Jack Layton
+http://dbpedia.org/resource/Harry_Mayerovitch ; Harry Mayerovitch
+http://dbpedia.org/resource/Luc_Lacourcière ; Luc Lacourcière
+http://dbpedia.org/resource/Jason_Reitman ; Jason Reitman
+http://dbpedia.org/resource/Estelle_Beauchamp ; Estelle Beauchamp
+http://dbpedia.org/resource/Emma_Richler ; Emma Richler
+http://dbpedia.org/resource/Francine_Pelletier_(writer) ; Francine Pelletier
+http://dbpedia.org/resource/Pierre_Leroux_(author) ; Pierre Leroux
+http://dbpedia.org/resource/Sonia_Sarfati ; Sonia Sarfati
+http://dbpedia.org/resource/Louise_Maheux-Forcier ; Louise Maheux-Forcier
+http://dbpedia.org/resource/Michelle_Tisseyre ; Michelle Tisseyre
+http://dbpedia.org/resource/Bruce_Taylor_(poet) ; Bruce Taylor
+http://dbpedia.org/resource/Maka_Kotto ; Maka Kotto
+http://dbpedia.org/resource/Gordon_Symons ; Gordon Symons
+http://dbpedia.org/resource/Corinne_Chaponnière ; Corinne Chaponnière
+http://dbpedia.org/resource/Marie_Brassard ; Marie Brassard
+http://dbpedia.org/resource/Marquise_Lepage ; Marquise Lepage
+http://dbpedia.org/resource/Carolyn_Bennett_(comedian) ; Carolyn Bennett
+http://dbpedia.org/resource/Nadia_G ; Nadia G
+http://dbpedia.org/resource/Julie_Bruck ; Julie Bruck
+http://dbpedia.org/resource/François-Réal_Angers ; François-Réal Angers
+http://dbpedia.org/resource/Martin_Pasko ; Martin Pasko
+http://dbpedia.org/resource/Jacques_Ferron ; Jacques Ferron
+http://dbpedia.org/resource/Nick_Auf_der_Maur ; Nick Auf der Maur
+http://dbpedia.org/resource/David_Bercuson ; David Bercuson
+http://dbpedia.org/resource/Eibie_Weizfeld ; Eibie Weizfeld
+http://dbpedia.org/resource/Danielle_Trussart ; Danielle Trussart
+http://dbpedia.org/resource/Pierre_Turgeon_(writer) ; Pierre Turgeon
+http://dbpedia.org/resource/Fil_Fraser ; Fil Fraser
+http://dbpedia.org/resource/Charles_Heavysege ; Charles Heavysege
+http://dbpedia.org/resource/Sylvie_Desrosiers ; Sylvie Desrosiers
+http://dbpedia.org/resource/Lisa_Carducci ; Lisa Carducci
+http://dbpedia.org/resource/Linda_Amyot ; Linda Amyot
+http://dbpedia.org/resource/JBM ; JBM
+http://dbpedia.org/resource/Denise_Desautels ; Denise Desautels
+http://dbpedia.org/resource/Anne_Robillard ; Anne Robillard
+http://dbpedia.org/resource/Evan_Beloff ; Evan Beloff
+http://dbpedia.org/resource/Marie-Hélène_Cousineau ; Marie-Hélène Cousineau
+http://dbpedia.org/resource/Francine_Noël ; Francine Noël
+http://dbpedia.org/resource/George_Radwanski ; George Radwanski
+http://dbpedia.org/resource/Adam_Bock ; Adam Bock
+http://dbpedia.org/resource/Naïm_Kattan ; Naïm Kattan
+http://dbpedia.org/resource/Daniel_J._Caron ; Daniel J. Caron
+http://dbpedia.org/resource/Jonah_Keri ; Jonah Keri
+http://dbpedia.org/resource/Gilles_Vigneault ; Gilles Vigneault
+http://dbpedia.org/resource/Alexander_Henry_the_elder ; Alexander Henry the elder
+http://dbpedia.org/resource/Edgar_Andrew_Collard ; Edgar Andrew Collard
+http://dbpedia.org/resource/Claude_Legault ; Claude Legault
+http://dbpedia.org/resource/Peter_Behrens_(writer) ; Peter Behrens
+http://dbpedia.org/resource/Thomas_Waugh ; Thomas Waugh
+http://dbpedia.org/resource/Dave_Holmes_(researcher) ; Dave Holmes
+http://dbpedia.org/resource/Gaétan_Brulotte ; Gaétan Brulotte
+http://dbpedia.org/resource/Matthew_Hays ; Matthew Hays
+http://dbpedia.org/resource/Esdras_Minville ; Esdras Minville
+http://dbpedia.org/resource/Pierre_DesRuisseaux ; Pierre DesRuisseaux
+http://dbpedia.org/resource/Tania_Langlais ; Tania Langlais
+http://dbpedia.org/resource/Stephen_Lack ; Stephen Lack
+http://dbpedia.org/resource/Chantal_Renaud ; Chantal Renaud
+http://dbpedia.org/resource/René-Daniel_Dubois ; René-Daniel Dubois
+http://dbpedia.org/resource/Olivier_Kemeid ; Olivier Kemeid
+http://dbpedia.org/resource/Ethlie_Ann_Vare ; Ethlie Ann Vare
+http://dbpedia.org/resource/Geneviève_Massignon ; Geneviève Massignon
+http://dbpedia.org/resource/Leonard_Cohen ; Leonard Cohen
+http://dbpedia.org/resource/Brigitte_Alepin ; Brigitte Alepin
+http://dbpedia.org/resource/Jean-Jacques_Simard ; Jean-Jacques Simard
+http://dbpedia.org/resource/Kerry_Lee_Powell ; Kerry Lee Powell
+http://dbpedia.org/resource/Rolande_Allard-Lacerte ; Rolande Allard-Lacerte
+http://dbpedia.org/resource/Roch_Carrier ; Roch Carrier
+http://dbpedia.org/resource/Nora_Gold ; Nora Gold
+http://dbpedia.org/resource/Clément_Marchand ; Clément Marchand
+http://dbpedia.org/resource/Donald_Bell_(writer) ; Donald Bell
+http://dbpedia.org/resource/Gil_Courtemanche ; Gil Courtemanche
+http://dbpedia.org/resource/Sarah_Hampson ; Sarah Hampson
+http://dbpedia.org/resource/Fulvio_Caccia ; Fulvio Caccia
+http://dbpedia.org/resource/Trevor_Ferguson ; Trevor Ferguson
+http://dbpedia.org/resource/Bert_Archer ; Bert Archer
+http://dbpedia.org/resource/Gaston_Miron ; Gaston Miron
+http://dbpedia.org/resource/Gilles_Archambault ; Gilles Archambault
+http://dbpedia.org/resource/Phil_Edmonston ; Phil Edmonston
+http://dbpedia.org/resource/Charles_Yale_Harrison ; Charles Yale Harrison
+http://dbpedia.org/resource/Hélène_Ouvrard ; Hélène Ouvrard
+http://dbpedia.org/resource/Aude_(writer) ; Aude
+http://dbpedia.org/resource/René_Lapierre ; René Lapierre
+http://dbpedia.org/resource/Boyce_Richardson ; Boyce Richardson
+http://dbpedia.org/resource/Roland_Michel_Tremblay ; Roland Michel Tremblay
+http://dbpedia.org/resource/Jacob_Tierney ; Jacob Tierney
+http://dbpedia.org/resource/Joseph_A._Schwarcz ; Joseph A. Schwarcz
+http://dbpedia.org/resource/Barry_Webster_(writer) ; Barry Webster
+http://dbpedia.org/resource/Pierre_Daviault ; Pierre Daviault
+http://dbpedia.org/resource/Gilles_Houde ; Gilles Houde
+http://dbpedia.org/resource/Henri-Raymond_Casgrain ; Henri-Raymond Casgrain
+http://dbpedia.org/resource/Jeanne-Mance_Delisle ; Jeanne-Mance Delisle
+http://dbpedia.org/resource/Eric_Berne ; Éric Berne
+http://dbpedia.org/resource/Marilyn_Lightstone ; Marilyn Lightstone
+http://dbpedia.org/resource/Stephanie_Morgenstern ; Stephanie Morgenstern
+http://dbpedia.org/resource/Janine_O'Leary_Cobb ; Janine O'Leary Cobb
+http://dbpedia.org/resource/John_Charlton_Fisher ; John Charlton Fisher
+http://dbpedia.org/resource/Lily_Dougall ; Lily Dougall
+http://dbpedia.org/resource/Catherine_Lalonde ; Catherine Lalonde
+http://dbpedia.org/resource/Richard_Goldbloom ; Richard Goldbloom
+http://dbpedia.org/resource/Chloé_Robichaud ; Chloé Robichaud
+http://dbpedia.org/resource/Dean_DeBlois ; Dean DeBlois
+http://dbpedia.org/resource/Pascale_Quiviger ; Pascale Quiviger
+http://dbpedia.org/resource/Pierre_Labrie ; Pierre Labrie
+http://dbpedia.org/resource/Lionel_Groulx ; Lionel Groulx
+http://dbpedia.org/resource/Jean_Desprez ; Jean Desprez
+http://dbpedia.org/resource/Normand_de_Bellefeuille ; Normand de Bellefeuille
+http://dbpedia.org/resource/Peter_Dubé ; Peter Dubé
+http://dbpedia.org/resource/Marc_de_Foy ; Marc de Foy
+http://dbpedia.org/resource/Michel_Vastel ; Michel Vastel
+http://dbpedia.org/resource/A._J._M._Smith ; A. J. M. Smith
+http://dbpedia.org/resource/Blanche_Lamontagne-Beauregard ; Blanche Lamontagne-Beauregard
+http://dbpedia.org/resource/Didier_Leclair ; Didier Leclair
+http://dbpedia.org/resource/Lowell_Green ; Lowell Green
+http://dbpedia.org/resource/Gilles_Poitras ; Gilles Poitras
+http://dbpedia.org/resource/Elisha_Lim ; Elisha Lim
+http://dbpedia.org/resource/Fernand_Ouellette ; Fernand Ouellette
+http://dbpedia.org/resource/Rachel_Leclerc ; Rachel Leclerc
+http://dbpedia.org/resource/Wade_Rowland ; Wade Rowland
+http://dbpedia.org/resource/Serge_Monast ; Serge Monast
+http://dbpedia.org/resource/Stephanie_Morgenstern ; Stéphanie Morgenstern
+http://dbpedia.org/resource/John_Wildman_(actor) ; John Wildman
+http://dbpedia.org/resource/Claude_Couture ; Claude Couture
+http://dbpedia.org/resource/Michel_Noël_(writer) ; Michel Noël
+http://dbpedia.org/resource/Bryan_Perro ; Bryan Perro
+http://dbpedia.org/resource/Larry_Fineberg ; Larry Fineberg
+http://dbpedia.org/resource/Gail_Scott_(writer) ; Gail Scott
+http://dbpedia.org/resource/Ted_Blackman ; Ted Blackman
+http://dbpedia.org/resource/Conrad_Black ; Conrad Black
+http://dbpedia.org/resource/Alexander_Begg_(1839–1897) ; Alexander Begg
+http://dbpedia.org/resource/Régis_Labeaume ; Régis Labeaume
+http://dbpedia.org/resource/Anne_Dandurand ; Anne Dandurand
+http://dbpedia.org/resource/Stuart_McLean ; Stuart McLean
+http://dbpedia.org/resource/Alix_Ohlin ; Alix Ohlin
+http://dbpedia.org/resource/Gustave_Lanctot ; Gustave Lanctot
+http://dbpedia.org/resource/Jean-Paul_Daoust ; Jean-Paul Daoust
+http://dbpedia.org/resource/F._R._Scott ; Francis Reginald Scott

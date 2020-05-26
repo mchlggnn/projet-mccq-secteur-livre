@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:schema="https://schema.org/"
+>
+  <rdf:Description rdf:about="http://www.sogides.com/editeur/3">
+    <schema:name>Bayard Canada</schema:name>
+    <rdf:type rdf:resource="http://www.sogides.com/classe/Editeur"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.sogides.com/editeur/2">
+    <schema:name>Atma</schema:name>
+    <rdf:type rdf:resource="http://www.sogides.com/classe/Editeur"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.sogides.com/editeur/26">
+    <schema:name>Parfum d'encre</schema:name>
+    <rdf:type rdf:resource="http://www.sogides.com/classe/Editeur"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.sogides.com/editeur/13">
+    <schema:name>La Mèche</schema:name>
+    <rdf:type rdf:resource="http://www.sogides.com/classe/Editeur"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.sogides.com/editeur/38">
+    <schema:name>Z'Ailées</schema:name>
+    <rdf:type rdf:resource="http://www.sogides.com/classe/Editeur"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.sogides.com/editeur/15">
+    <schema:name>Le Jour</schema:name>
+    <rdf:type rdf:resource="http://www.sogides.com/classe/Editeur"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.sogides.com/editeur/7">
+    <rdf:type rdf:resource="http://www.sogides.com/classe/Editeur"/>
+    <schema:name>Édimag</schema:name>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.sogides.com/editeur/14">
+    <schema:name>La Semaine</schema:name>
+    <rdf:type rdf:resource="http://www.sogides.com/classe/Editeur"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.sogides.com/editeur/23">
+    <rdf:type rdf:resource="http://www.sogides.com/classe/Editeur"/>
+    <schema:name>Marchand de feuilles</schema:name>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.sogides.com/editeur/9">
+    <rdf:type rdf:resource="http://www.sogides.com/classe/Editeur"/>
+    <schema:name>Glénat Québec</schema:name>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.sogides.com/editeur/24">
+    <rdf:type rdf:resource="http://www.sogides.com/classe/Editeur"/>
+    <schema:name>Michel Quintin</schema:name>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.sogides.com/editeur/5">
+    <schema:name>Chouette</schema:name>
+    <rdf:type rdf:resource="http://www.sogides.com/classe/Editeur"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.sogides.com/editeur/12">
+    <schema:name>La Griffe</schema:name>
+    <rdf:type rdf:resource="http://www.sogides.com/classe/Editeur"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.sogides.com/editeur/25">
+    <schema:name>Monde Différent (Un)</schema:name>
+    <rdf:type rdf:resource="http://www.sogides.com/classe/Editeur"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.sogides.com/editeur/33">
+    <rdf:type rdf:resource="http://www.sogides.com/classe/Editeur"/>
+    <schema:name>Stanké</schema:name>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.sogides.com/editeur/16">
+    <schema:name>Les Éditions de l'Hexagone</schema:name>
+    <rdf:type rdf:resource="http://www.sogides.com/classe/Editeur"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.sogides.com/editeur/4">
+    <schema:name>Bravo!</schema:name>
+    <rdf:type rdf:resource="http://www.sogides.com/classe/Editeur"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.sogides.com/editeur/19">
+    <schema:name>Les Presses Libres</schema:name>
+    <rdf:type rdf:resource="http://www.sogides.com/classe/Editeur"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.sogides.com/editeur/37">
+    <rdf:type rdf:resource="http://www.sogides.com/classe/Editeur"/>
+    <schema:name>Wilson &amp; Lafleur</schema:name>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.sogides.com/editeur/36">
+    <rdf:type rdf:resource="http://www.sogides.com/classe/Editeur"/>
+    <schema:name>VLB éditeur</schema:name>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.sogides.com/editeur/1">
+    <schema:name>Alire</schema:name>
+    <rdf:type rdf:resource="http://www.sogides.com/classe/Editeur"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.sogides.com/editeur/22">
+    <rdf:type rdf:resource="http://www.sogides.com/classe/Editeur"/>
+    <schema:name>Marcel Broquet Éditeur</schema:name>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.sogides.com/editeur/21">
+    <schema:name>Logiques</schema:name>
+    <rdf:type rdf:resource="http://www.sogides.com/classe/Editeur"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.sogides.com/editeur/29">
+    <rdf:type rdf:resource="http://www.sogides.com/classe/Editeur"/>
+    <schema:name>Presses Aventure</schema:name>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.sogides.com/editeur/27">
+    <rdf:type rdf:resource="http://www.sogides.com/classe/Editeur"/>
+    <schema:name>Perro éditeur</schema:name>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.sogides.com/editeur/10">
+    <schema:name>JCL</schema:name>
+    <rdf:type rdf:resource="http://www.sogides.com/classe/Editeur"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.sogides.com/editeur/28">
+    <schema:name>Petit homme</schema:name>
+    <rdf:type rdf:resource="http://www.sogides.com/classe/Editeur"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.sogides.com/editeur/30">
+    <rdf:type rdf:resource="http://www.sogides.com/classe/Editeur"/>
+    <schema:name>Publistar</schema:name>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.sogides.com/editeur/31">
+    <schema:name>Recto-Verso</schema:name>
+    <rdf:type rdf:resource="http://www.sogides.com/classe/Editeur"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.sogides.com/editeur/18">
+    <rdf:type rdf:resource="http://www.sogides.com/classe/Editeur"/>
+    <schema:name>Les Éditions Québec-Livres</schema:name>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.sogides.com/editeur/17">
+    <rdf:type rdf:resource="http://www.sogides.com/classe/Editeur"/>
+    <schema:name>Les Éditions du Journal</schema:name>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.sogides.com/editeur/32">
+    <schema:name>Soulières Éditeur</schema:name>
+    <rdf:type rdf:resource="http://www.sogides.com/classe/Editeur"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.sogides.com/editeur/34">
+    <rdf:type rdf:resource="http://www.sogides.com/classe/Editeur"/>
+    <schema:name>Trécarré</schema:name>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.sogides.com/editeur/6">
+    <schema:name>De la Bagnole</schema:name>
+    <rdf:type rdf:resource="http://www.sogides.com/classe/Editeur"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.sogides.com/editeur/11">
+    <rdf:type rdf:resource="http://www.sogides.com/classe/Editeur"/>
+    <schema:name>La Courte échelle</schema:name>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.sogides.com/editeur/8">
+    <rdf:type rdf:resource="http://www.sogides.com/classe/Editeur"/>
+    <schema:name>Fonfon</schema:name>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.sogides.com/editeur/20">
+    <schema:name>Libre Expression</schema:name>
+    <rdf:type rdf:resource="http://www.sogides.com/classe/Editeur"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.sogides.com/editeur/35">
+    <rdf:type rdf:resource="http://www.sogides.com/classe/Editeur"/>
+    <schema:name>Typo</schema:name>
+  </rdf:Description>
+</rdf:RDF>

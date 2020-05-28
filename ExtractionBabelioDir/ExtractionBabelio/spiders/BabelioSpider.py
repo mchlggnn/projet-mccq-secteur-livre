@@ -7,7 +7,9 @@ class BabelioSpider(scrapy.Spider):
     name = 'books'
     start_urls = [
         "https://www.babelio.com/livres-/quebecois/12642",
-        #"https://www.babelio.com/livres/Lakhdari-King-Histoires-de-filles-sous-le-soleil/531341"
+        #"https://www.babelio.com/livres/Lakhdari-King-Histoires-de-filles-sous-le-soleil/531341",
+        #"https://www.babelio.com/auteur/George-RR-Martin/32409"
+
     ]
     root_url = "https://www.babelio.com/"
     review_page = None
@@ -31,11 +33,11 @@ class BabelioSpider(scrapy.Spider):
             pages = response.css("div#id_pagination a::text").extract()
 
             max_i = str(max([int(p) for p in pages]))
-            max_i = 2
+            # max_i = 2
             response.meta['max_i'] = max_i
 
-        yield from response.follow_all(list_book[0:2], callback=self.parse_book)
-        yield from response.follow_all(list_author[0:2], callback=self.parse_author)
+        yield from response.follow_all(list_book[0:], callback=self.parse_book)
+        yield from response.follow_all(list_author[0:], callback=self.parse_author)
 
         if i != max_i:
             i += 1
@@ -54,12 +56,19 @@ class BabelioSpider(scrapy.Spider):
         author = BabelioAuthor()
         author['url'] = response.url
         author['name'] = response.css('h1 a::text').extract_first()
-        author['infos'] = response.css('div.livre_resume::text').extract()
+        author['infos'] = response.css('div.livre_resume::text, div.livre_resume span::text').extract()
         author['bio'] = response.css('#d_bio::text').extract()
-        author['date_of_birth'] = response.css('div.livre_resume span::text').extract_first()
-        author['tags'] = response.css('.tags a::text').extract()
+        tags_selector = response.css('.tags a')
+        author['tags'] = []
+        for tag in tags_selector:
+            author['tags'].append({
+                'tag': tag.css('a::text').extract_first(),
+                'info': tag.css('a::attr("class")').extract_first()
+            })
         author['friends'] = response.css('.list_trombi h2::text').extract()
-        author['mean_grade'] = response.css('.rating::text').extract_first()
+        author['rating'] = response.css('.rating::text').extract_first()
+        author['nb_rating'] = response.css('span.votes[itemprop=ratingCount]::text').extract_first()
+        author['prices'] = response.css('div.livre_award + a::text').extract()
 
         request_bibli = scrapy.Request(url=author['url'] + '/bibliographie', callback=self.parse_bibli)
         request_bibli.meta['author'] = author
@@ -68,12 +77,45 @@ class BabelioSpider(scrapy.Spider):
     def parse_bibli(self, response):
 
         author = response.meta['author']
+        bibliography = response.css('td.titre_livre a.titre_v2::attr("href")').extract()
         if 'bibliography' in author.keys():
-            author['bibliography'] + response.css('td.titre_livre a.titre_v2::attr("href")').extract()
+            author['bibliography'] += bibliography
         else:
-            author['bibliography'] = response.css('td.titre_livre a.titre_v2::attr("href")').extract()
+            author['bibliography'] = bibliography
 
-        yield author
+        request_media = scrapy.Request(url=author['url'] + '/videos', callback=self.parse_video)
+        request_media.meta['author'] = author
+        yield request_media
+
+    def parse_video(self, response):
+        author = response.meta['author']
+
+        media_ls_selector = response.css('div.post_con')
+        print("response url: " + str(response.url))
+        print(media_ls_selector.extract())
+        media_ls = []
+        for media_selector in media_ls_selector:
+            media = {
+                    'url': media_selector.css('a.actualite_media::attr("href")').extract_first(),
+                    'date': media_selector.css('.actalite_post_head span::text').extract_first(),
+                    'description': media_selector.css('.actualite_media + div::text').extract()
+                }
+            media_ls.append(media)
+
+        if 'media' in author.keys():
+            author['media'] += media_ls
+        else:
+            author['media'] = media_ls
+
+        next_page = response.css("div.pagination a.icon-next::attr('href')").get()
+        if next_page is not None:
+            next_page_request = scrapy.Request(url=self.root_url + next_page, callback=self.parse_video)
+            next_page_request.meta['author'] = author
+            yield next_page_request
+        else:
+            yield author
+
+
 
     def parse_book(self, response):
 
@@ -85,11 +127,18 @@ class BabelioSpider(scrapy.Spider):
         author_last_name = author.css('span[itemprop="name"] b::text').extract()
         book['author'] = author_first_name + author_last_name
         book['author_id'] = response.css('span[itemprop="author"] a::attr(\'href\')').get()
-        book['infos'] = response.css('.livre_refs::text').extract()
+        book['infos'] = response.css('.livre_refs::text, .livre_refs a::text').extract()
         book['editor'] = response.css('.livre_refs a::text').extract_first()
         book['rating'] = response.css('.texte_t2[itemprop=ratingValue]::text').extract_first()
+        book['nb_rating'] = response.css('.livre_con span[itemprop=ratingCount]::text').extract_first()
         book['resume'] = response.css('#d_bio.livre_resume::text').extract()
-        book['tags'] = response.css('.tags a::text').extract()
+        tags_selector = response.css('.tags a')
+        book['tags'] = []
+        for tag in tags_selector:
+            book['tags'].append({
+                'tag': tag.css('a::text').extract_first(),
+                'info': tag.css('a::attr("class")').extract_first()
+            })
 
         request_review = scrapy.Request(url=book['url'] + '/critiques', callback=self.parse_review)
         request_review.meta['book'] = book

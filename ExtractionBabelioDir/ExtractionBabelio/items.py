@@ -9,6 +9,9 @@ import scrapy
 
 
 class BabelioBook(scrapy.Item):
+    """
+    Représente un objet Livre scrappé depuis Babélio
+    """
 
     url = scrapy.Field()
     title = scrapy.Field()
@@ -29,6 +32,10 @@ class BabelioBook(scrapy.Item):
 
 
 class BabelioAuthor(scrapy.Item):
+    """
+    Représente un objet auteur scrappé depuis Babélio
+    """
+
     url = scrapy.Field()
     name = scrapy.Field()
     bibliography = scrapy.Field()
@@ -49,6 +56,10 @@ class BabelioAuthor(scrapy.Item):
     prices = scrapy.Field()
 
 class BabelioReview(scrapy.Item):
+    """
+    Représente un objet "Critique" relatif à un livre
+    """
+
     id = scrapy.Field()
     author = scrapy.Field()
     date = scrapy.Field()
@@ -57,6 +68,9 @@ class BabelioReview(scrapy.Item):
     content = scrapy.Field()
 
 class BabelioExtract(scrapy.Item):
+    """
+    Représente un objet "extrait/citation" relatif à un livre
+    """
     id = scrapy.Field()
     author = scrapy.Field()
     date = scrapy.Field()

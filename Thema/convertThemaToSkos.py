@@ -47,14 +47,15 @@ for code in taxo["CodeList"]["ThemaCodes"]["Code"]:
 
 ### Création de la représentation RDF avec SKOS
 
-def ajouterTriplets(hierarchie, graphe, code = root):               
+def ajouterTriplets(hierarchie, graphe, code = root):
+    graphe.add((THEMA[code], RDFS.label, Literal(code)))            
+    graphe.add((THEMA[code], SKOS.prefLabel, Literal(code + ' - ' + label[code], lang = "fr")))
+    
     if hierarchie != {}:
         for sousCode in hierarchie:
             graphe.add((THEMA[code], SKOS.narrower, THEMA[sousCode]))
-            graphe.add((THEMA[code], RDFS.label, Literal(code)))            
-            graphe.add((THEMA[code], SKOS.prefLabel, Literal(code + ' - ' + label[code], lang = "fr")))
             ajouterTriplets(hierarchie[sousCode], graphe, sousCode)
-                
+        
 
 
 graphe = Graph()

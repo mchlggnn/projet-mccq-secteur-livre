@@ -46,8 +46,11 @@ def normalize(string):
     :param string: chaine de caractère à normaliser
     :return: même chaine de caractère normalisée
     """
-    string = nettoyer_accents(string)
-    return re.sub(r'\W', ' ', string)
+    try:
+        string = nettoyer_accents(string)
+        return re.sub(r'\W', ' ', string)
+    except:
+        return None
 
 
 def same_book(titre1, titre2):
@@ -97,7 +100,7 @@ def babelio_item_treatment(babelio_item):
                 book_ADP = g.predicate_objects(subj)
                 for info in book_ADP:
                     if info[0] == rdflib.URIRef("https://schema.org/name"):
-                        if same_book(info[1], babelio_item['title']):
+                        if same_book(info[1].n3(), babelio_item['title']):
                             book_refs["ADP"] = subj.n3()
 
         # Analyse des données de Dépot Legal
@@ -113,7 +116,15 @@ def babelio_item_treatment(babelio_item):
                 book_refs['depot_legal'] = book_Depot_legal['TITRE_PUBLICATION']
 
         # Analyse des données de Hurtubise
-        csv_reader = csv.DictReader(books_Hurtubise)
+        csv_reader = csv.DictReader(books_Hurtubise, delimiter=',', fieldnames=[
+            "Editeur", "ISBN Papier", "ISBN PDF", "ISBN epub", "Titre", "Sous - titre", "Titre de la serie",
+            "Contributeurs", "Contributeur(premier)", "Langue", "Langue Origine", "Resume", "Nombre de pages",
+            "Date de parution", "Annee de parution", "Sujet  THEMA principal", "Sujet THEMA",
+            "Quantificateur Georaphique", "Quantificateur de langue", "Quantificateur Historique", "Niveau soclaire FR",
+            "Niveau scolaire QC", "Cycle scolaire FR", "Niveau de lecture", "Echele CECR", "Quantificateur d'interet",
+            "Quantificateur d'age", "Quantificateur de style", "Classification Editoriale", "Mots cles"
+
+        ])
         for book_Hurtubise in csv_reader:
             if same_book(book_Hurtubise['Titre'], babelio_item['title']):
                 book_refs['Hurtubise'] = book_Hurtubise['ISBN Papier']
@@ -144,11 +155,11 @@ def babelio_item_treatment(babelio_item):
                 author_ADP = g.predicate_objects(subj)
                 for info in author_ADP:
                     if info[0] == rdflib.URIRef("https://schema.org/name"):
-                        if same_book(info[1], babelio_item['name']):
+                        if same_author(info[1].n3(), babelio_item['name']):
                             author_refs["ADP"] = subj.n3()
 
         csv_reader = csv.DictReader(authors_ILE, delimiter=',', fieldnames=[
-            'nom', 'uri', 'bio', 'genres', 'site', 'pseudonyme'])
+            'uri', 'nom', 'bio', 'genres', 'site', 'pseudonyme'])
         for author_ILE in csv_reader:
             if same_author(author_ILE['nom'], babelio_item['name']):
                 author_refs['ILE'] = author_ILE['uri']
@@ -159,8 +170,8 @@ def babelio_item_treatment(babelio_item):
             if same_author(author_wikidata['nom'], babelio_item['name']):
                 author_refs['wikidata'] = author_wikidata['uri']
 
-        csv_reader = csv.DictReader(authors_DBpedia, delimiter=',', fieldnames=[
-            'nom', 'uri'])
+        csv_reader = csv.DictReader(authors_DBpedia, delimiter=';', fieldnames=[
+            'uri', 'nom'])
         for author_DBpedia in csv_reader:
             if same_author(author_DBpedia['nom'], babelio_item['name']):
                 author_refs['wikidata'] = author_DBpedia['uri']
@@ -171,13 +182,12 @@ def babelio_item_treatment(babelio_item):
 with open("./Babelio/item.json", "r") as babelioJson:
 
     # Loading des données sauvegardées
-    books_Depot_legal = open("./DepotLegal/depotlegal20171231.csv", "r", encoding='utf-8')
-    books_Hurtubise = open("./Hurtubise/Exportation-Hurtubise.csv", "r")
-    books_ILE = open("./ILE/oeuvres_ILE_comma_separated.csv", "r")
-    authors_ILE = open("./ILE/auteurs_ILE_comma_separated.csv", 'r')
-    authors_wikidata = open("./Wikidata/ecrivains_wikidata.txt", 'r')
-    authors_DBpedia = open("./DBpedia/ecrivains_dbpedia_fr.txt", "r")
-
+    books_Depot_legal = open("./DepotLegal/depotlegal20171231.csv", "r", encoding='ISO-8859-1')
+    books_Hurtubise = open("./Hurtubise/Exportation-Hurtubise.csv", "r", encoding='ISO-8859-1')
+    books_ILE = open("./ILE/oeuvres_ILE_comma_separated.csv", "r", encoding='ISO-8859-1')
+    authors_ILE = open("./ILE/auteurs_ILE_comma_separated.csv", 'r', encoding='ISO-8859-1')
+    authors_wikidata = open("./Wikidata/ecrivains_wikidata_comma_separated.csv", 'r', encoding='ISO-8859-1')
+    authors_DBpedia = open("./DBpedia/ecrivains_dbpedia_fr.txt", "r", encoding='ISO-8859-1')
 
     babelioData = json.load(babelioJson)[0:]
 

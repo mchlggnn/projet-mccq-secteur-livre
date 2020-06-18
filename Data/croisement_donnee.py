@@ -147,6 +147,8 @@ def same_book(book1, book2):
     # start_same_book_time = time.time()
     title1 = normalize(book1['title'])
     title2 = normalize(book2['title'])
+    if not title1 or not title2:
+        return False
     authors1 = [normalize(author) for author in book1['author']]
     authors2 = [normalize(author) for author in book2['author']]
     isbns1 = [normalize_number(isbn) for isbn in book1['isbn']]
@@ -186,8 +188,206 @@ def same_author(author1, author2):
     test2 = normalize(author2)
     return normalize(author1) == normalize(author2)
 
+def ADP_book_treatment(book, book_refs):
 
-def babelio_item_treatment(babelio_item):
+    # Analyse des données ADP à partir des graphs
+    # parcour des triplets du graph
+    for subj, pred, obj in data_manager["g_book"]:
+        # si il s'agit d'un livre, on en cherche les informations et on sauvegarde l'identifiant
+        if obj == rdflib.URIRef("http://www.sogides.com/classe/Livre"):
+            book_ADP = data_manager["g_book"].predicate_objects(subj)
+            book_ADP_resume = {'title': '', 'author': [], 'isbn': []}
+            for info in book_ADP:
+                if info[0] == rdflib.URIRef("https://schema.org/name"):
+                    if not info[1].n3():
+                        print("problème !!! infoADP: ", info)
+                    book_ADP_resume['title'] = info[1]
+                elif info[0] == rdflib.URIRef("https://schema.org/author"):
+                    author_ADP = data_manager["g_author"].predicate_objects(info[1])
+                    for author_info in author_ADP:
+                        if author_info[0] == rdflib.URIRef("https://schema.org/name"):
+                            book_ADP_resume['author'].append(author_info[1].n3())
+                elif info[0] == rdflib.URIRef("https://schema.org/isbn"):
+                    book_ADP_resume['isbn'].append(info[1].n3())
+
+            if same_book(book_ADP_resume, book):
+                book_refs["ADP"] = subj.n3()
+
+def depot_legal_book_treatment(book, book_refs):
+
+    for subj, pred, obj in data_manager["g_book_DL"]:
+        if obj == rdflib.URIRef("http://dbpedia.org/ontology/Book"):
+            book_DL = data_manager["g_book_DL"].predicate_objects(subj)
+            book_DL_resume = {'title': '', 'author': [], 'isbn': []}
+            for info in book_DL:
+                if info[0] == rdflib.URIRef("https://schema.org/name"):
+                    if info[1].n3():
+                        book_DL_resume['title'] = info[1]
+                    else:
+                        print("gros probleme DL: ", subj)
+                elif info[0] == rdflib.URIRef("https://schema.org/author"):
+                    author_ADP = data_manager["g_book_DL"].predicate_objects(info[1])
+                    for author_info in author_ADP:
+                        if author_info[0] == rdflib.URIRef("https://schema.org/name"):
+                            book_DL_resume['author'].append(author_info[1].n3())
+                elif info[0] == rdflib.URIRef("https://schema.org/isbn"):
+                    book_DL_resume['isbn'].append(info[1].n3())
+
+            if same_book(book_DL_resume, book):
+                book_refs["DL"] = subj.n3()
+
+def hurtubise_book_treatment(book, book_refs):
+
+    # Analyse des données de Hurtubise
+    for book_Hurtubise in data_manager["books_Hurtubise"]:
+        book_Hurtubise_resume = {'title': book_Hurtubise['Titre'],
+                                 'author': book_Hurtubise['Contributeurs'].split(';'),
+                                 'isbn': [book_Hurtubise['ISBN Papier'],
+                                          book_Hurtubise['ISBN PDF'],
+                                          book_Hurtubise['ISBN epub']]
+                                 }
+
+        if not book_Hurtubise['Titre']:
+            pass
+            # print("problème !!! infoHurtubise: ", book_Hurtubise)
+
+        elif same_book(book_Hurtubise_resume, book):
+            book_refs['Hurtubise'] = book_Hurtubise['ISBN Papier']
+
+
+def ILE_book_treatment(book, book_refs):
+    # Analyse des données ILE
+    for book_ILE in data_manager["books_ILE"]:
+        book_ILE_resume = {'title': book_ILE['titre'],
+                           'author': book_ILE['auteurs'].split(';'),
+                           'isbn': [book_ILE['isbn']]
+                           }
+        if not book_ILE['titre']:
+            print("problème !!! infoILE: ", book_ILE)
+
+        elif same_book(book_ILE_resume, book):
+            book_refs['ILE'] = book_ILE['id']
+
+
+def ADP_author_treatment(author, author_refs):
+
+    for subj, pred, obj in data_manager["g_author"]:
+        if obj == rdflib.URIRef("http://www.sogides.com/classe/Auteur"):
+            author_ADP = data_manager["g_author"].predicate_objects(subj)
+            for info in author_ADP:
+                if info[0] == rdflib.URIRef("https://schema.org/name"):
+                    if not info[1].n3():
+                        print("problème !!! infoADP: ", info)
+                    if same_author(info[1].n3(), author['name']):
+                        author_refs["ADP"] = subj.n3()
+
+def ILE_author_treatment(author, author_refs):
+
+    for author_ILE in data_manager["authors_ILE"]:
+        if not author_ILE['nom']:
+            print("problème !!! infoILE: ", author_ILE)
+        elif same_author(author_ILE['nom'], author['name']):
+            author_refs['ILE'] = author_ILE['uri']
+
+
+def wikidata_author_treatment(author, author_refs):
+
+    for author_wikidata in data_manager["authors_wikidata"]:
+        if not author_wikidata['nom']:
+            print("problème !!! infowikidata: ", author_wikidata)
+        elif same_author(author_wikidata['nom'], author['name']):
+            author_refs['wikidata'] = author_wikidata['uri']
+
+
+def DB_pedia_author_treatment(author, author_refs):
+
+    for author_DBpedia in data_manager["authors_DBpedia"]:
+        if not author_DBpedia['nom']:
+            print("problème !!! infoDBpedia: ", author_DBpedia)
+        elif same_author(author_DBpedia['nom'], author['name']):
+            author_refs['wikidata'] = author_DBpedia['uri']
+
+def babelio_item_treatment(item, item_refs):
+
+    for babelio_item in data_manager["babelioData"]:
+        if "author_id" in babelio_item.keys():
+            babelio_book = {'title': babelio_item['title'],
+                            'author': babelio_item['author'] if 'author' in babelio_item.keys() else [],
+                            'isbn': [babelio_item['EAN']] if 'EAN' in babelio_item.keys() else []
+                            }
+            if not babelio_item['title']:
+                print("problème babelio: item => ", babelio_item)
+            elif same_book(babelio_book, item):
+                item_refs['babelio'] = babelio_item['url']
+        else:
+            if not babelio_item['nom']:
+                print("problème babelio: item => ", babelio_item)
+            elif same_author(babelio_item['nom'], item['name']):
+                item_refs['babelio'] = babelio_item['url']
+
+
+def depot_legal_item_crossing(subj, pred, obj):
+
+    start_time = time.time()
+
+    book_refs = {"babelio": "",
+                 "ADP": "",
+                 "depot_legal": "",
+                 "Hurtubise": "",
+                 "ILE": "",
+                 "wikidata": ""
+                 }
+
+    author_refs = {"babelio": "",
+                   "ADP": "",
+                   "depot_legal": "",
+                   "Hurtubise": "",
+                   "ILE": "",
+                   "wikidata": ""
+                   }
+
+    if obj == rdflib.URIRef("http://dbpedia.org/ontology/Book"):
+        book_refs["depot_legal"] = subj
+        book_ADP = data_manager["g_book"].predicate_objects(subj)
+        book_ADP_resume = {'title': '', 'author': [], 'isbn': []}
+
+        for info in book_ADP:
+            if info[0] == rdflib.URIRef("https://schema.org/name"):
+                if not info[1].n3():
+                    print("problème !!! infoADP: ", info)
+                book_ADP_resume['title'] = info[1]
+            elif info[0] == rdflib.URIRef("https://schema.org/author"):
+                author_ADP = data_manager["g_author"].predicate_objects(info[1])
+                for author_info in author_ADP:
+                    if author_info[0] == rdflib.URIRef("https://schema.org/name"):
+                        book_ADP_resume['author'].append(author_info[1].n3())
+            elif info[0] == rdflib.URIRef("https://schema.org/isbn"):
+                book_ADP_resume['isbn'].append(info[1].n3())
+
+        # Analyse des données ADP à partir des graphs
+        # parcour des triplets du graph
+        ADP_book_treatment(book_ADP_resume, book_refs)
+        ADP_time = time.time()
+        print("ADP_book_time: ", ADP_time - start_time)
+
+        # Analyse des données de Hurtubise
+        hurtubise_book_treatment(book_ADP_resume, book_refs)
+        Hurtubise_time = time.time()
+        print("hurtubise_book_time: ", Hurtubise_time - ADP_time)
+
+        # Analyse des données ILE
+        ILE_book_treatment(book_ADP_resume, book_refs)
+        ILE_time = time.time()
+        print("ILE_book_time: ", ILE_time - Hurtubise_time)
+
+        babelio_item_treatment(book_ADP_resume, book_refs)
+        babelio_time = time.time()
+        print("babelio_book_time: ", babelio_time - ILE_time)
+
+        return book_refs
+
+
+def babelio_item_crossing(babelio_item):
     """
     recupération des identifiants des livres ou auteurs correspondants à l'item babelio dans les autres bases de donnée
     :param babelio_item: item babelio (auteur ou livre)
@@ -213,51 +413,13 @@ def babelio_item_treatment(babelio_item):
 
         # Analyse des données ADP à partir des graphs
         # parcour des triplets du graph
-        for subj, pred, obj in data_manager["g_book"]:
-            # si il s'agit d'un livre, on en cherche les informations et on sauvegarde l'identifiant
-            if obj == rdflib.URIRef("http://www.sogides.com/classe/Livre"):
-                book_ADP = data_manager["g_book"].predicate_objects(subj)
-                book_ADP_resume ={'title': '', 'author': [], 'isbn': []}
-                for info in book_ADP:
-                    if info[0] == rdflib.URIRef("https://schema.org/name"):
-                        if not info[1].n3():
-                            print("problème !!! infoADP: ", info)
-                        book_ADP_resume['title'] = info[1]
-                    elif info[0] == rdflib.URIRef("https://schema.org/author"):
-                        author_ADP = data_manager["g_author"].predicate_objects(info[1])
-                        for author_info in author_ADP:
-                            if author_info[0] == rdflib.URIRef("https://schema.org/name"):
-                                book_ADP_resume['author'].append(author_info[1].n3())
-                    elif info[0] == rdflib.URIRef("https://schema.org/isbn"):
-                        book_ADP_resume['isbn'].append(info[1].n3())
-
-                if same_book(book_ADP_resume, babelio_book):
-                    book_refs["ADP"] = subj.n3()
+        ADP_book_treatment(babelio_book, book_refs)
         ADP_time = time.time()
         print("ADP_book_time: ", ADP_time - start_time)
 
         # Analyse du grpah de Dépot Legal
-        for subj, pred, obj in data_manager["g_book_DL"]:
-            if obj == rdflib.URIRef("http://dbpedia.org/ontology/Book"):
-                book_DL = data_manager["g_book_DL"].predicate_objects(subj)
-                book_DL_resume = {'title': '', 'author': [], 'isbn': []}
-                for info in book_DL:
-                    if info[0] == rdflib.URIRef("https://schema.org/name"):
-                        if info[1].n3():
-                            book_DL_resume['title'] = info[1]
-                        else:
-                            print("gros probleme DL: ", subj)
-                    elif info[0] == rdflib.URIRef("https://schema.org/author"):
-                        author_ADP = data_manager["g_book_DL"].predicate_objects(info[1])
-                        for author_info in author_ADP:
-                            if author_info[0] == rdflib.URIRef("https://schema.org/name"):
-                                book_DL_resume['author'].append(author_info[1].n3())
-                    elif info[0] == rdflib.URIRef("https://schema.org/isbn"):
-                        book_DL_resume['isbn'].append(info[1].n3())
 
-                if same_book(book_DL_resume, babelio_book):
-                    book_refs["DL"] = subj.n3()
-
+        depot_legal_book_treatment(babelio_book, book_refs)
         # Analyse des données de Dépot Legal
         # for book_Depot_legal in data_manager["books_Depot_legal"]:
         #
@@ -273,34 +435,12 @@ def babelio_item_treatment(babelio_item):
         print("Depot_Legal_book_time", Depot_Legal_time - ADP_time)
 
         # Analyse des données de Hurtubise
-        for book_Hurtubise in data_manager["books_Hurtubise"]:
-            book_Hurtubise_resume = {'title': book_Hurtubise['Titre'],
-                                     'author': book_Hurtubise['Contributeurs'].split(';'),
-                                     'isbn': [book_Hurtubise['ISBN Papier'],
-                                              book_Hurtubise['ISBN PDF'],
-                                              book_Hurtubise['ISBN epub']]
-                                     }
-
-            if not book_Hurtubise['Titre']:
-                pass
-                # print("problème !!! infoHurtubise: ", book_Hurtubise)
-
-            elif same_book(book_Hurtubise_resume, babelio_book):
-                book_refs['Hurtubise'] = book_Hurtubise['ISBN Papier']
+        hurtubise_book_treatment(babelio_book, book_refs)
         Hurtubise_time = time.time()
         print("hurtubise_book_time: ", Hurtubise_time - Depot_Legal_time)
 
         # Analyse des données ILE
-        for book_ILE in data_manager["books_ILE"]:
-            book_ILE_resume = {'title': book_ILE['titre'],
-                               'author': book_ILE['auteurs'].split(';'),
-                               'isbn': [book_ILE['isbn']]
-                               }
-            if not book_ILE['titre']:
-                print("problème !!! infoILE: ", book_ILE)
-
-            elif same_book(book_ILE_resume, babelio_book):
-                book_refs['ILE'] = book_ILE['id']
+        ILE_book_treatment(babelio_book, book_refs)
         ILE_time = time.time()
         print("ILE_book_time: ", ILE_time - Hurtubise_time)
 
@@ -315,41 +455,19 @@ def babelio_item_treatment(babelio_item):
                        "wikidata": ""
         }
 
-
-        # même chose pour les auteurs
-        for subj, pred, obj in data_manager["g_author"]:
-            if obj == rdflib.URIRef("http://www.sogides.com/classe/Auteur"):
-                author_ADP = data_manager["g_author"].predicate_objects(subj)
-                for info in author_ADP:
-                    if info[0] == rdflib.URIRef("https://schema.org/name"):
-                        if not info[1].n3():
-                            print("problème !!! infoADP: ", info)
-                        if same_author(info[1].n3(), babelio_item['name']):
-                            author_refs["ADP"] = subj.n3()
+        ADP_author_treatment(babelio_item, author_refs)
         ADP_author_time = time.time()
         print("ADP_author_time: ", ADP_author_time - start_time)
 
-        for author_ILE in data_manager["authors_ILE"]:
-            if not author_ILE['nom']:
-                print("problème !!! infoILE: ", author_ILE)
-            elif same_author(author_ILE['nom'], babelio_item['name']):
-                author_refs['ILE'] = author_ILE['uri']
+        ILE_author_treatment(babelio_item, author_refs)
         ILE_author_time = time.time()
         print("ILE_author_time: ", ILE_author_time - ADP_author_time)
 
-        for author_wikidata in data_manager["authors_wikidata"]:
-            if not author_wikidata['nom']:
-                print("problème !!! infowikidata: ", author_wikidata)
-            elif same_author(author_wikidata['nom'], babelio_item['name']):
-                author_refs['wikidata'] = author_wikidata['uri']
+        wikidata_author_treatment(babelio_item, author_refs)
         Wikipedia_author_time = time.time()
         print("Wikipedia_author_time: ", Wikipedia_author_time - ILE_author_time)
 
-        for author_DBpedia in data_manager["authors_DBpedia"]:
-            if not author_DBpedia['nom']:
-                print("problème !!! infoDBpedia: ", author_DBpedia)
-            elif same_author(author_DBpedia['nom'], babelio_item['name']):
-                author_refs['wikidata'] = author_DBpedia['uri']
+        DB_pedia_author_treatment(babelio_item, author_refs)
         DBpedia_author_time = time.time()
         print("DBpedia_author_time: ", DBpedia_author_time - Wikipedia_author_time)
 
@@ -419,7 +537,6 @@ with open("./Babelio/item.json", "r") as babelioJson:
                     "g_book": g_book,
                      "g_author": g_author,
                     "g_book_DL": g_book_DL,
-                     # "books_Depot_legal": books_Depot_legal,
                      "books_Hurtubise": books_Hurtubise,
                      "books_ILE": books_ILE,
                      "authors_ILE":authors_ILE,
@@ -429,8 +546,11 @@ with open("./Babelio/item.json", "r") as babelioJson:
                     }
 
     results = []
-    for babelio_item in babelioData:
-        results.append(babelio_item_treatment(babelio_item))
+    # for babelio_item in babelioData:
+    #     results.append(babelio_item_crossing(babelio_item))
+
+    for subj, pred, obj in data_manager["g_book_DL"]:
+        results.append(depot_legal_item_crossing(subj, pred, obj))
 
     # On utilise plusieurs threads pour accelérer le traitement
     # p = Pool(7)

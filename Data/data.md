@@ -1,12 +1,54 @@
 ADP
 
+* ProductIDType: tous les items ont les trois types de ID suivants: ISBN-15 (15), GTIN (03) et propriétaire (01)
+* ProductForm: on trouve seulement le code BA (Book)
+* ProductFormDetail: on trouve seulement le code B101 (Mass market (rack) paperback)
+* PrimaryContentType: on trouve seulement le code 10 (Text)
+* TitleType: on trouve seulement le code 01 (Distinctive title (book); Cover title (serial); Title on item (serial content item or reviewed resource)
+* ContributionRole: on trouve seulement le code A01 (By (author))
+* Contributor/SequenceNumber: On note jusqu'à 30 auteurs
+    * 1 auteur:  112163
+    * 2 auteurs: 18230
+    * 3 auteurs: 3864
+    * 4 auteurs: 983
+    * 5 auteurs: 379
+    * 6 auteurs: 191
+    * 7 auteurs: 94
+    * 8 auteurs: 55
+    * 9 auteurs: 25
+    * 10 auteurs et plus: 91
+* Contributor/BiographicalNote: 6164 instances
+* LanguageRole: on trouve seulement le code 01 (language of text)
+* LanguageCode: 120 115 français, 36 anglais.
+* SujbectSchemaIdentifer:
+    * Thema (93): 77935
+    * BISAC (10): 78954
+    * Publisher's own category (23): 95818
+    * Dewey (01): 860
+    * Thema place qualifier (94): 300
+* AudienceCodeType: on trouve seulement le code 02 (proprietary)
+* CollectionType: on trouve seulement le code 10 (Publisher collection)  69305 instances trouvées
+* PublishingRole: dans tous les cas on trouve les codes 01 (publisher) et 10 (publishing group)
+* CityOfPublication: seulement Montréal, qui apparaît 2223 fois
+* CollateralDetail/TextContent/TextType:
+    * Description (03):  20049
+    * Promotional headline (10): 3365
+    * Review quote (06): 76
+* CollateralDetail/TextContent/ContentAudience: on trouve seulement le code 00 (unrestricted)
+* RelatedMaterial/RelatedProduct/ProductRelationCode:
+    * Electronic version available as (27):  6478
+    * Replaced by (05): 1895
+    * Unspecified (00): 444
+    * Is part of (02): 12
+    * Alternative format (06): 8
+
 
 
 Babelio
 
 - livres:
 
-    - url
+    - url:
     - title
     - author
     - author_id
@@ -85,7 +127,7 @@ Depotlegal
 - ETAT_PERIODICITE
 - LISTE_ISBN_NETTOYE
 - LISTE_AUTEUR
-- EST_NUMERIQUE"
+- EST_NUMERIQUE
 
 
 Hurtubise
@@ -110,7 +152,7 @@ Hurtubise
 - Quantificateur Géoraphique
 - Quantificateur de langue
 - Quantificateur Historique
-- Niveau soclaire FR
+- Niveau scolaire FR
 - Niveau scolaire QC
 - Cycle scolaire FR
 - Niveau de lecture
@@ -124,33 +166,54 @@ Hurtubise
 
 ILE
 
-- Auteur:
-    - nom
-    - uri
-    - bio
-    - genres
-        * le roman
-        * le récit
-        * la nouvelle
-        * le conte
-        * la poésie
-        * le théâtre
-        * l’essai ou l’étude
-        * la bande dessinée
-        * la biographie
-        * la littérature jeunesse
-    - site
-    - pseudonyme
+- Auteur: 1791
+    - name: 1791
+    - givenName: 1791
+    - familyName: 1791
+    - uri: 1791
+    - bio: 1729
+    - genre: 3476
+        * Roman: 969
+        * Récit: 253
+        * Nouvelle: 403
+        * Conte: 116
+        * Poésie: 631
+        * Théâtre: 158
+        * Essai-étude: 472
+        * Bande dessinée: 10
+        * Biographie: 76
+        * Jeunesse: 293
+        * Guide: 69
+        * Traduction: 3
+        * Fanzine: 1
+        * Scientifique: 21
+        * Scolaire: 1
+    - site: 507
+    - pseudonyme: 50
 
 
-- Oeuvre:
-    - id
-    - titre
-    - auteurs
-    - lieuPublication
-    - editeur
-    - annee
-    - isbn
+- Oeuvre: 27109
+    - name: 27109
+    - auteurs: 27019
+    - lieuPublication: 26615
+        * Montréal: 11618
+        * \[Montréal\]: 1676
+        * Québec: 1310
+        * Saint-Lambert: 1102
+        * Paris: 845
+        * Saint-Laurent: 615
+        * Trois-Rivières: 533
+        * Toronto: 516
+        * Autre: < 500
+    - editeur: 27094
+        * Boréal: 718
+        * Leméac: 620
+        * Fides: 603
+        * La Courte échelle: 577
+        * Dominique et compagnie: 573
+        * Autres: < 500
+    - datePublished: 27008
+    - isbn: 21178
 
 
 Wikidata
@@ -171,3 +234,4 @@ Wikidata
     * wd:Q1930187   jounraliste
     * wd:Q487596    dramaturge
     * wd:Q201788    historien
+

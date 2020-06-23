@@ -108,26 +108,100 @@ DBpedia
 
 Depotlegal
 
-- ID_DEPOT
-- TITRE_PUBLICATION
-- ANNEE_PUBLICATION
-- STATUT_REQUETE
-- DATE_ENREGISTREMENT
-- CODE_EDITEUR
-- NOM_EDITEUR
-- CATEGORIE_EDITEUR
-- TYPE_DOCUMENT
-- TYPEPUBLICATION
-- LANGUE_PUBLICATION
-- LANGUE_ORIGINALE
-- CATEGORIE_SUJET
-- SUJET
-- COEDITION
-- PERIODICITE
-- ETAT_PERIODICITE
-- LISTE_ISBN_NETTOYE
-- LISTE_AUTEUR
-- EST_NUMERIQUE
+- ID_DEPOT: 396471
+- TITRE_PUBLICATION: 396471
+- ANNEE_PUBLICATION: 395241
+- STATUT_REQUETE: 396471
+- DATE_ENREGISTREMENT: 396471
+- CODE_EDITEUR: 396474
+- NOM_EDITEUR: 396471
+    * "Ministère de l'Éducation et de l'Enseignement supérieur": 8517
+    * 'Éditions AdA': 3872
+    * "Ministère de l'Énergie et des Ressources naturelles": 3486
+    * 'Éditeur officiel du Québec': 3266
+    * "Presses de l'Université du Québec (PUQ)": 3029
+    * 'Chenelière Éducation': 3013
+    * "École des hautes études commerciales. Groupe d'études et de recherche en analyse des décisions": 3009
+    * 'Ministère de la Santé et des Services sociaux': 2962
+    * "Productions d'OZ": 2851
+    * 'Éditions Héritage': 2829
+    * 'Éditions Québec Amérique, QA International'2818
+    * 'Éditions du Renouveau pédagogique': 2862
+    * 'Éditions du Boréal': 2647
+    * 'Éditions Québec-Livres': 2646
+    * 'Festo Didactique': 2592
+    *  Autre: < 2500
+    
+- CATEGORIE_EDITEUR: 391633
+    * '01 - Éditeurs commerciaux': 191293
+    * '02 - Gouvernement du Québec': 75970
+    * '99 - Autres (évêchés/galeries/paroisses/partis politiques)': 40334
+    * '06 - Associations diverses (syndicats/corporation prof/etc.)'26540
+    * "04 - Maisons d'enseignements (Incluant les commissions scolaires)": 25114
+    * '00 - Individus': 15609
+    * '03 - Gouvernements locaux et multi-locaux(CUM/MRC)'5719
+    * '05 - Compagnies et institutions finacières': 5133
+    * '08 - Services sociaux et services de santé': 4548
+    * '09 - Communautés culturelles': 1052
+    * '07 - Associations étudiantes': 320
+- TYPE_DOCUMENT: 396471
+    * 'Livre - Privé': 123839
+    * 'Brochure - Privé' 32050
+    * 'Monographie numérique - privé': 31951
+    * 'Monographie numérique - gouvernemental': 25244
+    * 'Enregistrement sonore': 18844
+    * 'Brochure - Publication pour jeunes': 17359
+    * 'Brochure - Gouvernemental': 17273
+    * 'Livre - Gouvernemental': 15771
+    * 'Affiche': 14965
+    * 'Livre - Publication pour jeunes': 12659
+    * 'Livre - Manuel scolaire': 11971
+    * 'Annuel': 10958
+    * 'Estampe': 10688
+    * Autres: < 10000
+- TYPE_PUBLICATION: 396471
+- LANGUE_PUBLICATION:384840
+    * 'Français': 324334
+    * 'Anglais': 45874
+    * 'Multilingue': 9378
+    * 'Autres': 5353
+- LANGUE_ORIGINALE:34216
+    * Anglais: 26351
+    * Français: 5853
+    * Autres: 2001
+    * Multilingues: 10
+    * Autres: =1
+- CATEGORIE_SUJET:310457
+    * '16.00 Langues et littérature (P)': 80918
+    * '08.00 Sciences sociales (H)': 56892
+    * '18.00 Médecine (R)': 26202
+    * '20.00 Technologie (T)': 22147
+    * '02.00 Philosophie, psychologie, religion (B)': 21827
+    * '12.00 Éducation (L)': 18106
+    * '17.00 Sciences (Q)': 16354
+    * '11.00 Droit (K)': 10424
+    * '07.00 Géographie, anthropologie, récréation (G)': 10310
+    * Autre: < 10000
+- SUJET:310457
+- COEDITION:396363
+- PERIODICITE:31086
+    * 'annuel': 15453
+    * 'irrégulier': 5272
+    * 'trimestriel': 2648
+    * 'mensuel': 1682
+    * 'semestriel': 992
+    * 'autre': 906
+    * 'bimestriel': 871
+    * 'trois fois par an': 781
+    * 'hebdomadaire': 726
+    * 'triennal': 706
+    * Autre: < 500
+- ETAT_PERIODICITE:7241
+- LISTE_ISBN_NETTOYE:270214
+- LISTE_AUTEUR:203359
+- EST_NUMERIQUE:396471
+    * Non: 329006
+    * Oui: 67464
 
 
 Hurtubise

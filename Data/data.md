@@ -48,27 +48,48 @@ Babelio
 
 - livres:
 
-    - url:
-    - title
-    - author
-    - author_id
-    - infos
-    - edition
-    - EAN
-    - editor
-    - nb_pages
-    - rating
-    - nb_rating
-    - tags
-    - resume
-    - reviews:
+    - url: 2040
+    - title: 2040
+    - author: 2040
+    - author_id: 2040
+    - infos: 2040
+    - edition: 1988
+    - EAN: 1960
+    - editor: 1989
+        * 'Boréal': 98
+        * 'Québec Amérique': 64
+        * 'Éditions Hurtubise': 55
+        * 'La Courte Echelle': 45
+        * 'Presses Universitaires du Septentrion': 41
+        * 'VLB Editeur': 40
+        * 'Leméac (Editeur)': 39
+        * 'Libre Expression': 32
+        * 'Editions Alire': 32
+        * Autre: < 30
+    - nb_pages: 1119
+    - rating: 1591
+    - nb_rating: 1591
+    - tags: 2040
+        * ' québécois  ': 1998
+        * ' littérature québécoise  ': 607
+        * ' roman  ': 516
+        * ' récits  ': 337
+        * ' québec  ': 252
+        * ' écrivain femme  ': 245
+        * ' littérature jeunesse  ': 182
+        * ' amour  ': 179
+        * ' jeunesse  ': 159
+        * ' littérature canadienne  ': 156
+        * Autre < 150
+    - resume: 1989
+    - reviews: 1092
         + id
         + author
         + date
         + rating
         + pop
         + content
-    - extracts:
+    - extracts: 871
         + id
         + author
         + date
@@ -77,24 +98,50 @@ Babelio
     
 - auteurs:
 
-    - url
-    - name
-    - bibliography
-    - infos
-    - nationnality
-    - bio
-    - date_of_birth
-    - date_of_death
-    - place_of_birth
-    - place_of_death
-    - country_of_birth
-    - country_of_death
-    - tags
-    - friends
-    - rating
-    - nb_rating
-    - media
-    - prices
+    - url: 1419
+    - name: 1419
+    - bibliography: 1419
+    - infos: 1022
+    - nationnality: 723
+        * 'Canada ': 480
+        * 'Canada  ': 133
+        * 'France ': 53
+        * 'France  ': 27
+        * Autre: <10
+    - bio: 1064
+    - date_of_birth: 289
+    - date_of_death: 53
+    - place_of_birth: 547
+        * 'Montréal ': 104
+        * 'Québec ': 60
+        * 'Montréal  ': 12
+        * 'Montréal': 10
+        * Autre: < 10
+    - place_of_death: 71
+        * 'Montréal ': 22
+        * 'Québec ': 10
+        * Autre < 3
+    - country_of_birth: 25
+    - country_of_death: 2
+    - tags: 1417
+        * ' québécois': 1239
+        * ' littérature québécoise': 589
+        * ' roman': 510
+        * ' récits': 479
+        * ' écrivain femme': 303
+        * ' amour': 273
+        * ' québec': 230
+        * ' littérature jeunesse': 225
+        * ' recueil': 217
+        * Autre: < 200
+    - friends: 1384
+    - rating: 1219
+    - nb_rating: 1219
+    - media: 460
+        * url: 460
+        * date: 460
+        * description: 460
+    - prices: 23
 
 
 DBpedia: 

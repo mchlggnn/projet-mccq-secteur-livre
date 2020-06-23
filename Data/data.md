@@ -97,7 +97,7 @@ Babelio
     - prices
 
 
-DBpedia
+DBpedia: 
 
 - abstract
 - wikiPageID
@@ -206,36 +206,86 @@ Depotlegal
 
 Hurtubise
 
-- Éditeur
-- ISBN Papier
-- ISBN PDF
-- ISBN epub	
-- Titre	
-- Sous-titre
-- Titre de la série
-- Contributeurs
-- Contributeur (premier)
-- Langue
-- Langue Origine
-- Résumé
-- Nombre de pages
-- Date de parution
-- Année de parution
-- Sujet THEMA principal
-- Sujet THEMA
-- Quantificateur Géoraphique
-- Quantificateur de langue
-- Quantificateur Historique
-- Niveau scolaire FR
-- Niveau scolaire QC
-- Cycle scolaire FR
-- Niveau de lecture
-- Échèle CECR
-- Quantificateur d'intérêt	
-- Quantificateur d'âge	
-- Quantificateur de style
-- Classification Éditoriale	
-- Mots clés
+- Éditeur: 1314
+    * 'Éditions Hurtubise': 1313  
+- ISBN Papier: 1311
+- ISBN PDF: 835
+- ISBN epub	: 550
+- Titre: 1314
+- Sous-titre: 694
+- Titre de la série: 444
+- Contributeurs: 1314
+- Contributeur (premier): 1314
+- Langue: 1313
+    * Français: 1298
+    * 'Anglais, Français': 3
+    * 'Français, Espagnol': 2
+    * 'Anglais': 2
+    * autre: =1
+- Langue Origine: 1264
+    * 'Français': 943
+    * 'Anglais': 314
+    * 'Portugais': 2
+    * autre: =1
+- Résumé: 1302
+- Nombre de pages: 1305
+- Date de parution: 790
+- Année de parution: 1307
+- Sujet THEMA principal :1314
+    * 'FV - Roman historique': 242
+    * 'YFC - Fiction jeunesse\xa0: romans d’action et d’aventures': 109
+    * 'DNL - Essais littéraires': 58
+    * 'YFN - Fiction jeunesse\xa0: histoires familiales et de la vie de tous les jours': 52
+    * 'FBA - Littérature moderne et contemporaine': 44
+    * 'YFCF - Fiction jeunesse\xa0: romans policiers et à suspense': 39
+    * 'YFM - Fiction jeunesse\xa0: romans sentimentaux, d’amour et histoires de relation': 38
+    * 'YBCS - Livres d’histoires illustrés': 34
+    * Autre: < 30
+- Sujet THEMA: 911
+    * 'FT - Sagas familiales, FXD - Thème narratif\xa0: amour et relations': 86
+    * 'FT - Sagas familiales': 57
+    * 'YFN - Fiction jeunesse\xa0: histoires familiales et de la vie de tous les jours': 50
+    * 'FXD - Thème narratif\xa0: amour et relations'36
+    * Autre < 20
+- Quantificateur Géoraphique: 512
+    * '1KBC-CA-QMM - Montréal': 86
+    * '1KBC-CA-Q - Québec': 58
+    * '1KBC-CA-QY - Québec\xa0: Centre-du-Québec': 40
+    * '1KBC-CA-QFC - Québec (ville)': 33
+    * Autre: < 15
+- Quantificateur de langue: 36
+    * '2ADF - Français': 20
+    * '2ADS - Espagnol': 4
+    * '2ACB - Anglais': 3
+    * '2CSR - Arabe': 2
+    * Autre: =1
+- Quantificateur Historique: 381
+- Niveau scolaire FR: 1
+- Niveau scolaire QC: 5
+- Cycle scolaire FR: 3
+- Niveau de lecture: 1
+- Échèle CECR: 1
+- Quantificateur d'intérêt: 68
+    * '5LB - Relatif à la petite enfance': 19
+    * '5PB-US-E - Relatif aux Amérindiens': 18
+    * '5PGJ - Relatif aux personnes et groupes juifs': 5
+    * Autre < 5
+- Quantificateur d'âge: 462
+    * '5AN - Âge : à partir de 12 ans': 117
+    * '5AL - Âge : à partir de 10 ans': 114
+    * '5AQ - Âge : à partir de 14 ans': 55
+    * '5AJ - Âge : à partir de 8 ans': 44
+    * '5AK - Âge : à partir de 9 ans': 37
+    * '5AM - Âge : à partir de 11 ans': 29
+    * '5AP - Âge : à partir de 13 ans': 26
+    * Autre: < 15
+- Quantificateur de style: 7
+- Classification Éditoriale: 130
+    * 'Ouvrage de référence': 78
+    * 'Beaux livres': 41
+    * 'Parcours pédagogiques': 10
+    * Autre = 1
+- Mots clés: 476
 
 
 ILE

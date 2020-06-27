@@ -5,296 +5,184 @@ import rdflib
 import Levenshtein
 import time
 from tqdm import tqdm
-
 from multiprocessing import Process
 
+from extraction_croissement import *
 
-def nettoyer_unicode(c):
-    liste_codes = {
-        'Ã\xa0': 'à',
-        'Ã€': 'À',
-        'Ã¢': 'â',
-        'Ã‚': 'Â',
-        'Ã©': 'é',
-        'Ã\x89': 'É',
-        'Ã\xa8': 'è',
-        'Ã\xaa': 'ê',
-        'Ã\x8a': 'Ê',
-        'Ã«': 'ë',
-        'Ã®': 'î',
-        'Ã\x8e': 'Î',
-        'Ã¯': 'ï',
-        'Ã´': 'ô',
-        'Ã\x94': 'Ô',
-        'Ã¹': 'ù',
-        'Ã»': 'û',
-        'Å\x93': 'œ',
-        'Â«': '«',
-        'Â»': '»',
-        'Ã§': 'ç',
-        'Ã\x87': 'Ç',
-        'Âº': 'º',
-        'â\x80\x99': '’',
-        'â\x80\xa6': '…',
-    }
-
-    for code in liste_codes:
-        c = c.replace(code, liste_codes[code])
-
-    return c
-
-
-def nettoyer_accents(c):
+def same_book(book1, book2, stats):
     """
-    remplace les caractères et accents par leurs équivalents sans accents
-    :param c: str
-    :return: même str sans accents
-    """
-    liste_codes = {
-        'ã': 'a',
-        'ã'.upper(): 'A',
-        'â': 'a',
-        'Â': 'A',
-        'à': 'a',
-        'À': 'A',
-        'ä': 'a',
-        'Ä': 'A',
-        'é': 'e',
-        'É': 'E',
-        'è': 'e',
-        'È': 'E',
-        'ê': 'e',
-        'Ê': 'E',
-        'ï': 'i',
-        'Ï': 'I',
-        'î': 'i',
-        'Î': 'I',
-        'ô': 'o',
-        'Ô': 'O',
-        'ö': 'o',
-        'Ö': 'O',
-        'ù': 'u',
-        'Ù': 'U',
-        'ü': 'u',
-        'Ü': 'U',
-        'û': 'u',
-        'Û': 'U',
-        'ÿ': 'y',
-        'Ÿ': 'y',
-        'ç': 'c',
-        'œ': 'oe',
-        '\'': ' ',
-        '"': '',
-    }
-
-    try:
-        for code in liste_codes:
-            c = c.replace(code, liste_codes[code])
-
-        return c
-
-    except:
-        return None
-
-
-def remove_text_between_parens(text):
-    n = 1  # run at least once
-    while n:
-        text, n = re.subn(r'\([^()]*\)', '', text)  # remove non-nested/flat balanced parts
-    return text
-
-
-def normalize(string):
-    """
-    normalise une chaine de caractère pour faciliter leurs comparaisons
-    :param string: chaine de caractère à normaliser
-    :return: même chaine de caractère normalisée
-    """
-
-    if isinstance(string, str) and string:
-        # start_normalise = time.time()
-        string = nettoyer_accents(nettoyer_unicode(string))
-        # nett_accent_time = time.time()
-        # print("     nett_accent_time: ", nett_accent_time - start_normalise)
-
-        string = remove_text_between_parens(string)
-        # remove_text_between_parens_time = time.time()
-        # print("     remove_text_between_parens: ", remove_text_between_parens_time - nett_accent_time)
-
-        # retire début et fin de chaine de caractère si non alpha
-        string = ' '.join(re.sub(r'\W', ' ', string).split()).lower()
-        # regex_time = time.time()
-        # print("     regex_time: ", regex_time - remove_text_between_parens_time)
-
-        return string
-    else:
-        return None
-
-
-def normalize_number(text):
-    return re.sub(r'\D', '', text)
-
-
-def same_book(book1, book2):
-    """
-    verifie si deux livres sont identiques à partir de leur nom
+    verifie si deux livres sont identiques à partir de leur informations
+    cette fonction comporte la logique de la comparaison, les données sont normalement déjà formatées
     :param book1: (title: str, author: [str,...], isbns: [str,...])
     :param book2: (title: str, author: [str,...], isbns: [str,...])
     :return: boolean
     """
-    start_same_book_time = time.time()
 
-    isbns1 = [normalize_number(isbn) for isbn in book1['isbn']]
-    isbns2 = [normalize_number(isbn) for isbn in book2['isbn']]
-    if list(set(isbns1) & set(isbns2)) if isbns1 and isbns2 else False:
-        return True
+    # start_same_book_time = time.time()
+    isbn_in_common = True
+    if book1["isbn"] and book2["isbn"]:
+        isbn_in_common = False
+        for isbn1 in book1["isbn"]:
+            for isbn2 in book2["isbn"]:
+                if same_isbn(isbn1, isbn2):
+                    # print("isbn similar !!titre1: ", book1['title'], ' titre2: ', book2['title'], ' isbn: ',
+                    #       book1['isbn_raw'], ' isbn: ', book2['isbn_raw'])
+                    stats["isbn egaux"] += 1
+                    isbn_in_common = True
 
-    authors1 = [normalize(author) for author in book1['author']]
-    authors2 = [normalize(author) for author in book2['author']]
-    title1 = normalize(book1['title'])
-    title2 = normalize(book2['title'])
 
-    if not title1 or not title2:
+    if not book1['title'] or not book2['title']:
         return False
+
     # normalize_time = time.time()
     # print("   normalisation time: ", normalize_time - start_same_book_time)
 
-    dist_titre = Levenshtein.distance(title1, title2)
+    dist_titre = Levenshtein.distance(book1['title'], book2['title'])
     # dist_time = time.time()
     # print("   distance time: ", dist_time - normalize_time)
 
     # comparaison_time = time.time()
     # print("   comparaison: ", comparaison_time - dist_time)
 
-    author_bool = list(set(authors1) & set(authors2)) if authors1 and authors2 else False
+    author_boolean = True
+    author_in_common = False
+    if book1['author'] and book2['author']:
+        author_boolean = False
+        author_in_common = False
+        for author1 in book1['author']:
+            for author2 in book2['author']:
+                if same_author(author1, author2):
+                    author_in_common = True
+                    author_boolean = True
+
 
     # set_time = time.time()
     # print("   set time: ", set_time - comparaison_time)
 
-    if dist_titre < min(len(title1), len(title2)) / 4 and author_bool:
-        print("titre1: ", title1, ' titre2: ', title2, ' authors1: ', authors1, ' authors2: ', authors2)
+    dist_bool = dist_titre < max(1, min(len(book1['title']), len(book2['title'])) / 8)
 
-    return dist_titre < min(len(title1), len(title2)) / 4 and author_bool
+    if not isbn_in_common:
+        if dist_bool and author_boolean and not author_in_common:
+            stats["isbn different mais titres equivalents"] += 1
+            # print("item maybe similar but isbn diff!! titre1: ", book1['title'], ' titre2: ', book2['title'], ' authors1: ',
+            #       book1['author'], ' authors2: ', book2['author'], ' isbn: ',
+            #               book1['isbn_raw'], ' isbn: ', book2['isbn_raw'])
+        if dist_bool and author_in_common:
+            stats["isbn different mais titre et auteurs egaux"] += 1
+            # print("item similar but isbn diff !!titre1: ", book1['title'], ' titre2: ', book2['title'], ' authors1: ',
+            #       book1['author'], ' authors2: ', book2['author'], ' isbn: ',
+            #               book1['isbn_raw'], ' isbn: ', book2['isbn_raw'])
+
+    else:
+        if dist_bool and not author_boolean:
+            stats["titre equivalents mais auteurs differents"] += 1
+            # print("title similar !! titre1: ", book1['title'], ' titre2: ', book2['title'], ' authors1: ', book1['author'], ' authors2: ', book2['author'])
+        if dist_bool and author_boolean and not author_in_common:
+            stats["titre egaux mais pas d'infos en plus"] += 1
+            # print("item maybe similar !! titre1: ", book1['title'], ' titre2: ', book2['title'], ' authors1: ', book1['author'], ' authors2: ', book2['author'])
+        if dist_bool and author_in_common:
+            stats["titre et auteurs egaux"] += 1
+            # print("item similar !!titre1: ", book1['title'], ' titre2: ', book2['title'], ' authors1: ', book1['author'], ' authors2: ', book2['author'])
+
+    return (dist_bool and author_in_common) or isbn_in_common
 
 
 def same_author(author1, author2):
     """
     verifie si deux auteurs sont identiques à partir de leur nom
+    cette fonction comporte la logique de la comparaison, les données sont normalement déjà formatées
     :param author1: nom du premier auteur
     :param author2: nom du second auteur
     :return: boolean
     """
-    # test = normalize(author1)
-    # test2 = normalize(author2)
-    return normalize(author1) == normalize(author2)
+    if not author1 or not author2:
+        return False
+    author1 = author1.split(" ")
+    author2 = author2.split(" ")
+    return True if list(set(author1) & set(author2)) else False
+
+def same_isbn(isbn1, isbn2):
+    """
+    verifie si deux isbns sont identiques à partir de leur chaine de caractère
+    cette fonction comporte la logique de la comparaison, les données sont normalement déjà formatées
+    :param isbn1: 1er isbn
+    :param isbn2: 2eme isbn
+    :return: boolean
+    """
+    return isbn1[:-1] == isbn2[:-1] or isbn1[3:-1] == isbn2[:-1] or isbn1[:-1] == isbn2[3:-1] or isbn1[3:-1] == isbn2[3:-1]
 
 
-def get_ADP_books(g_book, g_author):
-
-    ADP_books = []
-    # Analyse des données ADP à partir des graphs
-    # parcour des triplets du graph
-    for subj, pred in g_book.subject_predicates(rdflib.URIRef("http://www.sogides.com/classe/Livre")):
-        book_ADP = g_book.predicate_objects(subj)
-        book_ADP_resume = {'title': '', 'author': [], 'isbn': []}
-
-        for info in book_ADP:
-            if info[0] == rdflib.URIRef("https://schema.org/name"):
-                if not info[1].n3():
-                    print("problème !!! infoADP: ", info)
-                book_ADP_resume['title'] = info[1]
-            elif info[0] == rdflib.URIRef("https://schema.org/author"):
-                author_ADP = g_author.predicate_objects(info[1])
-                for author_info in author_ADP:
-                    if author_info[0] == rdflib.URIRef("https://schema.org/name"):
-                        book_ADP_resume['author'].append(author_info[1].n3())
-            elif info[0] == rdflib.URIRef("https://schema.org/isbn"):
-                book_ADP_resume['isbn'].append(info[1].n3())
-        ADP_books.append(book_ADP_resume)
-    return ADP_books
-
-
-def get_depot_legal_book(g_item):
-
-    DL_books = []
-
-    for subj, pred in g_item.subject_predicates(rdflib.URIRef("http://dbpedia.org/ontology/Book")):
-
-        book_DL = g_item.predicate_objects(subj)
-        book_DL_resume = {'title': '', 'author': [], 'isbn': []}
-        for info in book_DL:
-            if info[0] == rdflib.URIRef("https://schema.org/name"):
-                if info[1].n3():
-                    book_DL_resume['title'] = info[1]
-                else:
-                    print("gros probleme DL: ", subj)
-            elif info[0] == rdflib.URIRef("https://schema.org/author"):
-                author_ADP = g_item.predicate_objects(info[1])
-                for author_info in author_ADP:
-                    if author_info[0] == rdflib.URIRef("https://schema.org/name"):
-                        book_DL_resume['author'].append(author_info[1].n3())
-            elif info[0] == rdflib.URIRef("https://schema.org/isbn"):
-                book_DL_resume['isbn'].append(info[1].n3())
-
-        DL_books.append(book_DL_resume)
-    return DL_books
-
-
-def ADP_book_treatment(book, book_refs):
-
+def ADP_book_treatment(book, book_refs, stats):
+    """
+    Compare un livre avec la base de donnée ADP
+    :param book: {'title': '', 'author': [], 'isbn': []}
+    :param book_refs: cd book_refs
+    """
     for book_ADP in ADP_books:
         if not book_ADP['title']:
             pass
             # print("problème !!! infoHurtubise: ", book_Hurtubise)
 
-        elif same_book(book_ADP, book):
+        elif same_book(book_ADP, book, stats):
             book_refs['ADP'] = book_ADP['isbn']
 
 
-def DL_book_treatment(book, book_refs):
+def DL_book_treatment(book, book_refs, stats):
+    """
+    Compare un livre avec la base de donnée Depot legal
+    :param book: {'title': '', 'author': [], 'isbn': []}
+    :param book_refs: cd book_refs
+    """
     for book_DL in DL_books:
         if not book_DL['title']:
             pass
             # print("problème !!! infoHurtubise: ", book_Hurtubise)
 
-        elif same_book(book_DL, book):
+        elif same_book(book_DL, book, stats):
             book_refs['depot_legal'] = book_DL['isbn']
 
 
-def hurtubise_book_treatment(book, book_refs):
+def hurtubise_book_treatment(book, book_refs, stats):
+    """
+    Compare un livre avec la base de donnée Hurtubise
+    :param book: {'title': '', 'author': [], 'isbn': []}
+    :param book_refs: cd book_refs
+    """
 
     # Analyse des données de Hurtubise
     for book_Hurtubise in books_Hurtubise:
-        book_Hurtubise_resume = {'title': book_Hurtubise['Titre'],
-                                 'author': book_Hurtubise['Contributeurs'].split(';'),
-                                 'isbn': [book_Hurtubise['ISBN Papier'],
-                                          book_Hurtubise['ISBN PDF'],
-                                          book_Hurtubise['ISBN epub']]
-                                 }
 
-        if not book_Hurtubise['Titre']:
+        if not book_Hurtubise['title']:
             pass
             # print("problème !!! infoHurtubise: ", book_Hurtubise)
 
-        elif same_book(book_Hurtubise_resume, book):
-            book_refs['Hurtubise'] = book_Hurtubise['ISBN Papier']
+        elif same_book(book_Hurtubise, book, stats):
+            book_refs['Hurtubise'] = book_Hurtubise['isbn']
 
 
-def ILE_book_treatment(book, book_refs):
+def ILE_book_treatment(book, book_refs, stats):
+    """
+    Compare un livre avec la base de donnée ILE
+    :param book: {'title': '', 'author': [], 'isbn': []}
+    :param book_refs: cd book_refs
+    """
+
     # Analyse des données ILE
-    for book_ILE in books_ILE:
-        book_ILE_resume = {'title': book_ILE['titre'],
-                           'author': book_ILE['auteurs'].split(';'),
-                           'isbn': [book_ILE['isbn']]
-                           }
-        if not book_ILE['titre']:
-            print("problème !!! infoILE: ", book_ILE)
+    for book_ILE in ILE_item:
+        if not book_ILE['title']:
+            pass
+            # print("problème !!! infoILE: ", book_ILE)
 
-        elif same_book(book_ILE_resume, book):
-            book_refs['ILE'] = book_ILE['id']
+        elif same_book(book_ILE, book, stats):
+            book_refs['ILE'] = book_ILE['isbn']
 
 
 def ADP_author_treatment(author, author_refs):
+    """
+    Compare un auteur avec la base de donnée ADP
+    :param author: nom de l'auteur
+    :param author_refs: cd author_refs
+    """
 
     for subj, pred in g_author_ADP.subject_predicates(rdflib.URIRef("http://www.sogides.com/classe/Auteur")):
         author_ADP = g_author_ADP.predicate_objects(subj)
@@ -307,15 +195,26 @@ def ADP_author_treatment(author, author_refs):
 
 
 def ILE_author_treatment(author, author_refs):
+    """
+    Compare un auteur avec la base de donnée ILE
+    :param author: nom de l'auteur
+    :param author_refs: cd author_refs
+    """
 
     for author_ILE in authors_ILE:
         if not author_ILE['nom']:
-            print("problème !!! infoILE: ", author_ILE)
+            pass
+            # print("problème !!! infoILE: ", author_ILE)
         elif same_author(author_ILE['nom'], author['name']):
             author_refs['ILE'] = author_ILE['uri']
 
 
 def wikidata_author_treatment(author, author_refs):
+    """
+    Compare un auteur avec la base de donnée wikidata
+    :param author: nom de l'auteur
+    :param author_refs: cd author_refs
+    """
 
     for author_wikidata in authors_wikidata:
         if not author_wikidata['nom']:
@@ -325,6 +224,11 @@ def wikidata_author_treatment(author, author_refs):
 
 
 def DB_pedia_author_treatment(author, author_refs):
+    """
+    Compare un auteur avec la base de donnée DB_pedia
+    :param author: nom de l'auteur
+    :param author_refs: cd author_refs
+    """
 
     for author_DBpedia in authors_DBpedia:
         if not author_DBpedia['nom']:
@@ -333,17 +237,18 @@ def DB_pedia_author_treatment(author, author_refs):
             author_refs['wikidata'] = author_DBpedia['uri']
 
 
-def babelio_book_treatment(item, item_refs):
+def babelio_book_treatment(item, item_refs, stats):
+    """
+    Compare un item (livre ou auteur) avec la base de donnée babelio
+    :param item: nom d'auteur ou livre: {'title': '', 'author': [], 'isbn': []}
+    :param item_refs: cd book_refs|author_refs
+    """
 
     for babelio_item in babelioData:
         if "author_id" in babelio_item.keys():
-            babelio_book = {'title': babelio_item['title'],
-                            'author': babelio_item['author'] if 'author' in babelio_item.keys() else [],
-                            'isbn': [babelio_item['EAN']] if 'EAN' in babelio_item.keys() else []
-                            }
             if not babelio_item['title']:
                 print("problème babelio: item => ", babelio_item)
-            elif same_book(babelio_book, item):
+            elif same_book(babelio_item, item, stats):
                 item_refs['babelio'] = babelio_item['url']
         # else:
         #     if not babelio_item['name']:
@@ -352,7 +257,29 @@ def babelio_book_treatment(item, item_refs):
         #         item_refs['babelio'] = babelio_item['url']
 
 
+def depot_legal_item_crossing_debug(DL_book, stats):
+    book_refs = {"babelio": "",
+                 "ADP": "",
+                 "depot_legal": DL_book["id"],
+                 "Hurtubise": "",
+                 "ILE": "",
+                 "wikidata": ""
+                 }
+    stats["nombre_livre_tot"] += 1
+
+    ADP_book_treatment(DL_book, book_refs, stats["ADP"])
+    hurtubise_book_treatment(DL_book, book_refs, stats["Hurtubise"])
+    ILE_book_treatment(DL_book, book_refs, stats["ILE"])
+    babelio_book_treatment(DL_book, book_refs, stats["Babelio"])
+    return book_refs
+
 def depot_legal_item_crossing(DL_book):
+    """
+    recupération des identifiants des livres ou auteurs correspondants à l'item de dépot légal
+    dans les autres bases de données
+    :param DL_book: {'title': '', 'author': [], 'isbn': []}
+    :return: cd book_refs
+    """
 
     start_time = time.time()
 
@@ -407,6 +334,11 @@ def depot_legal_item_crossing(DL_book):
     proc_Hurtubise.join()
     proc_ILE.join()
     proc_babelio.join()
+
+    proc_ADP.close()
+    proc_Hurtubise.close()
+    proc_ILE.close()
+    proc_babelio.close()
 
     return book_refs
 
@@ -486,117 +418,126 @@ def babelio_item_crossing(babelio_item):
 
         return author_refs
 
+start_loading_data_time = time.time()
 
-with open("./Babelio/item.json", "r") as babelioJson:
+# Loading des données sauvegardées dans la mémoire ram
+g_book_ADP = rdflib.Graph()
+g_author_ADP = rdflib.Graph()
+ADP_book_graph = g_book_ADP.parse("../Graphes/grapheADPLivres.rdf")
+ADP_author_graph = g_author_ADP.parse("../Graphes/grapheADPAuteurs.rdf")
+ADP_books = get_ADP_books(g_book_ADP, g_author_ADP)
+ADP_loading_time = time.time()
+print("ADP_loading_time: ", ADP_loading_time - start_loading_data_time)
 
-    start_loading_data_time = time.time()
-    # Loading des données sauvegardées dans la mémoire ram
-    g_book_ADP = rdflib.Graph()
-    g_author_ADP = rdflib.Graph()
-    ADP_book_graph = g_book_ADP.parse("../Graphes/grapheADPLivres.rdf")
-    ADP_author_graph = g_author_ADP.parse("../Graphes/grapheADPAuteurs.rdf")
-    ADP_books = get_ADP_books(g_book_ADP, g_author_ADP)
-    ADP_loading_time = time.time()
-    print("ADP_loading_time: ", ADP_loading_time - start_loading_data_time)
+g_item_DL = rdflib.Graph()
+book_graph_DL = g_item_DL.parse("../Graphes/grapheDepotLegal.rdf")
+DL_books = get_depot_legal_book(g_item_DL)
+DL_loading_time = time.time()
+print("DL_loading_time: ", DL_loading_time - ADP_loading_time)
 
-    g_item_DL = rdflib.Graph()
-    book_graph_DL = g_item_DL.parse("../Graphes/grapheDepotLegal.rdf")
-    DL_books = get_depot_legal_book(g_item_DL)
-    DL_loading_time = time.time()
-    print("DL_loading_time: ", DL_loading_time - ADP_loading_time)
+g_item_ILE = rdflib.Graph()
+item_graph_ILE = g_item_ILE.parse("../Graphes/grapheILE.rdf")
+ILE_item = get_ILE_book(g_item_ILE)
+ILE_loading_time = time.time()
+print("ILE_loading time: ", ILE_loading_time - DL_loading_time)
 
-    # books_Depot_legal = open("./DepotLegal/depotlegal20171231.csv", "r", encoding='ISO-8859-1')
-    # csv_reader = csv.DictReader(books_Depot_legal, delimiter=',', fieldnames=[
-    #     "ID_DEPOT", "TITRE_PUBLICATION", "ANNEE_PUBLICATION", "STATUT_REQUETE", "DATE_ENREGISTREMENT",
-    #     "CODE_EDITEUR", "NOM_EDITEUR", "CATEGORIE_EDITEUR", "TYPE_DOCUMENT", "TYPEPUBLICATION",
-    #     "LANGUE_PUBLICATION", "LANGUE_ORIGINALE", "CATEGORIE_SUJET", "SUJET", "COEDITION", "PERIODICITE",
-    #     "ETAT_PERIODICITE", "LISTE_ISBN_NETTOYE", "LISTE_AUTEUR", "EST_NUMERIQUE"
-    # ])
-    # books_Depot_legal = [x for x in csv_reader]
+books_Hurtubise_file = open("./Hurtubise/Exportation-Hurtubise.csv", "r", encoding='ISO-8859-1')
+csv_reader = csv.DictReader(books_Hurtubise_file, delimiter=',', fieldnames=[
+    "Editeur", "ISBN Papier", "ISBN PDF", "ISBN epub", "Titre", "Sous - titre", "Titre de la serie",
+    "Contributeurs", "Contributeur(premier)", "Langue", "Langue Origine", "Resume", "Nombre de pages",
+    "Date de parution", "Annee de parution", "Sujet  THEMA principal", "Sujet THEMA",
+    "Quantificateur Georaphique", "Quantificateur de langue", "Quantificateur Historique", "Niveau soclaire FR",
+    "Niveau scolaire QC", "Cycle scolaire FR", "Niveau de lecture", "Echele CECR", "Quantificateur d'interet",
+    "Quantificateur d'age", "Quantificateur de style", "Classification Editoriale", "Mots cles"
 
-    books_Hurtubise = open("./Hurtubise/Exportation-Hurtubise.csv", "r", encoding='ISO-8859-1')
-    csv_reader = csv.DictReader(books_Hurtubise, delimiter=',', fieldnames=[
-        "Editeur", "ISBN Papier", "ISBN PDF", "ISBN epub", "Titre", "Sous - titre", "Titre de la serie",
-        "Contributeurs", "Contributeur(premier)", "Langue", "Langue Origine", "Resume", "Nombre de pages",
-        "Date de parution", "Annee de parution", "Sujet  THEMA principal", "Sujet THEMA",
-        "Quantificateur Georaphique", "Quantificateur de langue", "Quantificateur Historique", "Niveau soclaire FR",
-        "Niveau scolaire QC", "Cycle scolaire FR", "Niveau de lecture", "Echele CECR", "Quantificateur d'interet",
-        "Quantificateur d'age", "Quantificateur de style", "Classification Editoriale", "Mots cles"
+])
+books_Hurtubise = get_Hurtubise_books(csv_reader)
+books_Hurtubise_file.close()
 
-    ])
-    books_Hurtubise = [x for x in csv_reader]
+# books_ILE_file = open("./ILE/oeuvres_ILE_comma_separated.csv", "r", encoding='ISO-8859-1')
+# csv_reader = csv.DictReader(books_ILE_file, delimiter=',', fieldnames=[
+#     'id', 'titre', 'annee', 'auteurs', 'editeur', 'lieuPublication', 'isbn'])
+# books_ILE = [x for x in csv_reader]
+# books_ILE_file.close()
 
-    books_ILE = open("./ILE/oeuvres_ILE_comma_separated.csv", "r", encoding='ISO-8859-1')
-    csv_reader = csv.DictReader(books_ILE, delimiter=',', fieldnames=[
-        'id', 'titre', 'annee', 'auteurs', 'editeur', 'lieuPublication', 'isbn'])
-    books_ILE = [x for x in csv_reader]
+authors_ILE_file = open("./ILE/auteurs_ILE_comma_separated.csv", 'r', encoding='ISO-8859-1')
+csv_reader = csv.DictReader(authors_ILE_file, delimiter=',', fieldnames=[
+    'uri', 'nom', 'bio', 'genres', 'site', 'pseudonyme'])
+authors_ILE = [x for x in csv_reader]
+authors_ILE_file.close()
 
-    authors_ILE = open("./ILE/auteurs_ILE_comma_separated.csv", 'r', encoding='ISO-8859-1')
-    csv_reader = csv.DictReader(authors_ILE, delimiter=',', fieldnames=[
-        'uri', 'nom', 'bio', 'genres', 'site', 'pseudonyme'])
-    authors_ILE = [x for x in csv_reader]
+authors_wikidata_file = open("./Wikidata/ecrivains_wikidata_comma_separated.csv", 'r', encoding='ISO-8859-1')
+csv_reader = csv.DictReader(authors_wikidata_file, delimiter=',', fieldnames=[
+    'nom', 'uri'])
+authors_wikidata = [x for x in csv_reader]
+authors_wikidata_file.close()
 
-    authors_wikidata = open("./Wikidata/ecrivains_wikidata_comma_separated.csv", 'r', encoding='ISO-8859-1')
-    csv_reader = csv.DictReader(authors_wikidata, delimiter=',', fieldnames=[
-        'nom', 'uri'])
-    authors_wikidata = [x for x in csv_reader]
+authors_DBpedia_file = open("./DBpedia/ecrivains_dbpedia_fr.txt", "r", encoding='ISO-8859-1')
+csv_reader = csv.DictReader(authors_DBpedia_file, delimiter=';', fieldnames=[
+    'uri', 'nom'])
+authors_DBpedia = [x for x in csv_reader]
+authors_DBpedia_file.close()
 
-    authors_DBpedia = open("./DBpedia/ecrivains_dbpedia_fr.txt", "r", encoding='ISO-8859-1')
-    csv_reader = csv.DictReader(authors_DBpedia, delimiter=';', fieldnames=[
-        'uri', 'nom'])
-    authors_DBpedia = [x for x in csv_reader]
+babelioJson = open("./Babelio/item.json", "r")
+babelioData = get_Babelio_books(json.load(babelioJson))
+babelioJson.close()
 
-    babelioData = json.load(babelioJson)[0:]
+loading_data_time = time.time()
+print("loading_data_time: ", loading_data_time - start_loading_data_time)
 
-    loading_data_time = time.time()
-    print("loading_data_time: ", loading_data_time - start_loading_data_time)
+results = []
+# for babelio_item in babelioData:
+#     results.append(babelio_item_crossing(babelio_item))
 
-    # manager = multiprocessing.Manager()
-    # data_manager = {
-    #     "g_book_ADP": g_book_ADP,
-    #     "g_author_ADP": g_author_ADP,
-    #     "g_item_DL": g_item_DL,
-    #     "DL_books": DL_books,
-    #     "ADP_books": ADP_books,
-    #     "books_Hurtubise": books_Hurtubise,
-    #     "books_ILE": books_ILE,
-    #     "authors_ILE":authors_ILE,
-    #     "authors_wikidata": authors_wikidata,
-    #     "authors_DBpedia": authors_DBpedia,
-    #     "babelioData": babelioData
-    # }
+# for DL_book in tqdm(DL_books, total=len(DL_books)):
+#     results.append(depot_legal_item_crossing(DL_book))
+stats_by_data_base = {"nombre_livre_tot": 0,
+                      "nombre_livres": 0,
+                      "nombre test": 0,
+                      "isbn egaux": 0,
+                      "isbn different mais titre et auteurs egaux": 0,
+                      "isbn different mais titres equivalents": 0,
+                      "titre equivalents mais auteurs differents": 0,
+                      "titre et auteurs egaux": 0,
+                      "titre egaux mais pas d'infos en plus": 0
+                      }
+for name in ["ADP", "ILE", "Hurtubise", "Babelio"]:
+    stats_by_data_base[name] = {
+             "isbn egaux": 0,
+             "isbn different mais titre et auteurs egaux": 0,
+             "isbn different mais titres equivalents": 0,
+             "titre equivalents mais auteurs differents": 0,
+             "titre et auteurs egaux": 0,
+             "titre egaux mais pas d'infos en plus": 0}
 
-    results = []
-    # for babelio_item in babelioData:
-    #     results.append(babelio_item_crossing(babelio_item))
+for DL_book in tqdm(DL_books, total=len(DL_books)):
+    results.append(depot_legal_item_crossing_debug(DL_book, stats_by_data_base))
 
-    for DL_book in tqdm(DL_books, total=len(DL_books)):
+data_base_list = ["ADP", "ILE", "Hurtubise", "Babelio"]
 
-        book_refs = {"babelio": "",
-                     "ADP": "",
-                     "depot_legal": "",
-                     "Hurtubise": "",
-                     "ILE": "",
-                     "wikidata": ""
-                     }
+for case in ["isbn egaux",
+                 "isbn different mais titre et auteurs egaux",
+                 "isbn different mais titres equivalents",
+                 "titre equivalents mais auteurs differents",
+                 "titre et auteurs egaux",
+                 "titre egaux mais pas d'infos en plus"]:
+    for name_data_base in data_base_list:
 
-        results.append(depot_legal_item_crossing(DL_book))
+        stats_by_data_base[case] += stats_by_data_base[name_data_base][case]
 
+    stats_by_data_base[case] = "%d => %s" % (stats_by_data_base[case],
+                                             [" " + name_data_base + ": " +
+                                              str(round(stats_by_data_base[name_data_base][case] / stats_by_data_base[case] * 100) if stats_by_data_base[case] else 0)
+                                              + "%"
+                                              for name_data_base in data_base_list])
 
+test_str = json.dumps(stats_by_data_base, indent=2)
+print(test_str)
 
-
-
-    # On utilise plusieurs threads pour accelérer le traitement
-    # p = Pool(7)
-    # for result in tqdm(p.imap(babelio_item_treatment, babelioData), total=len(babelioData)):
-    #     results.append(result)
-    # p.close()
-    # p.join()
-
-    # on sauvegarde les données
-    with open('./results.csv', 'w') as result_file:
-        writer = csv.DictWriter(result_file,
-                                delimiter=",",
-                                fieldnames=["babelio", "ADP", "depot_legal", "Hurtubise", "ILE", "wikidata"])
-        for res in results:
-            writer.writerow(res)
+# on sauvegarde les données
+with open('./results.csv', 'w') as result_file:
+    writer = csv.DictWriter(result_file,
+                            delimiter=",",
+                            fieldnames=["babelio", "ADP", "depot_legal", "Hurtubise", "ILE", "wikidata"])
+    for res in results:
+        writer.writerow(res)

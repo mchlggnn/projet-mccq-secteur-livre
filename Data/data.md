@@ -42,11 +42,62 @@ ADP
     * Is part of (02): 12
     * Alternative format (06): 8
 
+ADP graph (15469 livres)
+
+- nom: 15469
+- isbn: 15469
+- description: 7076
+- commentaire: 75
+- auteurs: 17266
+    * "Collectif": 676,
+    * "Alain M. Bergeron": 215,
+    * "Jim Davis": 196,
+    * "Sampar": 192,
+    * "Michel Quintin": 173,
+    * "Eric S\u00e9vigny": 88,
+    * "BOBBIE KALMAN": 81,
+    * "Anne-Marie Chalifoux": 64,
+    * "Pierre Brignaud": 60,
+    * "Jean Morin": 58
+- editeurs: 15469
+    * "Les éditions Québec-Livres": 2282,
+    * "Libre Expression": 1211,
+    * "Presses Aventure": 979,
+    * "Trécarré": 978,
+    * "VLB éditeur": 833,
+    * "Bayard Canada": 782,
+    * "Michel Quintin": 779,
+    * "Stanké": 759,
+    * "Les éditions de l'Hexagone": 752,
+    * "La Courte échelle": 734
+- sujet principal: 8092
+    "FB": 1270,
+    "WZS": 965,
+    "YFB": 892,
+    "JM": 688,
+    "JNLB": 519,
+    "DC": 417,
+    "VX": 249,
+    "XAK": 220,
+    "MB": 205,
+    "SC": 180
+- sujet: 9109
+    * "FB": 1288,
+    * "YFB": 992,
+    * "WZS": 966,
+    * "JM": 690,
+    * "JNLB": 519,
+    * "DC": 423,
+    * "VX": 251,
+    * "XAK": 229,
+    * "MB": 206,
+    * "SC": 181
+
 
 
 Babelio
 
-- livres:
+- livres: 2040
 
     - url: 2040
     - title: 2040
@@ -95,8 +146,9 @@ Babelio
         + date
         + pop
         + content
-    
-- auteurs:
+
+
+- auteurs: 1419
 
     - url: 1419
     - name: 1419
@@ -178,7 +230,6 @@ Depotlegal
     * 'Éditions Québec-Livres': 2646
     * 'Festo Didactique': 2592
     *  Autre: < 2500
-    
 - CATEGORIE_EDITEUR: 391633
     * '01 - Éditeurs commerciaux': 191293
     * '02 - Gouvernement du Québec': 75970
@@ -405,4 +456,3 @@ Wikidata
     * wd:Q1930187   jounraliste
     * wd:Q487596    dramaturge
     * wd:Q201788    historien
-

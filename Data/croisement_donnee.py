@@ -1,422 +1,12 @@
 import json
 import csv
-import re
-import rdflib
 import Levenshtein
 import time
+import random
 from tqdm import tqdm
-from multiprocessing import Process
 
 from extraction_croissement import *
 
-def same_book(book1, book2, stats):
-    """
-    verifie si deux livres sont identiques à partir de leur informations
-    cette fonction comporte la logique de la comparaison, les données sont normalement déjà formatées
-    :param book1: (title: str, author: [str,...], isbns: [str,...])
-    :param book2: (title: str, author: [str,...], isbns: [str,...])
-    :return: boolean
-    """
-
-    # start_same_book_time = time.time()
-    isbn_in_common = True
-    if book1["isbn"] and book2["isbn"]:
-        isbn_in_common = False
-        for isbn1 in book1["isbn"]:
-            for isbn2 in book2["isbn"]:
-                if same_isbn(isbn1, isbn2):
-                    # print("isbn similar !!titre1: ", book1['title'], ' titre2: ', book2['title'], ' isbn: ',
-                    #       book1['isbn_raw'], ' isbn: ', book2['isbn_raw'])
-                    stats["isbn egaux"] += 1
-                    isbn_in_common = True
-
-
-    if not book1['title'] or not book2['title']:
-        return False
-
-    # normalize_time = time.time()
-    # print("   normalisation time: ", normalize_time - start_same_book_time)
-
-    dist_titre = Levenshtein.distance(book1['title'], book2['title'])
-    # dist_time = time.time()
-    # print("   distance time: ", dist_time - normalize_time)
-
-    # comparaison_time = time.time()
-    # print("   comparaison: ", comparaison_time - dist_time)
-
-    author_boolean = True
-    author_in_common = False
-    if book1['author'] and book2['author']:
-        author_boolean = False
-        author_in_common = False
-        for author1 in book1['author']:
-            for author2 in book2['author']:
-                if same_author(author1, author2):
-                    author_in_common = True
-                    author_boolean = True
-
-
-    # set_time = time.time()
-    # print("   set time: ", set_time - comparaison_time)
-
-    dist_bool = dist_titre < max(1, min(len(book1['title']), len(book2['title'])) / 8)
-
-    if not isbn_in_common:
-        if dist_bool and author_boolean and not author_in_common:
-            stats["isbn different mais titres equivalents"] += 1
-            # print("item maybe similar but isbn diff!! titre1: ", book1['title'], ' titre2: ', book2['title'], ' authors1: ',
-            #       book1['author'], ' authors2: ', book2['author'], ' isbn: ',
-            #               book1['isbn_raw'], ' isbn: ', book2['isbn_raw'])
-        if dist_bool and author_in_common:
-            stats["isbn different mais titre et auteurs egaux"] += 1
-            # print("item similar but isbn diff !!titre1: ", book1['title'], ' titre2: ', book2['title'], ' authors1: ',
-            #       book1['author'], ' authors2: ', book2['author'], ' isbn: ',
-            #               book1['isbn_raw'], ' isbn: ', book2['isbn_raw'])
-
-    else:
-        if dist_bool and not author_boolean:
-            stats["titre equivalents mais auteurs differents"] += 1
-            # print("title similar !! titre1: ", book1['title'], ' titre2: ', book2['title'], ' authors1: ', book1['author'], ' authors2: ', book2['author'])
-        if dist_bool and author_boolean and not author_in_common:
-            stats["titre egaux mais pas d'infos en plus"] += 1
-            # print("item maybe similar !! titre1: ", book1['title'], ' titre2: ', book2['title'], ' authors1: ', book1['author'], ' authors2: ', book2['author'])
-        if dist_bool and author_in_common:
-            stats["titre et auteurs egaux"] += 1
-            # print("item similar !!titre1: ", book1['title'], ' titre2: ', book2['title'], ' authors1: ', book1['author'], ' authors2: ', book2['author'])
-
-    return (dist_bool and author_in_common) or isbn_in_common
-
-
-def same_author(author1, author2):
-    """
-    verifie si deux auteurs sont identiques à partir de leur nom
-    cette fonction comporte la logique de la comparaison, les données sont normalement déjà formatées
-    :param author1: nom du premier auteur
-    :param author2: nom du second auteur
-    :return: boolean
-    """
-    if not author1 or not author2:
-        return False
-    author1 = author1.split(" ")
-    author2 = author2.split(" ")
-    return True if list(set(author1) & set(author2)) else False
-
-def same_isbn(isbn1, isbn2):
-    """
-    verifie si deux isbns sont identiques à partir de leur chaine de caractère
-    cette fonction comporte la logique de la comparaison, les données sont normalement déjà formatées
-    :param isbn1: 1er isbn
-    :param isbn2: 2eme isbn
-    :return: boolean
-    """
-    return isbn1[:-1] == isbn2[:-1] or isbn1[3:-1] == isbn2[:-1] or isbn1[:-1] == isbn2[3:-1] or isbn1[3:-1] == isbn2[3:-1]
-
-
-def ADP_book_treatment(book, book_refs, stats):
-    """
-    Compare un livre avec la base de donnée ADP
-    :param book: {'title': '', 'author': [], 'isbn': []}
-    :param book_refs: cd book_refs
-    """
-    for book_ADP in ADP_books:
-        if not book_ADP['title']:
-            pass
-            # print("problème !!! infoHurtubise: ", book_Hurtubise)
-
-        elif same_book(book_ADP, book, stats):
-            book_refs['ADP'] = book_ADP['isbn']
-
-
-def DL_book_treatment(book, book_refs, stats):
-    """
-    Compare un livre avec la base de donnée Depot legal
-    :param book: {'title': '', 'author': [], 'isbn': []}
-    :param book_refs: cd book_refs
-    """
-    for book_DL in DL_books:
-        if not book_DL['title']:
-            pass
-            # print("problème !!! infoHurtubise: ", book_Hurtubise)
-
-        elif same_book(book_DL, book, stats):
-            book_refs['depot_legal'] = book_DL['isbn']
-
-
-def hurtubise_book_treatment(book, book_refs, stats):
-    """
-    Compare un livre avec la base de donnée Hurtubise
-    :param book: {'title': '', 'author': [], 'isbn': []}
-    :param book_refs: cd book_refs
-    """
-
-    # Analyse des données de Hurtubise
-    for book_Hurtubise in books_Hurtubise:
-
-        if not book_Hurtubise['title']:
-            pass
-            # print("problème !!! infoHurtubise: ", book_Hurtubise)
-
-        elif same_book(book_Hurtubise, book, stats):
-            book_refs['Hurtubise'] = book_Hurtubise['isbn']
-
-
-def ILE_book_treatment(book, book_refs, stats):
-    """
-    Compare un livre avec la base de donnée ILE
-    :param book: {'title': '', 'author': [], 'isbn': []}
-    :param book_refs: cd book_refs
-    """
-
-    # Analyse des données ILE
-    for book_ILE in ILE_item:
-        if not book_ILE['title']:
-            pass
-            # print("problème !!! infoILE: ", book_ILE)
-
-        elif same_book(book_ILE, book, stats):
-            book_refs['ILE'] = book_ILE['isbn']
-
-
-def ADP_author_treatment(author, author_refs):
-    """
-    Compare un auteur avec la base de donnée ADP
-    :param author: nom de l'auteur
-    :param author_refs: cd author_refs
-    """
-
-    for subj, pred in g_author_ADP.subject_predicates(rdflib.URIRef("http://www.sogides.com/classe/Auteur")):
-        author_ADP = g_author_ADP.predicate_objects(subj)
-        for info in author_ADP:
-            if info[0] == rdflib.URIRef("https://schema.org/name"):
-                if not info[1].n3():
-                    print("problème !!! infoADP: ", info)
-                if same_author(info[1].n3(), author['name']):
-                    author_refs["ADP"] = subj.n3()
-
-
-def ILE_author_treatment(author, author_refs):
-    """
-    Compare un auteur avec la base de donnée ILE
-    :param author: nom de l'auteur
-    :param author_refs: cd author_refs
-    """
-
-    for author_ILE in authors_ILE:
-        if not author_ILE['nom']:
-            pass
-            # print("problème !!! infoILE: ", author_ILE)
-        elif same_author(author_ILE['nom'], author['name']):
-            author_refs['ILE'] = author_ILE['uri']
-
-
-def wikidata_author_treatment(author, author_refs):
-    """
-    Compare un auteur avec la base de donnée wikidata
-    :param author: nom de l'auteur
-    :param author_refs: cd author_refs
-    """
-
-    for author_wikidata in authors_wikidata:
-        if not author_wikidata['nom']:
-            print("problème !!! infowikidata: ", author_wikidata)
-        elif same_author(author_wikidata['nom'], author['name']):
-            author_refs['wikidata'] = author_wikidata['uri']
-
-
-def DB_pedia_author_treatment(author, author_refs):
-    """
-    Compare un auteur avec la base de donnée DB_pedia
-    :param author: nom de l'auteur
-    :param author_refs: cd author_refs
-    """
-
-    for author_DBpedia in authors_DBpedia:
-        if not author_DBpedia['nom']:
-            print("problème !!! infoDBpedia: ", author_DBpedia)
-        elif same_author(author_DBpedia['nom'], author['name']):
-            author_refs['wikidata'] = author_DBpedia['uri']
-
-
-def babelio_book_treatment(item, item_refs, stats):
-    """
-    Compare un item (livre ou auteur) avec la base de donnée babelio
-    :param item: nom d'auteur ou livre: {'title': '', 'author': [], 'isbn': []}
-    :param item_refs: cd book_refs|author_refs
-    """
-
-    for babelio_item in babelioData:
-        if "author_id" in babelio_item.keys():
-            if not babelio_item['title']:
-                print("problème babelio: item => ", babelio_item)
-            elif same_book(babelio_item, item, stats):
-                item_refs['babelio'] = babelio_item['url']
-        # else:
-        #     if not babelio_item['name']:
-        #         print("problème babelio: item => ", babelio_item)
-        #     elif same_author(babelio_item['name'], item['name']):
-        #         item_refs['babelio'] = babelio_item['url']
-
-
-def depot_legal_item_crossing_debug(DL_book, stats):
-    book_refs = {"babelio": "",
-                 "ADP": "",
-                 "depot_legal": DL_book["id"],
-                 "Hurtubise": "",
-                 "ILE": "",
-                 "wikidata": ""
-                 }
-    stats["nombre_livre_tot"] += 1
-
-    ADP_book_treatment(DL_book, book_refs, stats["ADP"])
-    hurtubise_book_treatment(DL_book, book_refs, stats["Hurtubise"])
-    ILE_book_treatment(DL_book, book_refs, stats["ILE"])
-    babelio_book_treatment(DL_book, book_refs, stats["Babelio"])
-    return book_refs
-
-def depot_legal_item_crossing(DL_book):
-    """
-    recupération des identifiants des livres ou auteurs correspondants à l'item de dépot légal
-    dans les autres bases de données
-    :param DL_book: {'title': '', 'author': [], 'isbn': []}
-    :return: cd book_refs
-    """
-
-    start_time = time.time()
-
-    book_refs = {"babelio": "",
-                 "ADP": "",
-                 "depot_legal": DL_book["title"],
-                 "Hurtubise": "",
-                 "ILE": "",
-                 "wikidata": ""
-                 }
-
-    author_refs = {"babelio": "",
-                   "ADP": "",
-                   "depot_legal": "",
-                   "Hurtubise": "",
-                   "ILE": "",
-                   "wikidata": ""
-                   }
-
-    # Analyse des données ADP à partir des graphs
-    # parcour des triplets du graph
-    proc_ADP = Process(target=ADP_book_treatment, args=(DL_book, book_refs))
-    book_refs["ADP"] = proc_ADP
-    proc_ADP.start()
-
-    # ADP_time = time.time()
-    # print("ADP_book_time: ", ADP_time - start_time)
-
-    # Analyse des données de Hurtubise
-    proc_Hurtubise = Process(target=hurtubise_book_treatment, args=(DL_book, book_refs))
-    book_refs["Hurtubise"] = proc_Hurtubise
-    proc_Hurtubise.start()
-
-    # Hurtubise_time = time.time()
-    # print("hurtubise_book_time: ", Hurtubise_time - ADP_time)
-
-    # Analyse des données ILE
-    proc_ILE = Process(target=ILE_book_treatment, args=(DL_book, book_refs))
-    book_refs["ILE"] = proc_ILE
-    proc_ILE.start()
-    # ILE_time = time.time()
-    # print("ILE_book_time: ", ILE_time - Hurtubise_time)
-
-    babelio_book_treatment(DL_book, book_refs)
-    proc_babelio = Process(target=babelio_book_treatment, args=(DL_book, book_refs))
-    book_refs["babelio"] = proc_babelio
-    proc_babelio.start()
-    # babelio_time = time.time()
-    # print("babelio_book_time: ", babelio_time - ILE_time)
-
-    proc_ADP.join()
-    proc_Hurtubise.join()
-    proc_ILE.join()
-    proc_babelio.join()
-
-    proc_ADP.close()
-    proc_Hurtubise.close()
-    proc_ILE.close()
-    proc_babelio.close()
-
-    return book_refs
-
-
-def babelio_item_crossing(babelio_item):
-    """
-    recupération des identifiants des livres ou auteurs correspondants à l'item babelio dans les autres bases de donnée
-    :param babelio_item: item babelio (auteur ou livre)
-    :return: dictionnaires des identifiants
-    """
-
-    start_time = time.time()
-    if "author_id" in babelio_item.keys():
-        # pass
-        # dictionnaires des identifiants
-        book_refs = {"babelio": babelio_item['url'],
-                     "ADP": "",
-                     "depot_legal": "",
-                     "Hurtubise": "",
-                     "ILE": "",
-                     "wikidata": ""
-                     }
-
-        babelio_book = {'title': babelio_item['title'],
-                        'author': babelio_item['author'] if 'author' in babelio_item.keys() else [],
-                        'isbn': [babelio_item['EAN']] if 'EAN' in babelio_item.keys() else []
-                        }
-
-        # Analyse des données ADP à partir des graphs
-        # parcour des triplets du graph
-        ADP_book_treatment(babelio_book, book_refs)
-        ADP_time = time.time()
-        print("ADP_book_time: ", ADP_time - start_time)
-
-        # Analyse du grpah de Dépot Legal
-
-        DL_book_treatment(babelio_book, book_refs)
-        Depot_Legal_time = time.time()
-        print("Depot_Legal_book_time", Depot_Legal_time - ADP_time)
-
-        # Analyse des données de Hurtubise
-        hurtubise_book_treatment(babelio_book, book_refs)
-        Hurtubise_time = time.time()
-        print("hurtubise_book_time: ", Hurtubise_time - Depot_Legal_time)
-
-        # Analyse des données ILE
-        ILE_book_treatment(babelio_book, book_refs)
-        ILE_time = time.time()
-        print("ILE_book_time: ", ILE_time - Hurtubise_time)
-
-        return book_refs
-
-    else:
-        author_refs = {"babelio": babelio_item['url'],
-                       "ADP": "",
-                       "depot_legal": "",
-                       "Hurtubise": "",
-                       "ILE": "",
-                       "wikidata": ""
-                       }
-
-        ADP_author_treatment(babelio_item, author_refs)
-        ADP_author_time = time.time()
-        print("ADP_author_time: ", ADP_author_time - start_time)
-
-        ILE_author_treatment(babelio_item, author_refs)
-        ILE_author_time = time.time()
-        print("ILE_author_time: ", ILE_author_time - ADP_author_time)
-
-        wikidata_author_treatment(babelio_item, author_refs)
-        Wikipedia_author_time = time.time()
-        print("Wikipedia_author_time: ", Wikipedia_author_time - ILE_author_time)
-
-        DB_pedia_author_treatment(babelio_item, author_refs)
-        DBpedia_author_time = time.time()
-        print("DBpedia_author_time: ", DBpedia_author_time - Wikipedia_author_time)
-
-        return author_refs
 
 start_loading_data_time = time.time()
 
@@ -437,7 +27,7 @@ print("DL_loading_time: ", DL_loading_time - ADP_loading_time)
 
 g_item_ILE = rdflib.Graph()
 item_graph_ILE = g_item_ILE.parse("../Graphes/grapheILE.rdf")
-ILE_item = get_ILE_book(g_item_ILE)
+ILE_books = get_ILE_book(g_item_ILE)
 ILE_loading_time = time.time()
 print("ILE_loading time: ", ILE_loading_time - DL_loading_time)
 
@@ -451,14 +41,8 @@ csv_reader = csv.DictReader(books_Hurtubise_file, delimiter=',', fieldnames=[
     "Quantificateur d'age", "Quantificateur de style", "Classification Editoriale", "Mots cles"
 
 ])
-books_Hurtubise = get_Hurtubise_books(csv_reader)
+Hurtubise_books = get_Hurtubise_books(csv_reader)
 books_Hurtubise_file.close()
-
-# books_ILE_file = open("./ILE/oeuvres_ILE_comma_separated.csv", "r", encoding='ISO-8859-1')
-# csv_reader = csv.DictReader(books_ILE_file, delimiter=',', fieldnames=[
-#     'id', 'titre', 'annee', 'auteurs', 'editeur', 'lieuPublication', 'isbn'])
-# books_ILE = [x for x in csv_reader]
-# books_ILE_file.close()
 
 authors_ILE_file = open("./ILE/auteurs_ILE_comma_separated.csv", 'r', encoding='ISO-8859-1')
 csv_reader = csv.DictReader(authors_ILE_file, delimiter=',', fieldnames=[
@@ -478,66 +62,342 @@ csv_reader = csv.DictReader(authors_DBpedia_file, delimiter=';', fieldnames=[
 authors_DBpedia = [x for x in csv_reader]
 authors_DBpedia_file.close()
 
-babelioJson = open("./Babelio/item.json", "r")
-babelioData = get_Babelio_books(json.load(babelioJson))
-babelioJson.close()
+babelioJsonBooks = open("./Babelio/babelio_livres.json", "r")
+Babelio_books = get_Babelio_books(json.load(babelioJsonBooks))
+babelioJsonBooks.close()
+
+babelioJsonAuthor = open("./Babelio/babelio_auteurs.json", "r")
+Babelio_authors = get_Babelio_books(json.load(babelioJsonAuthor))
+babelioJsonAuthor.close()
 
 loading_data_time = time.time()
 print("loading_data_time: ", loading_data_time - start_loading_data_time)
 
-results = []
-# for babelio_item in babelioData:
-#     results.append(babelio_item_crossing(babelio_item))
 
-# for DL_book in tqdm(DL_books, total=len(DL_books)):
-#     results.append(depot_legal_item_crossing(DL_book))
-stats_by_data_base = {"nombre_livre_tot": 0,
-                      "nombre_livres": 0,
-                      "nombre test": 0,
-                      "isbn egaux": 0,
-                      "isbn different mais titre et auteurs egaux": 0,
-                      "isbn different mais titres equivalents": 0,
-                      "titre equivalents mais auteurs differents": 0,
-                      "titre et auteurs egaux": 0,
-                      "titre egaux mais pas d'infos en plus": 0
-                      }
-for name in ["ADP", "ILE", "Hurtubise", "Babelio"]:
-    stats_by_data_base[name] = {
-             "isbn egaux": 0,
-             "isbn different mais titre et auteurs egaux": 0,
-             "isbn different mais titres equivalents": 0,
-             "titre equivalents mais auteurs differents": 0,
-             "titre et auteurs egaux": 0,
-             "titre egaux mais pas d'infos en plus": 0}
 
-for DL_book in tqdm(DL_books, total=len(DL_books)):
-    results.append(depot_legal_item_crossing_debug(DL_book, stats_by_data_base))
 
-data_base_list = ["ADP", "ILE", "Hurtubise", "Babelio"]
+def compare_books(book1, book2, stats):
+    """
+    verifie si deux livres sont identiques à partir de leur informations
+    cette fonction comporte la logique de la comparaison, les données sont normalement déjà formatées
+    :param book1: (title: str, author: [str,...], isbns: [str,...])
+    :param book2: (title: str, author: [str,...], isbns: [str,...])
+    :return: boolean
+    """
+    start_time = time.time()
+    if not book1['title'] or not book2['title']:
+        return {"conclusion": False,
+                "isbn egaux et titre similaire": False,
+                "isbn egaux mais titre legerement differents": False,
+                "isbn egaux mais titre très differents": False,
+                "isbn different mais titres equivalents": False,
+                "isbn different mais titre et auteurs egaux": False,
+                "titre equivalents mais auteurs differents": False,
+                "titre egaux mais pas d'infos en plus": False,
+                "titre et auteurs egaux": False,
+                "time": (0, 0, 0, 0, 0)}
 
-for case in ["isbn egaux",
-                 "isbn different mais titre et auteurs egaux",
-                 "isbn different mais titres equivalents",
-                 "titre equivalents mais auteurs differents",
-                 "titre et auteurs egaux",
-                 "titre egaux mais pas d'infos en plus"]:
+    isbn_boolean = True
+    isbn_in_common = False
+    if book1["isbn"] and book2["isbn"]:
+        isbn_boolean = False
+        isbn_in_common = False
+        for isbn1 in book1["isbn"]:
+            for isbn2 in book2["isbn"]:
+                if compare_isbn(isbn1, isbn2):
+                    stats["isbn egaux"] += 1
+                    stats[book2["data_base"]]["isbn egaux"] += 1
+                    isbn_boolean = True
+                    isbn_in_common = True
+    isbn_comparaison = time.time()
+
+    author_boolean = True
+    author_in_common = False
+    if book1['author'] and book2['author']:
+        author_boolean = False
+        author_in_common = False
+        for author1 in book1['author']:
+            for author2 in book2['author']:
+                if compare_authors(author1, author2):
+                    author_in_common = True
+                    author_boolean = True
+    author_comparaison = time.time()
+
+    dist_titre = Levenshtein.distance(book1['title'], book2['title'])
+    dist_bool = dist_titre < max(1, min(len(book1['title']), len(book2['title'])) / 4)
+    dist_bool_neg = dist_titre >= min(len(book1['title']), len(book2['title'])) / 2
+    title_comparaison = time.time()
+
+    if not isbn_boolean:
+        if dist_bool and author_boolean and not author_in_common:
+            stats["isbn different mais titres equivalents"] += 1
+            stats[book1["data_base"]]["isbn different mais titres equivalents"] += 1
+            stats[book2["data_base"]]["isbn different mais titres equivalents"] += 1
+            stats[book2["data_base"]][book1["data_base"]]["isbn different mais titres equivalents"] += 1
+            stats[book1["data_base"]][book2["data_base"]]["isbn different mais titres equivalents"] += 1
+
+        if dist_bool and author_in_common:
+            stats["isbn different mais titre et auteurs egaux"] += 1
+            stats[book1["data_base"]]["isbn different mais titre et auteurs egaux"] += 1
+            stats[book2["data_base"]]["isbn different mais titre et auteurs egaux"] += 1
+            stats[book2["data_base"]][book1["data_base"]]["isbn different mais titre et auteurs egaux"] += 1
+            stats[book1["data_base"]][book2["data_base"]]["isbn different mais titre et auteurs egaux"] += 1
+
+    elif isbn_in_common:
+        if dist_bool:
+            stats["isbn egaux et titre similaire"] += 1
+            stats[book1["data_base"]]["isbn egaux et titre similaire"] += 1
+            stats[book2["data_base"]]["isbn egaux et titre similaire"] += 1
+            stats[book2["data_base"]][book1["data_base"]]["isbn egaux et titre similaire"] += 1
+            stats[book1["data_base"]][book2["data_base"]]["isbn egaux et titre similaire"] += 1
+
+        if not dist_bool and not dist_bool_neg:
+            stats["isbn egaux mais titre legerement differents"] += 1
+            stats[book2["data_base"]][book1["data_base"]]["isbn egaux mais titre legerement differents"] += 1
+            stats[book1["data_base"]][book2["data_base"]]["isbn egaux mais titre legerement differents"] += 1
+
+        if dist_bool_neg:
+            stats["isbn egaux mais titre très differents"] += 1
+            stats[book1["data_base"]]["isbn egaux mais titre très differents"] += 1
+            stats[book2["data_base"]]["isbn egaux mais titre très differents"] += 1
+            stats[book2["data_base"]][book1["data_base"]]["isbn egaux mais titre très differents"] += 1
+            stats[book1["data_base"]][book2["data_base"]]["isbn egaux mais titre très differents"] += 1
+
+    elif isbn_boolean:
+        if dist_bool and not author_boolean:
+            stats["titre equivalents mais auteurs differents"] += 1
+            stats[book1["data_base"]]["titre equivalents mais auteurs differents"] += 1
+            stats[book2["data_base"]]["titre equivalents mais auteurs differents"] += 1
+            stats[book2["data_base"]][book1["data_base"]]["titre equivalents mais auteurs differents"] += 1
+            stats[book1["data_base"]][book2["data_base"]]["titre equivalents mais auteurs differents"] += 1
+
+        if dist_bool and author_boolean and not author_in_common:
+            stats["titre egaux mais pas d'infos en plus"] += 1
+            stats[book2["data_base"]][book1["data_base"]]["titre egaux mais pas d'infos en plus"] += 1
+            stats[book1["data_base"]][book2["data_base"]]["titre egaux mais pas d'infos en plus"] += 1
+
+        if dist_bool and author_in_common:
+            stats["titre et auteurs egaux"] += 1
+            stats[book1["data_base"]]["titre et auteurs egaux"] += 1
+            stats[book2["data_base"]]["titre et auteurs egaux"] += 1
+            stats[book2["data_base"]][book1["data_base"]]["titre et auteurs egaux"] += 1
+            stats[book1["data_base"]][book2["data_base"]]["titre et auteurs egaux"] += 1
+    stats_saving = time.time()
+
+    return {"conclusion": (dist_bool and author_in_common) or isbn_in_common,
+            "isbn egaux et titre similaire": isbn_in_common and dist_bool,
+            "isbn egaux mais titre legerement differents": isbn_in_common and not dist_bool and not dist_bool_neg,
+            "isbn egaux mais titre très differents": isbn_in_common and dist_bool_neg,
+            "isbn different mais titres equivalents": not isbn_boolean and dist_bool and author_boolean and not author_in_common,
+            "isbn different mais titre et auteurs egaux": not isbn_boolean and dist_bool and author_in_common,
+            "titre equivalents mais auteurs differents": isbn_boolean and not isbn_in_common and dist_bool and not author_boolean,
+            "titre egaux mais pas d'infos en plus": isbn_boolean and not isbn_in_common and dist_bool and author_boolean and not author_in_common,
+            "titre et auteurs egaux": isbn_boolean and not isbn_in_common and dist_bool and author_in_common,
+            "time": (start_time, isbn_comparaison, author_comparaison, title_comparaison, stats_saving)}
+
+
+def compare_authors(author1, author2):
+    """
+    verifie si deux auteurs sont identiques à partir de leur nom
+    cette fonction comporte la logique de la comparaison, les données sont normalement déjà formatées
+    :param author1: nom du premier auteur
+    :param author2: nom du second auteur
+    :return: boolean
+    """
+    if not author1 or not author2:
+        return False
+    author1 = author1.split(" ")
+    author2 = author2.split(" ")
+    name_in_common = False
+    for author1_name in author1:
+        for author2_name in author2:
+            if author1_name == author2_name: name_in_common = True
+    return name_in_common
+
+
+def compare_isbn(isbn1, isbn2):
+    """
+    verifie si deux isbns sont identiques à partir de leur chaine de caractère
+    cette fonction comporte la logique de la comparaison, les données sont normalement déjà formatées
+    :param isbn1: 1er isbn
+    :param isbn2: 2eme isbn
+    :return: boolean
+    """
+    return isbn1 == isbn2
+
+
+pos_results = []
+neg_results = []
+
+data_base_list = ["ADP", "ILE", "Hurtubise", "Babelio", "Depot_legal"]
+cases = ["isbn egaux",
+         "isbn different mais titre et auteurs egaux",
+         "isbn different mais titres equivalents",
+         "isbn egaux et titre similaire",
+         "isbn egaux mais titre legerement differents",
+         "isbn egaux mais titre très differents",
+         "titre equivalents mais auteurs differents",
+         "titre et auteurs egaux",
+         "titre egaux mais pas d'infos en plus"
+         ]
+
+stats_by_data_base = {}
+for case in cases:
+    stats_by_data_base[case] = 0
+
+    for name1 in data_base_list:
+        stats_by_data_base[name1] = {}
+        for case in cases:
+            stats_by_data_base[name1][case] = 0
+        for name2 in data_base_list:
+            stats_by_data_base[name1][name2] = {}
+            for case in cases:
+                stats_by_data_base[name1][name2][case] = 0
+
+all_books = ADP_books + ILE_books + Hurtubise_books + Babelio_books + DL_books
+random.shuffle(all_books)
+isbn_comparaison_tot_time = 0
+author_comparaison_tot_time = 0
+title_comparaison_tot_time = 0
+stats_saving_tot_time = 0
+for book1 in tqdm(all_books[:], total=len(all_books[:])):
+    for book2 in all_books:
+        if book1["data_base"] != book2["data_base"]:
+            if book1["id"] != book2["id"]:
+                book_comparaison_res = compare_books(book1, book2, stats_by_data_base)
+
+                if book_comparaison_res["titre et auteurs egaux"] or \
+                        book_comparaison_res["isbn egaux et titre similaire"]:
+                    if book_comparaison_res["titre et auteurs egaux"]:
+                        book1["cause"], book2["cause"] = "titre et auteurs egaux", "titre et auteurs egaux"
+                    if book_comparaison_res["isbn egaux et titre similaire"]:
+                        book1["cause"], book2[
+                            "cause"] = "isbn egaux et titre similaire", "isbn egaux et titre similaire"
+                    pos_results.append((book1, book2))
+
+                if book_comparaison_res["titre equivalents mais auteurs differents"]:
+                    neg_results.append((book1, book2))
+                isbn_comparaison_tot_time += book_comparaison_res["time"][0] - book_comparaison_res["time"][1]
+                author_comparaison_tot_time += book_comparaison_res["time"][1] - book_comparaison_res["time"][2]
+                title_comparaison_tot_time += book_comparaison_res["time"][2] - book_comparaison_res["time"][3]
+                stats_saving_tot_time += book_comparaison_res["time"][3] - book_comparaison_res["time"][4]
+tot_time = isbn_comparaison_tot_time + author_comparaison_tot_time + title_comparaison_tot_time + stats_saving_tot_time
+print("isbn_comparaison_tot_time", isbn_comparaison_tot_time / tot_time * 100)
+print("author_comparaison_tot_time", author_comparaison_tot_time / tot_time * 100)
+print("title_comparaison_tot_time", title_comparaison_tot_time / tot_time * 100)
+print("stats_saving_tot_time", stats_saving_tot_time / tot_time * 100)
+
+for case in cases:
     for name_data_base in data_base_list:
-
         stats_by_data_base[case] += stats_by_data_base[name_data_base][case]
 
     stats_by_data_base[case] = "%d => %s" % (stats_by_data_base[case],
                                              [" " + name_data_base + ": " +
-                                              str(round(stats_by_data_base[name_data_base][case] / stats_by_data_base[case] * 100) if stats_by_data_base[case] else 0)
+                                              str(round(
+                                                  stats_by_data_base[name_data_base][case] / stats_by_data_base[
+                                                      case] * 100) if stats_by_data_base[case] else 0)
                                               + "%"
                                               for name_data_base in data_base_list])
 
 test_str = json.dumps(stats_by_data_base, indent=2)
 print(test_str)
 
-# on sauvegarde les données
-with open('./results.csv', 'w') as result_file:
-    writer = csv.DictWriter(result_file,
-                            delimiter=",",
-                            fieldnames=["babelio", "ADP", "depot_legal", "Hurtubise", "ILE", "wikidata"])
-    for res in results:
-        writer.writerow(res)
+
+pos_result_by_book = []
+
+for book1, book2 in tqdm(pos_results, total=len(pos_results)):
+    book1_is_stored = False
+    book2_is_stored = False
+    for stored_book in pos_result_by_book:
+        stored_book_same_book_1 = False
+        stored_book_same_book_2 = False
+        if book1["data_base"] in stored_book and stored_book[book1["data_base"]]:
+            if stored_book[book1["data_base"]]["id"] == book1["id"]:
+                book1_is_stored = True
+                stored_book_same_book_1 = True
+
+        if book2["data_base"] in stored_book and stored_book[book2["data_base"]]:
+            if stored_book[book2["data_base"]]["id"] == book2["id"]:
+                book2_is_stored = True
+                stored_book_same_book_2 = True
+
+        if book1_is_stored and book2_is_stored:
+            break
+        elif stored_book_same_book_1:
+            if book2["data_base"] in stored_book and stored_book[book2["data_base"]]:
+                if not book1["data_base"] in stored_book:
+                    print("problème !!", "book1:", json.dumps(book1, indent=2), "book2:", json.dumps(book2, indent=2),
+                          "stored_book:", json.dumps(stored_book, indent=2))
+                print("overwirting ! COUPLE PRESENT: (", stored_book[book1["data_base"]]["title_raw"], " ET ",
+                      stored_book[book2["data_base"]]["title_raw"], " CAUSE: ",
+                      stored_book[book1["data_base"]]["cause"], ") ET AUTEUR: (",
+                      stored_book[book1["data_base"]]["author_raw"], " ET ",
+                      stored_book[book2["data_base"]]["author_raw"],
+                      ") AVEC COUPLE: (", book1["title_raw"], " ET ", book2["title_raw"], ") CAUSE: ",
+                      book1["cause"], " ET AUTEUR: (", book1["author_raw"], " ET ", book2["author_raw"],
+                      ") (2eme livre a re-ecrire", )
+
+            stored_book[book2["data_base"]] = book2
+
+        elif stored_book_same_book_2:
+            if book1["data_base"] in stored_book and stored_book[book1["data_base"]]:
+                print("overwirting ! COUPLE PRESENT: (", stored_book[book1["data_base"]]["title_raw"], " ET ",
+                      stored_book[book2["data_base"]]["title_raw"], " CAUSE: ",
+                      stored_book[book1["data_base"]]["cause"], ") ET AUTEUR: (",
+                      stored_book[book1["data_base"]]["author_raw"], " ET ",
+                      stored_book[book2["data_base"]]["author_raw"],
+                      ") AVEC COUPLE: (", book1["title_raw"], " ET ", book2["title_raw"], ") CAUSE: ",
+                      book1["cause"], " ET AUTEUR: (", book1["author_raw"], " ET ", book2["author_raw"],
+                      ") (1eme livre a re-ecrire", )
+
+            stored_book[book1["data_base"]] = book1
+
+    if not book1_is_stored and not book2_is_stored:
+        pos_result_by_book.append({
+            book1["data_base"]: book1,
+            book2["data_base"]: book2
+        })
+
+pos_csv = []
+set_fieldsnames = set()
+
+for res in pos_result_by_book:
+    line = {}
+    for book in res.values():
+        if book:
+            for key in book:
+                line[key + "_" + book["data_base"]] = book[key]
+                if key + "_" + book["data_base"] not in set_fieldsnames:
+                    set_fieldsnames.add(key + "_" + book["data_base"])
+    pos_csv.append(line)
+
+neg_csv = []
+for couple in neg_results:
+    neg_csv.append({
+        'id1': couple[0]['id'], 'data_base1': couple[0]['data_base'],
+        'title1': couple[0]['title'], 'author1': couple[0]['author'], 'isbn1': couple[0]['isbn'],
+        'title_raw1': couple[0]['title_raw'], 'author_raw1': couple[0]['author_raw'],
+        'isbn_raw1': couple[0]['isbn_raw'],
+        'id2': couple[1]['id'], "data_base2": couple[1]['data_base'],
+        'title2': couple[1]['title'], 'author2': couple[1]['author'], 'isbn2': couple[1]['isbn'],
+        'title_raw2': couple[1]['title_raw'], 'author_raw2': couple[1]['author_raw'],
+        'isbn_raw2': couple[1]['isbn_raw'],
+    })
+
+with open('./pos_results.csv', 'w') as result_file_pos:
+    writer_pos = csv.DictWriter(result_file_pos,
+                                delimiter=",", fieldnames=list(set_fieldsnames))
+    writer_pos.writeheader()
+    for line in pos_csv:
+        writer_pos.writerow(line)
+
+with open('./neg_results.csv', 'w') as result_file_neg:
+    writer_neg = csv.DictWriter(result_file_neg,
+                                delimiter=",",
+                                fieldnames=['id1', "data_base1", 'title1', 'author1', 'isbn1', 'title_raw1',
+                                            'author_raw1', 'isbn_raw1',
+                                            'id2', 'data_base2', 'title2', 'author2', 'isbn2', 'title_raw2',
+                                            'author_raw2', 'isbn_raw2'])
+    writer_neg.writeheader()
+    for line in neg_csv:
+        writer_neg.writerow(line)

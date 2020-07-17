@@ -114,11 +114,23 @@ def normalize(string):
         # print("     remove_text_between_parens: ", remove_text_between_parens_time - nett_accent_time)
 
         # retire début et fin de chaine de caractère si non alpha
-        string = ' '.join(re.sub(r'\W', ' ', string).split()).lower()
+        string = ' '.join(re.sub(r'[^\w\s\-]', ' ', string).split()).lower()
         # regex_time = time.time()
         # print("     regex_time: ", regex_time - remove_text_between_parens_time)
 
         return string
+    else:
+        return None
+
+def normalize_author(string):
+    """
+    Processus de normalisation des auteurs,
+    permet de retirer les lettres isolées
+    :param string: chaine de caractère a traiter
+    :return: chaine de caractère traitée
+    """
+    if isinstance(string, str) and string:
+        return re.sub(r'^\w\s|\s\w\s|\s\w$', '', normalize(string))
     else:
         return None
 
@@ -130,8 +142,11 @@ def normalize_isbn(isbn):
     :return: chaine de caratère
     """
     isbn = remove_text_between_parentheses(isbn)
-    isbn = re.sub(r'X', '0', isbn)
-    return re.sub(r'\D', '', isbn)
+    isbn = re.sub(r'[^\dX]', '', isbn)
+    if len(isbn) == 10:
+        isbn = '978' + isbn
+    isbn = isbn[:-1] + 'X'
+    return isbn
 
 
 def get_ADP_books(g_book, g_author):
@@ -141,7 +156,7 @@ def get_ADP_books(g_book, g_author):
     # parcour des triplets du graph
     for subj, pred in g_book.subject_predicates(rdflib.URIRef("http://www.sogides.com/classe/Livre")):
         book_ADP = g_book.predicate_objects(subj)
-        book_ADP_resume = { 'id': subj.n3(),
+        book_ADP_resume = { 'id': subj.n3(), "data_base": "ADP",
                             'title': '', 'author': [], 'isbn': [],
                             'title_raw': '', 'author_raw': [], 'isbn_raw': []}
 
@@ -157,8 +172,10 @@ def get_ADP_books(g_book, g_author):
                     if author_info[0] == rdflib.URIRef("https://schema.org/name"):
                         book_ADP_resume['author_raw'].append(author_info[1].n3())
                         if author_info[1].n3().replace("\"", ""):
-                            book_ADP_resume['author'].append(normalize(author_info[1].n3()))
+                            book_ADP_resume['author'].append(normalize_author(author_info[1].n3()))
             elif info[0] == rdflib.URIRef("https://schema.org/isbn"):
+                if isinstance(info[1].n3(), list):
+                    print("stop")
                 book_ADP_resume['isbn_raw'].append(info[1].n3())
                 book_ADP_resume['isbn'].append(normalize_isbn(info[1].n3()))
         ADP_books.append(book_ADP_resume)
@@ -176,7 +193,7 @@ def get_depot_legal_book(g_item):
 
     for subj, pred in g_item.subject_predicates(rdflib.URIRef("http://dbpedia.org/ontology/Book")):
         book_DL = g_item.predicate_objects(subj)
-        book_DL_resume = { 'id': subj.n3(),
+        book_DL_resume = { 'id': subj.n3(), "data_base": "Depot_legal",
                             'title': '', 'author': [], 'isbn': [],
                             'title_raw': '', 'author_raw': [], 'isbn_raw': []}
         for info in book_DL:
@@ -194,10 +211,10 @@ def get_depot_legal_book(g_item):
                 author_ADP = g_item.predicate_objects(info[1])
                 for author_info in author_ADP:
                     if author_info[0] == rdflib.URIRef("https://schema.org/givenName"):
-                        givenName = normalize(author_info[1].n3().replace("\"", "")) if author_info[1].n3() else None
+                        givenName = normalize_author(author_info[1].n3().replace("\"", "")) if author_info[1].n3() else None
                         givenName_raw = author_info[1].n3()
                     elif author_info[0] == rdflib.URIRef("https://schema.org/familyName"):
-                        familyName = normalize(author_info[1].n3().replace("\"", "")) if author_info[1].n3() else None
+                        familyName = normalize_author(author_info[1].n3().replace("\"", "")) if author_info[1].n3() else None
                         familyName_raw = author_info[1].n3()
                 if familyName and givenName:
                     book_DL_resume['author'].append(" ".join([givenName, familyName]))
@@ -223,7 +240,7 @@ def get_ILE_book(g_item):
     for subj, pred in g_item.subject_predicates(rdflib.URIRef("http://recif.litterature.org/ontologie/classe/oeuvre")):
         # count_book += 1
         ILE_book = g_item.predicate_objects(subj)
-        book_ILE_resume = { 'id': subj.n3(),
+        book_ILE_resume = { 'id': subj.n3(), "data_base": "ILE",
                             'title': '', 'author': [], 'isbn': [],
                             'title_raw': '', 'author_raw': [], 'isbn_raw': []}
         for info in ILE_book:
@@ -239,12 +256,12 @@ def get_ILE_book(g_item):
                     if author_info[0] == rdflib.URIRef("https://schema.org/name"):
                         book_ILE_resume['author_raw'].append(author_info[1].n3())
                         if author_info[1].n3().replace("\"", ""):
-                            book_ILE_resume['author'].append(normalize(author_info[1].n3()))
+                            book_ILE_resume['author'].append(normalize_author(author_info[1].n3()))
             elif info[0] == rdflib.URIRef("https://schema.org/isbn"):
                 book_ILE_resume['isbn_raw'].append(info[1].n3())
                 if normalize_isbn(info[1].n3()).replace("\"", "")\
                     and len(normalize_isbn(info[1].n3()).replace("\"", "")) >= 8:
-                    for isbn in info[1].n3().replace("\"", "").split("|"):
+                    for isbn in re.split("[|;,]", info[1].n3().replace("\"", "")):
                         book_ILE_resume['isbn'].append(normalize_isbn(isbn))
 
         ILE_books.append(book_ILE_resume)
@@ -256,7 +273,7 @@ def get_Hurtubise_books(csv_reader):
     returned_books = []
     first_line = next(csv_reader)
     for book in csv_reader:
-        book_Hurtubise_resume = { 'id':None,
+        book_Hurtubise_resume = { 'id':None, "data_base": "Hurtubise",
                             'title': '', 'author': [], 'isbn': [],
                             'title_raw': '', 'author_raw': [], 'isbn_raw': []}
 
@@ -269,7 +286,7 @@ def get_Hurtubise_books(csv_reader):
                 elif key == 'Contributeurs':
                     book_Hurtubise_resume['author_raw'].append(value.split(','))
                     for author in value.split(','):
-                        book_Hurtubise_resume['author'].append(normalize(author))
+                        book_Hurtubise_resume['author'].append(normalize_author(author))
 
                 elif key == 'ISBN Papier' or key == 'ISBN PDF' or key == 'ISBN epub':
                     if key == 'ISBN Papier':
@@ -286,22 +303,22 @@ def get_Babelio_books(json):
 
     returned_books = []
     for book in json:
-        book_Babelio_resume = { 'id':None,
+        book_Babelio_resume = { 'id':None, "data_base": "Babelio",
                             'title': '', 'author': [], 'isbn': [],
                             'title_raw': '', 'author_raw': [], 'isbn_raw': []}
 
         for key, value in book.items():
             if value:
-                if key == 'title':
+                if key == 'titre':
                     book_Babelio_resume['title'] = normalize(value)
                     book_Babelio_resume['title_raw'] = value
 
-                elif key == 'author':
+                elif key == 'auteur':
                     book_Babelio_resume['author_raw'].append(value)
                     for author in value:
-                        book_Babelio_resume['author'].append(normalize(author))
+                        book_Babelio_resume['author'].append(normalize_author(author))
 
-                elif key == 'EAN':
+                elif key == 'isbn':
                     book_Babelio_resume['isbn'].append(normalize_isbn(value))
                     book_Babelio_resume['isbn_raw'].append(value)
 

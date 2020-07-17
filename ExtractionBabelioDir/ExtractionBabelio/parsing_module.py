@@ -143,7 +143,12 @@ class ParsingModule():
         author = response.css('span[itemprop="author"] a span[itemprop="name"]')
         author_first_name = author.css('span[itemprop="name"]::text').extract()
         author_last_name = author.css('span[itemprop="name"] b::text').extract()
-        book['author'] = author_first_name + author_last_name
+        book['author'] = []
+        for author_i in range(len(author_last_name)):
+            book['author'].append(" ".join([
+                author_first_name[author_i] if author_i < len(author_first_name) else '',
+                author_last_name[author_i] if author_i < len(author_last_name) else '']
+            ))
         book['author_id'] = response.css('span[itemprop="author"] a::attr(\'href\')').get()
         book['infos'] = response.css('.livre_refs::text, .livre_refs a::text').extract()
         book['editor'] = response.css('.livre_refs a::text').extract_first()

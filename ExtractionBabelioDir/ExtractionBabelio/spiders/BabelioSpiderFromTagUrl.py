@@ -11,6 +11,7 @@ class BabelioSpiderFromTagUrl(scrapy.Spider):
     name = 'booksFromTag'
     start_urls = [
         "https://www.babelio.com/livres-/quebecois/12642",
+        "https://www.babelio.com/livres-/litterature-quebecoise/593",
         #"https://www.babelio.com/livres/Lakhdari-King-Histoires-de-filles-sous-le-soleil/531341",
         #"https://www.babelio.com/auteur/George-RR-Martin/32409"
 
@@ -26,6 +27,12 @@ class BabelioSpiderFromTagUrl(scrapy.Spider):
                 et une requette HTTP POST qui utilise la fonction de recherche de Babélio avec le mot clef désigné
                 La réponse de cette requette devrait être une liste d'items livre et auteurs
         """
+
+        # Module de test pour un livre en particulier
+
+        # parsing_module = ParsingModule(self.root_url, self.start_urls)
+        # yield scrapy.Request(url="https://www.babelio.com/livres/Baccalario-Droles-despions-tome-1--Une-enigme-bleu-saphir/1234532",
+        #                      callback=parsing_module.parse_book)
 
         # si ce n'est pas la première page explorée
         if 'i' in response.meta.keys():

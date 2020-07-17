@@ -220,6 +220,81 @@ def get_ADP_stats(g_book, g_author, g_editor):
 
     return stats_books_ADP
 
+def get_depot_legal_stats_from_graph(g_item):
+    """
+    Statistiques sur la base de donnée ILE
+    On compte les valeurs non-nuls des champs de la base de donnée, et les occurences de leurs valeurs sour les
+    champs finissant par "_by_value"
+    :param g_item: graph des données ILE
+    :return: statistiques
+    """
+
+    stats_DL = {
+        "total": 0,
+        "auteurs": 0,
+        "editeurs": 0,
+        "auteurs_by_value": {},
+        "editeurs_by_value": {},
+    }
+
+    # recupération des livres
+    for subj, pred in g_item.subject_predicates(rdflib.URIRef("http://dbpedia.org/ontology/Book")):
+        stats_DL["total"] += 1
+        DL_book = g_item.predicate_objects(subj)
+
+        # pour chaque coupe prédictat-objet
+        for info in DL_book:
+            if info[1]:
+                # si le predicta n'existe pas, on créer une nouvelle catégorie
+                if info[0] not in stats_DL:
+                    stats_DL[info[0]] = 0
+                # si le prédictat appartient à une catégorie interessante, on l'ajoute "à la main"
+                if info[0] == rdflib.URIRef("https://schema.org/author"):
+                    author_ADP = g_item.predicate_objects(info[1])
+                    familyName = ""
+                    givenName = ""
+                    name = ""
+                    for author_info in author_ADP:
+                        if author_info[0] == rdflib.URIRef("https://schema.org/givenName"):
+                            givenName = author_info[1].n3().replace("\"", "")
+                        elif author_info[0] == rdflib.URIRef("https://schema.org/familyName"):
+                            familyName = author_info[1].n3().replace("\"", "")
+
+                    if nettoyer_unicode(givenName + " " + familyName) not in stats_DL["auteurs_by_value"]:
+                        stats_DL["auteurs_by_value"][nettoyer_unicode(givenName + " " + familyName)] = 0
+
+                    stats_DL["auteurs_by_value"][nettoyer_unicode(givenName + " " + familyName)] += 1
+                    stats_DL["auteurs"] += 1
+
+                if info[0] == rdflib.term.URIRef('https://schema.org/publisher'):
+                    # si l'objet n'est pas stoqué dans les valeurs connues, on l'y ajoute
+                    editor_ADP = g_item.predicate_objects(info[1])
+                    for editor_info in editor_ADP:
+                        if editor_info[0] == rdflib.URIRef("https://schema.org/name"):
+                            if nettoyer_unicode(editor_info[1]) not in stats_DL["editeurs_by_value"]:
+                                stats_DL["editeurs_by_value"][nettoyer_unicode(editor_info[1])] = 0
+
+                            stats_DL["editeurs_by_value"][nettoyer_unicode(editor_info[1])] += 1
+                            stats_DL["editeurs"] += 1
+
+                else:
+                    if info[0] + "_by_value" not in stats_DL:
+                        stats_DL[info[0] + "_by_value"] = {info[1]: 1}
+                    else:
+                        if info[1] not in stats_DL[info[0] + "_by_value"]:
+                            stats_DL[info[0] + "_by_value"][info[1]] = 0
+                        stats_DL[info[0] + "_by_value"][info[1]] += 1
+
+                    stats_DL[info[0]] += 1
+
+    # permet de trier les catégories interessantes par nombre d'occurence decroissante
+    stats_DL["auteurs_by_value"] = {k: v for k, v in
+                                         sorted(stats_DL["auteurs_by_value"].items(), key=lambda item: item[1],
+                                                reverse=True)}
+    stats_DL["editeurs_by_value"] = {k: v for k, v in sorted(stats_DL["editeurs_by_value"].items(),
+                                                                    key=lambda item: item[1], reverse=True)}
+
+    return stats_DL
 
 def get_babelio_stats(babelioData):
     """
@@ -489,10 +564,17 @@ def format_result(res):
 
 start_loading_data_time = time.time()
 
-stats_books_DL = get_depot_legal_stats()
+g_book_DL = rdflib.Graph()
+g_book_DL.parse("../Graphes/grapheDepotLegal.rdf")
+stats_books_DL = get_depot_legal_stats_from_graph(g_book_DL)
 DL_loading_time = time.time()
 print("DL_loading_time: ", DL_loading_time - start_loading_data_time)
 formated_stats_books_DL = format_result(stats_books_DL)
+
+stats_books_DL_csv = get_depot_legal_stats()
+DL_loading_time_csv = time.time()
+print("DL_loading_time: ", DL_loading_time_csv - DL_loading_time)
+formated_stats_books_DL_csv = format_result(stats_books_DL_csv)
 
 g_item_ILE = rdflib.Graph()
 item_graph_ILE = g_item_ILE.parse("../Graphes/grapheILE.rdf")
@@ -526,6 +608,7 @@ formated_stats_books_ADP = format_result(stats_books_ADP)
 
 global_res = {
     "DL_livres": formated_stats_books_DL,
+    "DL_livres_csv": formated_stats_books_DL_csv,
     "ILE_livres": formated_stats_books_ILE,
     "ILE_auteurs": formated_stats_authors_ILE,
     "Hurtubise_livres": formated_stats_books_Hurtubise,

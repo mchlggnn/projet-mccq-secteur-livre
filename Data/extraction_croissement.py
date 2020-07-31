@@ -1,6 +1,8 @@
 import re
 import rdflib
 
+import requests as req
+
 def nettoyer_unicode(c):
     liste_codes = {
         'Ã\xa0': 'à',

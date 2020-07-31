@@ -73,39 +73,39 @@ def get_ILE_stats(g_item):
 
         # pour chaque coupe prédictat-objet
         for info in ILE_book:
-            if info[1]:
-                # si le predicta n'existe pas, on créer une nouvelle catégorie
-                if info[0] not in stats_books_ILE:
-                    stats_books_ILE[info[0]] = 0
-                # si le prédictat appartient à une catégorie interessante, on l'ajoute "à la main"
-                if info[0] == rdflib.term.URIRef('https://schema.org/datePublished'):
-                    # si l'objet n'est pas stoqué dans les valeurs connues, on l'y ajoute
-                    if nettoyer_unicode(info[1]) not in stats_books_ILE["dates_by_value"]:
-                        stats_books_ILE["dates_by_value"][nettoyer_unicode(info[1])] = 0
+            # si le predicta n'existe pas, on créer une nouvelle catégorie
+            if info[0] not in stats_books_ILE:
+                stats_books_ILE[info[0]] = 0
+            # si le prédictat appartient à une catégorie interessante, on l'ajoute "à la main"
+            if info[0] == rdflib.term.URIRef('https://schema.org/datePublished'):
+                # si l'objet n'est pas stoqué dans les valeurs connues, on l'y ajoute
+                if nettoyer_unicode(info[1]) not in stats_books_ILE["dates_by_value"]:
+                    stats_books_ILE["dates_by_value"][nettoyer_unicode(info[1])] = 0
 
-                    stats_books_ILE["dates_by_value"][nettoyer_unicode(info[1])] += 1
-                    stats_books_ILE["dates"] += 1
-                # idem pour les autres predictas interessant
-                elif info[0] == rdflib.term.URIRef('https://schema.org/bookEdition'):
-                    if nettoyer_unicode(info[1]).split(",")[0] not in stats_books_ILE["editeurs_by_value"]:
-                        stats_books_ILE["editeurs_by_value"][nettoyer_unicode(info[1]).split(",")[0]] = 0
-                    stats_books_ILE["editeurs_by_value"][nettoyer_unicode(info[1]).split(",")[0]] += 1
-                    stats_books_ILE["editeur"] += 1
-                elif info[0] == rdflib.term.URIRef('http://recif.litterature.org/ontologie/propriete/lieuPublication'):
-                    if nettoyer_unicode(info[1]) not in stats_books_ILE["lieu_publication_by_value"]:
-                        stats_books_ILE["lieu_publication_by_value"][nettoyer_unicode(info[1])] = 0
-                    stats_books_ILE["lieu_publication_by_value"][nettoyer_unicode(info[1])] += 1
-                    stats_books_ILE["lieu_publication"] += 1
-                # si le predicta n'appartient pas à un catégorie interessant, le nom de la catégorie est le predicta
+                stats_books_ILE["dates_by_value"][nettoyer_unicode(info[1])] += 1
+                stats_books_ILE["dates"] += 1
+            # idem pour les autres predictas interessant
+            elif info[0] == rdflib.term.URIRef('https://schema.org/bookEdition'):
+                if nettoyer_unicode(info[1]).split(",")[0] not in stats_books_ILE["editeurs_by_value"]:
+                    stats_books_ILE["editeurs_by_value"][nettoyer_unicode(info[1]).split(",")[0]] = 0
+                stats_books_ILE["editeurs_by_value"][nettoyer_unicode(info[1]).split(",")[0]] += 1
+                stats_books_ILE["editeurs"] += 1
+            elif info[0] == rdflib.term.URIRef('http://recif.litterature.org/ontologie/propriete/lieuPublication'):
+                if nettoyer_unicode(info[1]) not in stats_books_ILE["lieu_publication_by_value"]:
+                    stats_books_ILE["lieu_publication_by_value"][nettoyer_unicode(info[1])] = 0
+                stats_books_ILE["lieu_publication_by_value"][nettoyer_unicode(info[1])] += 1
+                stats_books_ILE["lieu_publication"] += 1
+            # si le predicta n'appartient pas à un catégorie interessant, le nom de la catégorie est le predicta
+            else:
+                if info[0] + "_by_value" not in stats_books_ILE:
+                    stats_books_ILE[info[0] + "_by_value"] = {info[1]: 1}
                 else:
-                    if info[0] + "_by_value" not in stats_books_ILE:
-                        stats_books_ILE[info[0] + "_by_value"] = {info[1]: 1}
-                    else:
-                        if info[1] not in stats_books_ILE[info[0] + "_by_value"]:
-                            stats_books_ILE[info[0] + "_by_value"][info[1]] = 0
-                        stats_books_ILE[info[0] + "_by_value"][info[1]] += 1
+                    if info[1] not in stats_books_ILE[info[0] + "_by_value"]:
+                        stats_books_ILE[info[0] + "_by_value"][info[1]] = 0
+                    stats_books_ILE[info[0] + "_by_value"][info[1]] += 1
 
-                    stats_books_ILE[info[0]] += 1
+                stats_books_ILE[info[0]] += 1
+
 
     # permet de trier les catégories interessantes par nombre d'occurence decroissante
     stats_books_ILE["dates_by_value"] = {k: v for k, v in sorted(stats_books_ILE["dates_by_value"].items(), key=lambda item: item[1], reverse=True)}
@@ -116,24 +116,24 @@ def get_ILE_stats(g_item):
         ILE_author = g_item.predicate_objects(subj)
         stats_authors_ILE["total"] += 1
         for info in ILE_author:
-            if info[1]:
-                if info[0] not in stats_authors_ILE:
-                    stats_authors_ILE[info[0]] = 0
 
-                if info[0] == rdflib.term.URIRef('http://recif.litterature.org/ontologie/propriete/genre'):
-                    if nettoyer_unicode(info[1]) not in stats_authors_ILE["genre_by_value"]:
-                        stats_authors_ILE["genre_by_value"][nettoyer_unicode(info[1])] = 0
-                    stats_authors_ILE["genre_by_value"][nettoyer_unicode(info[1])] += 1
-                    stats_authors_ILE["genre"] += 1
+            if info[0] not in stats_authors_ILE:
+                stats_authors_ILE[info[0]] = 0
+
+            if info[0] == rdflib.term.URIRef('http://recif.litterature.org/ontologie/propriete/genre'):
+                if nettoyer_unicode(info[1]) not in stats_authors_ILE["genre_by_value"]:
+                    stats_authors_ILE["genre_by_value"][nettoyer_unicode(info[1])] = 0
+                stats_authors_ILE["genre_by_value"][nettoyer_unicode(info[1])] += 1
+                stats_authors_ILE["genre"] += 1
+            else:
+                if info[0] + "_by_value" not in stats_authors_ILE:
+                    stats_authors_ILE[info[0] + "_by_value"] = {info[1]: 1}
                 else:
-                    if info[0] + "_by_value" not in stats_authors_ILE:
-                        stats_authors_ILE[info[0] + "_by_value"] = {info[1]: 1}
-                    else:
-                        if info[1] not in stats_authors_ILE[info[0] + "_by_value"]:
-                            stats_authors_ILE[info[0] + "_by_value"][info[1]] = 0
-                        stats_authors_ILE[info[0] + "_by_value"][info[1]] += 1
+                    if info[1] not in stats_authors_ILE[info[0] + "_by_value"]:
+                        stats_authors_ILE[info[0] + "_by_value"][info[1]] = 0
+                    stats_authors_ILE[info[0] + "_by_value"][info[1]] += 1
 
-                stats_authors_ILE[info[0]] += 1
+            stats_authors_ILE[info[0]] += 1
 
     return stats_books_ILE, stats_authors_ILE
 
@@ -167,55 +167,54 @@ def get_ADP_stats(g_book, g_author, g_editor):
         ADP_book = g_book.predicate_objects(subj)
         for info in ADP_book:
 
-            if info[1]:
-                if info[0] not in stats_books_ADP:
-                    stats_books_ADP[info[0]] = 0
+            if info[0] not in stats_books_ADP:
+                stats_books_ADP[info[0]] = 0
 
-                if info[0] == rdflib.term.URIRef('https://schema.org/publisher'):
-                    editor_ADP = g_editor.predicate_objects(info[1])
-                    for editor_info in editor_ADP:
-                        if editor_info[0] == rdflib.URIRef("https://schema.org/name"):
-                            if editor_info[1].n3().replace("\"", "") not in stats_books_ADP["editeurs_by_value"]:
-                                stats_books_ADP["editeurs_by_value"][editor_info[1].n3().replace("\"", "")] = 0
-                            stats_books_ADP["editeurs_by_value"][editor_info[1].n3().replace("\"", "")] += 1
-                            stats_books_ADP["editeurs"] += 1
-                elif info[0] == rdflib.term.URIRef('https://schema.org/author'):
-                    author_ADP = g_author.predicate_objects(info[1])
-                    for author_info in author_ADP:
-                        if author_info[0] == rdflib.URIRef("https://schema.org/name"):
-                            if author_info[1].n3().replace("\"", "") not in stats_books_ADP["auteurs_by_value"]:
-                                stats_books_ADP["auteurs_by_value"][author_info[1].n3().replace("\"", "")] = 0
-                            stats_books_ADP["auteurs_by_value"][author_info[1].n3().replace("\"", "")] += 1
-                            stats_books_ADP["auteurs"] += 1
-                elif info[0] == rdflib.term.URIRef('http://www.sogides.com/prop/mainSubjectThema'):
-                    if info[1].n3().replace("\"", "") not in stats_books_ADP["sujet_principal_by_value"]:
-                        stats_books_ADP["sujet_principal_by_value"][info[1].n3().replace("\"", "")] = 0
-                    stats_books_ADP["sujet_principal_by_value"][info[1].n3().replace("\"", "")] += 1
-                    stats_books_ADP["sujet_principal"] += 1
-                elif info[0] == rdflib.term.URIRef('http://www.sogides.com/prop/subjectThema'):
-                    if info[1].n3().replace("\"", "") not in stats_books_ADP["sujet_by_value"]:
-                        stats_books_ADP["sujet_by_value"][info[1].n3().replace("\"", "")] = 0
-                    stats_books_ADP["sujet_by_value"][info[1].n3().replace("\"", "")] += 1
-                    stats_books_ADP["sujet"] += 1
+            if info[0] == rdflib.term.URIRef('https://schema.org/publisher'):
+                editor_ADP = g_editor.predicate_objects(info[1])
+                for editor_info in editor_ADP:
+                    if editor_info[0] == rdflib.URIRef("https://schema.org/name"):
+                        if editor_info[1].n3().replace("\"", "") not in stats_books_ADP["editeurs_by_value"]:
+                            stats_books_ADP["editeurs_by_value"][editor_info[1].n3().replace("\"", "")] = 0
+                        stats_books_ADP["editeurs_by_value"][editor_info[1].n3().replace("\"", "")] += 1
+                        stats_books_ADP["editeurs"] += 1
+            elif info[0] == rdflib.term.URIRef('https://schema.org/author'):
+                author_ADP = g_author.predicate_objects(info[1])
+                for author_info in author_ADP:
+                    if author_info[0] == rdflib.URIRef("https://schema.org/name"):
+                        if author_info[1].n3().replace("\"", "") not in stats_books_ADP["auteurs_by_value"]:
+                            stats_books_ADP["auteurs_by_value"][author_info[1].n3().replace("\"", "")] = 0
+                        stats_books_ADP["auteurs_by_value"][author_info[1].n3().replace("\"", "")] += 1
+                        stats_books_ADP["auteurs"] += 1
+            elif info[0] == rdflib.term.URIRef('http://www.sogides.com/prop/mainSubjectThema'):
+                if info[1].n3().replace("\"", "") not in stats_books_ADP["sujet_principal_by_value"]:
+                    stats_books_ADP["sujet_principal_by_value"][info[1].n3().replace("\"", "")] = 0
+                stats_books_ADP["sujet_principal_by_value"][info[1].n3().replace("\"", "")] += 1
+                stats_books_ADP["sujet_principal"] += 1
+            elif info[0] == rdflib.term.URIRef('http://www.sogides.com/prop/subjectThema'):
+                if info[1].n3().replace("\"", "") not in stats_books_ADP["sujet_by_value"]:
+                    stats_books_ADP["sujet_by_value"][info[1].n3().replace("\"", "")] = 0
+                stats_books_ADP["sujet_by_value"][info[1].n3().replace("\"", "")] += 1
+                stats_books_ADP["sujet"] += 1
+            else:
+                if info[0] + "_by_value" not in stats_books_ADP:
+                    stats_books_ADP[info[0] + "_by_value"] = {info[1]: 1}
                 else:
-                    if info[0] + "_by_value" not in stats_books_ADP:
-                        stats_books_ADP[info[0] + "_by_value"] = {info[1]: 1}
-                    else:
-                        if info[1] not in stats_books_ADP[info[0] + "_by_value"]:
-                            stats_books_ADP[info[0] + "_by_value"][info[1]] = 0
-                        stats_books_ADP[info[0] + "_by_value"][info[1]] += 1
+                    if info[1] not in stats_books_ADP[info[0] + "_by_value"]:
+                        stats_books_ADP[info[0] + "_by_value"][info[1]] = 0
+                    stats_books_ADP[info[0] + "_by_value"][info[1]] += 1
 
-                    stats_books_ADP[info[0]] += 1
+                stats_books_ADP[info[0]] += 1
 
-    stats_books_ADP["auteurs"] = {k: v for k, v in
-                                sorted(stats_books_ADP["auteurs"].items(), key=lambda item: item[1], reverse=True)}
-    stats_books_ADP["editeurs"] = {k: v for k, v in
-                                   sorted(stats_books_ADP["editeurs"].items(), key=lambda item: item[1], reverse=True)}
-    stats_books_ADP["sujet_principal"] = {k: v for k, v in
-                                           sorted(stats_books_ADP["sujet_principal"].items(), key=lambda item: item[1],
+    stats_books_ADP["auteurs_by_value"] = {k: v for k, v in
+                                sorted(stats_books_ADP["auteurs_by_value"].items(), key=lambda item: item[1], reverse=True)}
+    stats_books_ADP["editeurs_by_value"] = {k: v for k, v in
+                                   sorted(stats_books_ADP["editeurs_by_value"].items(), key=lambda item: item[1], reverse=True)}
+    stats_books_ADP["sujet_principal_by_value"] = {k: v for k, v in
+                                           sorted(stats_books_ADP["sujet_principal_by_value"].items(), key=lambda item: item[1],
                                                   reverse=True)}
-    stats_books_ADP["sujet"] = {k: v for k, v in
-                                          sorted(stats_books_ADP["sujet"].items(), key=lambda item: item[1],
+    stats_books_ADP["sujet_by_value"] = {k: v for k, v in
+                                          sorted(stats_books_ADP["sujet_by_value"].items(), key=lambda item: item[1],
                                                  reverse=True)}
 
     return stats_books_ADP
@@ -244,48 +243,46 @@ def get_depot_legal_stats_from_graph(g_item):
 
         # pour chaque coupe prédictat-objet
         for info in DL_book:
-            if info[1]:
-                # si le predicta n'existe pas, on créer une nouvelle catégorie
-                if info[0] not in stats_DL:
-                    stats_DL[info[0]] = 0
-                # si le prédictat appartient à une catégorie interessante, on l'ajoute "à la main"
-                if info[0] == rdflib.URIRef("https://schema.org/author"):
-                    author_ADP = g_item.predicate_objects(info[1])
-                    familyName = ""
-                    givenName = ""
-                    name = ""
-                    for author_info in author_ADP:
-                        if author_info[0] == rdflib.URIRef("https://schema.org/givenName"):
-                            givenName = author_info[1].n3().replace("\"", "")
-                        elif author_info[0] == rdflib.URIRef("https://schema.org/familyName"):
-                            familyName = author_info[1].n3().replace("\"", "")
+            # si le predicta n'existe pas, on créer une nouvelle catégorie
+            if info[0] not in stats_DL:
+                stats_DL[info[0]] = 0
+            # si le prédictat appartient à une catégorie interessante, on l'ajoute "à la main"
+            if info[0] == rdflib.URIRef("https://schema.org/author"):
+                author_ADP = g_item.predicate_objects(info[1])
+                familyName = ""
+                givenName = ""
+                for author_info in author_ADP:
+                    if author_info[0] == rdflib.URIRef("https://schema.org/givenName"):
+                        givenName = author_info[1].n3().replace("\"", "")
+                    elif author_info[0] == rdflib.URIRef("https://schema.org/familyName"):
+                        familyName = author_info[1].n3().replace("\"", "")
 
-                    if nettoyer_unicode(givenName + " " + familyName) not in stats_DL["auteurs_by_value"]:
-                        stats_DL["auteurs_by_value"][nettoyer_unicode(givenName + " " + familyName)] = 0
+                if nettoyer_unicode(givenName + " " + familyName) not in stats_DL["auteurs_by_value"]:
+                    stats_DL["auteurs_by_value"][nettoyer_unicode(givenName + " " + familyName)] = 0
 
-                    stats_DL["auteurs_by_value"][nettoyer_unicode(givenName + " " + familyName)] += 1
-                    stats_DL["auteurs"] += 1
+                stats_DL["auteurs_by_value"][nettoyer_unicode(givenName + " " + familyName)] += 1
+                stats_DL["auteurs"] += 1
 
-                if info[0] == rdflib.term.URIRef('https://schema.org/publisher'):
-                    # si l'objet n'est pas stoqué dans les valeurs connues, on l'y ajoute
-                    editor_ADP = g_item.predicate_objects(info[1])
-                    for editor_info in editor_ADP:
-                        if editor_info[0] == rdflib.URIRef("https://schema.org/name"):
-                            if nettoyer_unicode(editor_info[1]) not in stats_DL["editeurs_by_value"]:
-                                stats_DL["editeurs_by_value"][nettoyer_unicode(editor_info[1])] = 0
+            elif info[0] == rdflib.term.URIRef('https://schema.org/publisher'):
+                # si l'objet n'est pas stoqué dans les valeurs connues, on l'y ajoute
+                editor_ADP = g_item.predicate_objects(info[1])
+                for editor_info in editor_ADP:
+                    if editor_info[0] == rdflib.URIRef("https://schema.org/name"):
+                        if nettoyer_unicode(editor_info[1]) not in stats_DL["editeurs_by_value"]:
+                            stats_DL["editeurs_by_value"][nettoyer_unicode(editor_info[1])] = 0
 
-                            stats_DL["editeurs_by_value"][nettoyer_unicode(editor_info[1])] += 1
-                            stats_DL["editeurs"] += 1
+                        stats_DL["editeurs_by_value"][nettoyer_unicode(editor_info[1])] += 1
+                        stats_DL["editeurs"] += 1
 
+            else:
+                if info[0] + "_by_value" not in stats_DL:
+                    stats_DL[info[0] + "_by_value"] = {info[1]: 1}
                 else:
-                    if info[0] + "_by_value" not in stats_DL:
-                        stats_DL[info[0] + "_by_value"] = {info[1]: 1}
-                    else:
-                        if info[1] not in stats_DL[info[0] + "_by_value"]:
-                            stats_DL[info[0] + "_by_value"][info[1]] = 0
-                        stats_DL[info[0] + "_by_value"][info[1]] += 1
+                    if info[1] not in stats_DL[info[0] + "_by_value"]:
+                        stats_DL[info[0] + "_by_value"][info[1]] = 0
+                    stats_DL[info[0] + "_by_value"][info[1]] += 1
 
-                    stats_DL[info[0]] += 1
+                stats_DL[info[0]] += 1
 
     # permet de trier les catégories interessantes par nombre d'occurence decroissante
     stats_DL["auteurs_by_value"] = {k: v for k, v in
@@ -316,6 +313,7 @@ def get_babelio_stats(babelioData):
         # on check si il s'agit d'un livre ou d'un auteur
         if "author_id" in babelio_item:
             stats_book["total"] += 1
+
             # si c'est un auteur, on parcours ses attributs
             for key, value in babelio_item.items():
                 if value:
@@ -453,16 +451,15 @@ def get_stats_from_csv_reader(csv_reader):
     for book in csv_reader:
         stats_book["total"] += 1
         for key, value in book.items():
-            if value:
-                if key not in stats_book:
-                    stats_book[key] = 0
-                if key + "_by_value" not in stats_book:
-                    stats_book[key + "_by_value"] = {value: 1}
-                else:
-                    if value not in stats_book[key + "_by_value"]:
-                        stats_book[key + "_by_value"][value] = 0
-                    stats_book[key + "_by_value"][value] += 1
-                stats_book[key] += 1
+            if key not in stats_book:
+                stats_book[key] = 0
+            if key + "_by_value" not in stats_book:
+                stats_book[key + "_by_value"] = {value: 1}
+            else:
+                if value not in stats_book[key + "_by_value"]:
+                    stats_book[key + "_by_value"][value] = 0
+                stats_book[key + "_by_value"][value] += 1
+            stats_book[key] += 1
 
     for key, value in stats_book.items():
         if isinstance(value, dict):
@@ -521,7 +518,6 @@ def format_result(res):
     :return: res formaté
     """
 
-
     def check_len_str(stat):
         """
         Si la longeure de la chaine de caractère est trop importante, on la coupe après 100 caractères
@@ -542,15 +538,23 @@ def format_result(res):
         if isinstance(stat, dict):
             # on selectionne uniquement les 10 plus fréquents items si il y en a plus de 10,
             # et on tronque leurs longueures
-            if len(list(stat.items())) > 10:
-                cleaned_res[check_len_str(key)] = OrderedDict([(check_len_str(k), v) for k, v in stat.items()][:10])
+            nested = False
+            for value in list(stat.values()):
+                if isinstance(value, dict):
+                    nested = True
+            if not nested:
+                if len(list(stat.items())) > 10:
+                    cleaned_res[check_len_str(key)] = OrderedDict([(check_len_str(k), v) for k, v in sorted(stat.items(), key=lambda item: item[1], reverse=True)][:10])
+                else:
+                    cleaned_res[check_len_str(key)] = stat
             else:
-                cleaned_res[check_len_str(key)] = stat
-            # si il y a une couche de plus, on selectionne les 10 premiers elements et on tronque leurs longueure
-            for key_stat, stat_value in cleaned_res[key].items():
-                if isinstance(stat_value, dict):
-                    if len(list(stat_value.items())) > 10:
-                        cleaned_res[check_len_str(key)][check_len_str(key_stat)] = OrderedDict([(check_len_str(k), v) for k, v in stat_value.items()][:10])
+                # si il y a une couche de plus, on selectionne les 10 premiers elements et on tronque leurs longueure
+                for key_stat, stat_value in stat.items():
+                    if isinstance(stat_value, dict):
+                        if len(list(stat_value.items())) > 10:
+                            cleaned_res[check_len_str(key)][check_len_str(key_stat)] = OrderedDict([(check_len_str(k), v) for k, v in sorted(stat_value.items(), key=lambda item: item[1], reverse=True)][:10])
+                        else:
+                            cleaned_res[check_len_str(key)][check_len_str(key_stat)] = stat_value
                     else:
                         cleaned_res[check_len_str(key)][check_len_str(key_stat)] = stat_value
         # si c'est un entier, on tronque juste la taille de la clef
@@ -561,6 +565,7 @@ def format_result(res):
     json_print = json.dumps(cleaned_res, indent=2, ensure_ascii=False)
     print(json_print)
     return cleaned_res
+
 
 start_loading_data_time = time.time()
 

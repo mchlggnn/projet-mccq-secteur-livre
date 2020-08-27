@@ -124,7 +124,7 @@ def compare_books(book1, book2, stats):
     author_comparaison = time.time()
 
     dist_titre = Levenshtein.distance(book1['title'], book2['title'])
-    dist_bool = dist_titre < max(1, min(len(book1['title']), len(book2['title'])) / 4)
+    dist_bool = dist_titre < max(1, min(len(book1['title']), len(book2['title'])) / 3)
     dist_bool_neg = dist_titre >= min(len(book1['title']), len(book2['title'])) / 2
     title_comparaison = time.time()
 
@@ -281,6 +281,7 @@ for book1 in tqdm(all_books[:], total=len(all_books[:])):
                 author_comparaison_tot_time += book_comparaison_res["time"][1] - book_comparaison_res["time"][2]
                 title_comparaison_tot_time += book_comparaison_res["time"][2] - book_comparaison_res["time"][3]
                 stats_saving_tot_time += book_comparaison_res["time"][3] - book_comparaison_res["time"][4]
+
 tot_time = isbn_comparaison_tot_time + author_comparaison_tot_time + title_comparaison_tot_time + stats_saving_tot_time
 print("isbn_comparaison_tot_time", isbn_comparaison_tot_time / tot_time * 100)
 print("author_comparaison_tot_time", author_comparaison_tot_time / tot_time * 100)

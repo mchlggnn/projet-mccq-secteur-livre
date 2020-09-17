@@ -4,8 +4,34 @@ import Levenshtein
 import time
 import random
 from tqdm import tqdm
+from enum import Enum
+from multiprocessing import Pool
+from itertools import combinations
 
 from extraction_croissement import *
+
+class Case(Enum):
+    """
+    "conclusion"
+     "isbn egaux et titre similaire"
+     "isbn egaux mais titre legerement differents"
+     "isbn egaux mais titre très differents"
+     "isbn different mais titres equivalents"
+     "isbn different mais titre et auteurs egaux"
+     "titre equivalents mais auteurs differents"
+     "titre egaux mais pas d'infos en plus"
+     "titre et auteurs egaux"
+    """
+
+    ISBN_TITRE_EQ = 1
+    ISBN_EQ_TITRE_DIFF = 2
+    ISBN_EQ_TITRE_T_DIFF = 3
+    ISBN_DIFF_TITRE_EQ = 4
+    ISBN_DIFF_TITRE_AUTEUR_EQ = 5
+    TITRE_AUTEUR_EQ = 6
+    TITRE_EQ_AUTEUR_DIFF = 7
+    TITRE_EQ = 8
+    PAS_INFO = 9
 
 
 start_loading_data_time = time.time()
@@ -74,9 +100,35 @@ loading_data_time = time.time()
 print("loading_data_time: ", loading_data_time - start_loading_data_time)
 
 
+class Case(Enum):
+    """
+    "conclusion"
+     "isbn egaux et titre similaire"
+     "isbn egaux mais titre legerement differents"
+     "isbn egaux mais titre très differents"
+     "isbn different mais titres equivalents"
+     "isbn different mais titre et auteurs egaux"
+     "titre equivalents mais auteurs differents"
+     "titre egaux mais pas d'infos en plus"
+     "titre et auteurs egaux"
+    """
 
+    ISBN_TITRE_EQ = 1,
+    ISBN_EQ_TITRE_DIFF = 2,
+    ISBN_EQ_TITRE_T_DIFF = 3,
+    ISBN_DIFF_TITRE_EQ = 4,
+    ISBN_DIFF_TITRE_AUTEUR_EQ = 5,
+    TITRE_AUTEUR_EQ = 6,
+    TITRE_EQ_AUTEUR_DIFF = 7,
+    TITRE_EQ = 8,
+    PAS_INFO = 9
 
-def compare_books(book1, book2, stats):
+class Equivalence(Enum):
+    PAS_INFO = 1
+    EQUIVALENT = 2
+    PAS_EQUIVALENT = 3
+
+def compare_books(book1, book2):
     """
     verifie si deux livres sont identiques à partir de leur informations
     cette fonction comporte la logique de la comparaison, les données sont normalement déjà formatées
@@ -84,116 +136,71 @@ def compare_books(book1, book2, stats):
     :param book2: (title: str, author: [str,...], isbns: [str,...])
     :return: boolean
     """
-    start_time = time.time()
-    if not book1['title'] or not book2['title']:
-        return {"conclusion": False,
-                "isbn egaux et titre similaire": False,
-                "isbn egaux mais titre legerement differents": False,
-                "isbn egaux mais titre très differents": False,
-                "isbn different mais titres equivalents": False,
-                "isbn different mais titre et auteurs egaux": False,
-                "titre equivalents mais auteurs differents": False,
-                "titre egaux mais pas d'infos en plus": False,
-                "titre et auteurs egaux": False,
-                "time": (0, 0, 0, 0, 0)}
+    try:
+        title1, title2 = book1['title'], book2['title']
+        isbns1, isbns2 = book1['isbn'], book2['isbn']
+        authors1, authors2 = book1['author'], book2['author']
+        data_base1, data_base2 = book1['data_base'], book2['data_base']
 
-    isbn_boolean = True
-    isbn_in_common = False
-    if book1["isbn"] and book2["isbn"]:
-        isbn_boolean = False
-        isbn_in_common = False
-        for isbn1 in book1["isbn"]:
-            for isbn2 in book2["isbn"]:
-                if compare_isbn(isbn1, isbn2):
-                    stats["isbn egaux"] += 1
-                    stats[book2["data_base"]]["isbn egaux"] += 1
-                    isbn_boolean = True
-                    isbn_in_common = True
-    isbn_comparaison = time.time()
+        dist_titre = Levenshtein.distance(title1, title2)
+        dist_bool = dist_titre < max(1, min(len(title1), len(title2)) / 3)
+        dist_bool_neg = dist_titre >= min(len(title1), len(title2)) / 2
 
-    author_boolean = True
-    author_in_common = False
-    if book1['author'] and book2['author']:
-        author_boolean = False
-        author_in_common = False
-        for author1 in book1['author']:
-            for author2 in book2['author']:
-                if compare_authors(author1, author2):
-                    author_in_common = True
-                    author_boolean = True
-    author_comparaison = time.time()
+        if isbns1 and isbns2:
+            isbn_equivalence = Equivalence.PAS_EQUIVALENT
+            for isbn1 in isbns1:
+                for isbn2 in isbns2:
+                    if compare_isbn(isbn1, isbn2):
+                        isbn_equivalence = Equivalence.EQUIVALENT
+        else:
+            isbn_equivalence = Equivalence.PAS_INFO
 
-    dist_titre = Levenshtein.distance(book1['title'], book2['title'])
-    dist_bool = dist_titre < max(1, min(len(book1['title']), len(book2['title'])) / 3)
-    dist_bool_neg = dist_titre >= min(len(book1['title']), len(book2['title'])) / 2
-    title_comparaison = time.time()
 
-    if not isbn_boolean:
-        if dist_bool and author_boolean and not author_in_common:
-            stats["isbn different mais titres equivalents"] += 1
-            stats[book1["data_base"]]["isbn different mais titres equivalents"] += 1
-            stats[book2["data_base"]]["isbn different mais titres equivalents"] += 1
-            stats[book2["data_base"]][book1["data_base"]]["isbn different mais titres equivalents"] += 1
-            stats[book1["data_base"]][book2["data_base"]]["isbn different mais titres equivalents"] += 1
+        if authors1 and authors2:
+            author_equivalence = Equivalence.PAS_EQUIVALENT
+            for author1 in authors1:
+                for author2 in authors2:
+                    if compare_authors(author1, author2):
+                        author_equivalence = Equivalence.EQUIVALENT
+        else:
+            author_equivalence = Equivalence.PAS_INFO
 
-        if dist_bool and author_in_common:
-            stats["isbn different mais titre et auteurs egaux"] += 1
-            stats[book1["data_base"]]["isbn different mais titre et auteurs egaux"] += 1
-            stats[book2["data_base"]]["isbn different mais titre et auteurs egaux"] += 1
-            stats[book2["data_base"]][book1["data_base"]]["isbn different mais titre et auteurs egaux"] += 1
-            stats[book1["data_base"]][book2["data_base"]]["isbn different mais titre et auteurs egaux"] += 1
 
-    elif isbn_in_common:
-        if dist_bool:
-            stats["isbn egaux et titre similaire"] += 1
-            stats[book1["data_base"]]["isbn egaux et titre similaire"] += 1
-            stats[book2["data_base"]]["isbn egaux et titre similaire"] += 1
-            stats[book2["data_base"]][book1["data_base"]]["isbn egaux et titre similaire"] += 1
-            stats[book1["data_base"]][book2["data_base"]]["isbn egaux et titre similaire"] += 1
+        if isbn_equivalence == Equivalence.PAS_EQUIVALENT:
+            if dist_bool and author_equivalence == Equivalence.PAS_INFO:
+                case = Case.ISBN_DIFF_TITRE_EQ
 
-        if not dist_bool and not dist_bool_neg:
-            stats["isbn egaux mais titre legerement differents"] += 1
-            stats[book2["data_base"]][book1["data_base"]]["isbn egaux mais titre legerement differents"] += 1
-            stats[book1["data_base"]][book2["data_base"]]["isbn egaux mais titre legerement differents"] += 1
+            elif dist_bool and author_equivalence == Equivalence.EQUIVALENT:
+                case = Case.ISBN_DIFF_TITRE_AUTEUR_EQ
+            else:
+                case = Case.PAS_INFO
 
-        if dist_bool_neg:
-            stats["isbn egaux mais titre très differents"] += 1
-            stats[book1["data_base"]]["isbn egaux mais titre très differents"] += 1
-            stats[book2["data_base"]]["isbn egaux mais titre très differents"] += 1
-            stats[book2["data_base"]][book1["data_base"]]["isbn egaux mais titre très differents"] += 1
-            stats[book1["data_base"]][book2["data_base"]]["isbn egaux mais titre très differents"] += 1
+        elif isbn_equivalence == Equivalence.EQUIVALENT:
+            if dist_bool:
+                case = Case.ISBN_TITRE_EQ
 
-    elif isbn_boolean:
-        if dist_bool and not author_boolean:
-            stats["titre equivalents mais auteurs differents"] += 1
-            stats[book1["data_base"]]["titre equivalents mais auteurs differents"] += 1
-            stats[book2["data_base"]]["titre equivalents mais auteurs differents"] += 1
-            stats[book2["data_base"]][book1["data_base"]]["titre equivalents mais auteurs differents"] += 1
-            stats[book1["data_base"]][book2["data_base"]]["titre equivalents mais auteurs differents"] += 1
+            elif not dist_bool and not dist_bool_neg:
+                case = Case.ISBN_EQ_TITRE_DIFF
 
-        if dist_bool and author_boolean and not author_in_common:
-            stats["titre egaux mais pas d'infos en plus"] += 1
-            stats[book2["data_base"]][book1["data_base"]]["titre egaux mais pas d'infos en plus"] += 1
-            stats[book1["data_base"]][book2["data_base"]]["titre egaux mais pas d'infos en plus"] += 1
+            elif dist_bool_neg:
+                case = Case.ISBN_EQ_TITRE_T_DIFF
+            else:
+                case = Case.PAS_INFO
 
-        if dist_bool and author_in_common:
-            stats["titre et auteurs egaux"] += 1
-            stats[book1["data_base"]]["titre et auteurs egaux"] += 1
-            stats[book2["data_base"]]["titre et auteurs egaux"] += 1
-            stats[book2["data_base"]][book1["data_base"]]["titre et auteurs egaux"] += 1
-            stats[book1["data_base"]][book2["data_base"]]["titre et auteurs egaux"] += 1
-    stats_saving = time.time()
+        elif isbn_equivalence == Equivalence.PAS_INFO:
+            if dist_bool and author_equivalence == Equivalence.PAS_EQUIVALENT:
+                case = Case.TITRE_EQ_AUTEUR_DIFF
 
-    return {"conclusion": (dist_bool and author_in_common) or isbn_in_common,
-            "isbn egaux et titre similaire": isbn_in_common and dist_bool,
-            "isbn egaux mais titre legerement differents": isbn_in_common and not dist_bool and not dist_bool_neg,
-            "isbn egaux mais titre très differents": isbn_in_common and dist_bool_neg,
-            "isbn different mais titres equivalents": not isbn_boolean and dist_bool and author_boolean and not author_in_common,
-            "isbn different mais titre et auteurs egaux": not isbn_boolean and dist_bool and author_in_common,
-            "titre equivalents mais auteurs differents": isbn_boolean and not isbn_in_common and dist_bool and not author_boolean,
-            "titre egaux mais pas d'infos en plus": isbn_boolean and not isbn_in_common and dist_bool and author_boolean and not author_in_common,
-            "titre et auteurs egaux": isbn_boolean and not isbn_in_common and dist_bool and author_in_common,
-            "time": (start_time, isbn_comparaison, author_comparaison, title_comparaison, stats_saving)}
+            elif dist_bool and author_equivalence == Equivalence.PAS_INFO:
+                case = Case.TITRE_EQ
+
+            elif dist_bool and author_equivalence == Equivalence.EQUIVALENT:
+                case = Case.TITRE_AUTEUR_EQ
+            else:
+                case = Case.PAS_INFO
+        return case
+    except:
+        return Case.PAS_INFO
 
 
 def compare_authors(author1, author2):
@@ -204,15 +211,15 @@ def compare_authors(author1, author2):
     :param author2: nom du second auteur
     :return: boolean
     """
-    if not author1 or not author2:
+    try:
+        author1 = author1.split(" ")
+        author2 = author2.split(" ")
+        for author1_name in author1:
+            for author2_name in author2:
+                if author1_name == author2_name: return True
         return False
-    author1 = author1.split(" ")
-    author2 = author2.split(" ")
-    name_in_common = False
-    for author1_name in author1:
-        for author2_name in author2:
-            if author1_name == author2_name: name_in_common = True
-    return name_in_common
+    except:
+        return False
 
 
 def compare_isbn(isbn1, isbn2):
@@ -223,76 +230,90 @@ def compare_isbn(isbn1, isbn2):
     :param isbn2: 2eme isbn
     :return: boolean
     """
-    return isbn1 == isbn2
+    return isbn1[:12] == isbn2[:12]
 
 
 pos_results = []
 neg_results = []
 
 data_base_list = ["ADP", "ILE", "Hurtubise", "Babelio", "Depot_legal"]
-cases = ["isbn egaux",
-         "isbn different mais titre et auteurs egaux",
-         "isbn different mais titres equivalents",
-         "isbn egaux et titre similaire",
-         "isbn egaux mais titre legerement differents",
-         "isbn egaux mais titre très differents",
-         "titre equivalents mais auteurs differents",
-         "titre et auteurs egaux",
-         "titre egaux mais pas d'infos en plus"
-         ]
 
 stats_by_data_base = {}
-for case in cases:
+for case in Case:
     stats_by_data_base[case] = 0
 
     for name1 in data_base_list:
         stats_by_data_base[name1] = {}
-        for case in cases:
+        for case in Case:
             stats_by_data_base[name1][case] = 0
         for name2 in data_base_list:
             stats_by_data_base[name1][name2] = {}
-            for case in cases:
+            for case in Case:
                 stats_by_data_base[name1][name2][case] = 0
 
 all_books = ADP_books + ILE_books + Hurtubise_books + Babelio_books + DL_books
 random.shuffle(all_books)
-isbn_comparaison_tot_time = 0
-author_comparaison_tot_time = 0
-title_comparaison_tot_time = 0
-stats_saving_tot_time = 0
-for book1 in tqdm(all_books[:], total=len(all_books[:])):
-    for book2 in all_books:
+
+pbar = tqdm(total=len(all_books)**2)
+
+
+print("Cleaning couple list")
+p = Pool(10)
+
+def compare_book_all_book(books):
+    book1, all_book = books[0], books[1]
+    book1_results = []
+    for book2 in all_book:
+        pbar.update(1)
         if book1["data_base"] != book2["data_base"]:
-            if book1["id"] != book2["id"]:
-                book_comparaison_res = compare_books(book1, book2, stats_by_data_base)
+            case = compare_books(book1, book2)
+            book1_results.append((book1, book2, case))
+        else:
+            book1_results.append(None)
 
-                if book_comparaison_res["titre et auteurs egaux"] or \
-                        book_comparaison_res["isbn egaux et titre similaire"]:
-                    if book_comparaison_res["titre et auteurs egaux"]:
-                        book1["cause"], book2["cause"] = "titre et auteurs egaux", "titre et auteurs egaux"
-                    if book_comparaison_res["isbn egaux et titre similaire"]:
-                        book1["cause"], book2[
-                            "cause"] = "isbn egaux et titre similaire", "isbn egaux et titre similaire"
-                    pos_results.append((book1, book2))
+def generate_book_all_book():
+    for book1 in all_books:
+        yield (book1, all_books)
 
-                if book_comparaison_res["titre equivalents mais auteurs differents"]:
-                    neg_results.append((book1, book2))
-                isbn_comparaison_tot_time += book_comparaison_res["time"][0] - book_comparaison_res["time"][1]
-                author_comparaison_tot_time += book_comparaison_res["time"][1] - book_comparaison_res["time"][2]
-                title_comparaison_tot_time += book_comparaison_res["time"][2] - book_comparaison_res["time"][3]
-                stats_saving_tot_time += book_comparaison_res["time"][3] - book_comparaison_res["time"][4]
+for result in p.map(compare_book_all_book, generate_book_all_book()):
+    for res_book1 in result:
+        try:
+            book1, book2, case = res_book1[0], result[1], result[2]
+            if case == Case.TITRE_AUTEUR_EQ or case == Case.ISBN_TITRE_EQ:
+                if case == Case.TITRE_AUTEUR_EQ:
+                    book1["cause"], book2["cause"] = "titre et auteurs egaux", "titre et auteurs egaux"
+                if case == Case.ISBN_TITRE_EQ:
+                    book1["cause"], book2[
+                        "cause"] = "isbn egaux et titre similaire", "isbn egaux et titre similaire"
+                pos_results.append((book1, book2))
 
-tot_time = isbn_comparaison_tot_time + author_comparaison_tot_time + title_comparaison_tot_time + stats_saving_tot_time
-print("isbn_comparaison_tot_time", isbn_comparaison_tot_time / tot_time * 100)
-print("author_comparaison_tot_time", author_comparaison_tot_time / tot_time * 100)
-print("title_comparaison_tot_time", title_comparaison_tot_time / tot_time * 100)
-print("stats_saving_tot_time", stats_saving_tot_time / tot_time * 100)
+            if case == Case.TITRE_EQ_AUTEUR_DIFF:
+                neg_results.append((book1, book2))
 
-for case in cases:
+            data_base1 = book1["data_base"]
+            data_base2 = book2["data_base"]
+
+            stats_by_data_base[case] += 1
+            stats_by_data_base[data_base1][case] += 1
+            stats_by_data_base[data_base2][case] += 1
+            stats_by_data_base[data_base2][data_base1][case] += 1
+            stats_by_data_base[data_base1][data_base2][case] += 1
+
+        except:
+            pass
+
+stats_by_data_base_printable = {}
+for case in Case:
+    if case not in stats_by_data_base_printable:
+            stats_by_data_base_printable[case] = 0
     for name_data_base in data_base_list:
+        if name_data_base not in stats_by_data_base_printable:
+            stats_by_data_base_printable[name_data_base] = {}
+
+        stats_by_data_base_printable[case] += stats_by_data_base[name_data_base][case]
         stats_by_data_base[case] += stats_by_data_base[name_data_base][case]
 
-    stats_by_data_base[case] = "%d => %s" % (stats_by_data_base[case],
+    stats_by_data_base_printable[case] = "%d => %s" % (stats_by_data_base[case],
                                              [" " + name_data_base + ": " +
                                               str(round(
                                                   stats_by_data_base[name_data_base][case] / stats_by_data_base[
@@ -300,8 +321,10 @@ for case in cases:
                                               + "%"
                                               for name_data_base in data_base_list])
 
-test_str = json.dumps(stats_by_data_base, indent=2)
-print(test_str)
+
+print(json.dumps(stats_by_data_base_printable, indent=2, default=str))
+with open('./results_stats.json', 'w') as result_file_stats:
+    json.dump(stats_by_data_base_printable, result_file_stats, indent=2, default=str)
 
 
 pos_result_by_book = []

@@ -1,5 +1,6 @@
 import re
 import rdflib
+import csv
 
 import requests as req
 
@@ -147,7 +148,6 @@ def normalize_isbn(isbn):
     isbn = re.sub(r'[^\dX]', '', isbn)
     if len(isbn) == 10:
         isbn = '978' + isbn
-    isbn = isbn[:-1] + 'X'
     return isbn
 
 
@@ -234,6 +234,37 @@ def get_depot_legal_book(g_item):
 
         DL_books.append(book_DL_resume)
     return DL_books
+
+def get_ILE_book_csv():
+
+    with open("./ILE/auteurs_ILE_comma_separated.csv", 'r', encoding='ISO-8859-1') as authors_ILE_file:
+        csv_reader = csv.DictReader(authors_ILE_file, delimiter=',', fieldnames=[
+            'uri', 'nom', 'bio', 'genres', 'site', 'pseudonyme'])
+        authors_ILE = [x for x in csv_reader]
+
+    with open("./ILE/oeuvres_ILE_comma_separated.csv", 'r', encoding='ISO-8859-1') as books_ILE_file:
+        csv_reader = csv.DictReader(books_ILE_file, delimiter=',', fieldnames=[
+            'id', 'title', 'datePublished', 'author_uri', 'edition', 'publication_place', 'isbn'])
+        raw_books_ILE = [x for x in csv_reader]
+
+    ILE_books = []
+    for book in raw_books_ILE:
+        book_ILE_resume = {'id': book['id'],
+                           "data_base": "ILE",
+                           'title': normalize(book['title']),
+                           'author': [],
+                           'isbn': [normalize_isbn(book['isbn'])],
+                           'title_raw': book['title'],
+                           'author_raw': [],
+                           'isbn_raw': [book['isbn']]}
+        for author in authors_ILE:
+            if book['author_uri'] == author['uri']:
+                author_name = author['nom'].split(',')
+                book_ILE_resume['author'].append(normalize_author(author_name[1] + " " + author_name[0]))
+                book_ILE_resume['author_raw'].append(author['nom'])
+        ILE_books.append(book_ILE_resume)
+    return ILE_books
+
 
 def get_ILE_book(g_item):
 
@@ -329,3 +360,6 @@ def get_Babelio_books(json):
 
         returned_books.append(book_Babelio_resume)
     return returned_books
+
+if __name__ == '__main__':
+    ILE_books = get_ILE_book_csv()

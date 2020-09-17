@@ -1,3 +1,5 @@
+import wikitextparser as wtp
+
 text = """
 {{Voir homonymes|Tremblay|Michel Tremblay (homonymie)}}
 {{Infobox Écrivain
@@ -278,6 +280,7 @@ Michel Tremblay s'inspire notamment de sa vie privée, y mêlant son imagination
 
 import re
 
+
 def split_info_box(str):
     nb_bracket = 0
     start_index = str.find("{{Infobox")
@@ -295,10 +298,225 @@ def split_info_box(str):
 info_box, page = split_info_box(text)
 
 import wikitextparser as wtp
+
 parsed = wtp.parse(page)
 test = parsed.sections[4].get_lists()
 if not test:
     print(" pqs lq bonne section")
+
+# text_2 =  "Easy Money (1999) {{Commentaire biblio|Publié en français sous le titre Argent facile, traduction de France Camus-Pichon, Paris, Albin Michel, coll. Spécial Suspense, [[2000 en littérature|2000]], réédition, Paris, Le Livre de poche {{n°|17224}}, [[2002 en littérature|2002]].}}"
+# meta_data_re = re.sub(r"(\{\{.*\}\})", '', text_2)
+# print(meta_data_re.group())
+# text_3 = '{{ouvrage|prénom1=Michel |nom1=Venne |directeur1=oui |nom2=Institut du Nouveau Monde |titre=100 idées citoyennes pour un Québec en santé |lieu=Montréal |éditeur=Fides |année=2005 |pages=94 |isbn=9782762126426}}'
+# title_re = re.search(r'(?<=titre=).*?(?=\|)', text_3)
+# print(title_re.group())
+# text_4 = '[[Le Matou (roman)|Le Matou]], Éditions [[Québec/Amérique]], [[1981 en littérature|1981]] {{ISBN|2-7644-0132-9}}.'
+# title_re = re.search(r'(?<=\[\[).*?(?=\||/)', text_4)
+# while title_re:
+#     text_4 = re.sub(r"\[\[.*?\]\]", title_re.group(), text_4, count=1)
+#     title_re = re.search(r'(?<=\[\[).*?(?=\||/)', text_4)
+# text_5 = '   2000 : Lancelot, le dragon'
+# text_5 = re.sub(r'^\W.*?\d{4}', '', text_5)
+# text_6 = ' Œuvres '
+# test = re.search(r'bibliographie|\u0152uvres|Œuvres|oeuvres|\u0152uvre|théâtre|poésie|nouvelles|essais|publications', text_6, re.IGNORECASE)
+text_7 = """== Œuvres ==
+<!-- liste non exhaustive -->
+{{colonnes|taille=|nombre=2|
+* [[1918 en littérature|1918]] : ''[[Les Silences du colonel Bramble]]''. Contient la traduction par André Maurois du célèbre poème de [[Rudyard Kipling]] [[Si (poème)|''If—'']] (traduction parfois attribuée à tort à [[Paul Éluard]])
+* [[1919]] : ''Ni ange ni bête'' fiction historique
+* [[1922]] : ''[[Bernard Quesnay]]'', qui reparaît en 1926 dans une version révisée, sous le titre de : ''La Hausse et la Baisse''
+* [[1922]] : ''Les Discours du docteur O'Grady''. Reprend les personnages de ''Bramble''
+* [[1923]] : ''Ariel ou la Vie de [[Percy Bysshe Shelley|Shelley]]'' biographie.frontispice de [[Maxime Dethomas]], aux éd. Grasset. ({{1re|édition}} illustrée en couleurs en 1924, vignettes de [[Hermine David]], aux Éditions Grasset. Un exemplaire de la {{81e|édition}} de 1923 porte un envoi à Simone de Caillavet : ''A {{Mme}} Simone de Caillavet qui aime les poètes et mérite de les aimer''
+* [[1924]] : ''Dialogue sur le commandement'', essai, écrit à partir d'un dialogue entre son ancien maître, Alain, et son récent ami [[Aimery Blacque-Belair]], qu'ils ont refusé de cosigner car trop modifié par Maurois<ref>voir les archives Maurois ([[Institut de France]]).</ref>
+* [[1926]] : ''La Hausse et la Baisse'', roman
+* [[1926]] : ''Meïpe ou la Délivrance'', conte et nouvelle
+* [[1927]] : ''La Vie de [[Benjamin Disraeli|Disraeli]]'', étude historique
+* [[1927]] : ''Études anglaises'', essai
+* [[1927]] : ''Le Chapitre suivant'', {{1re|version}}
+* [[1928]] : ''Climats''
+* [[1928]] : ''Aspects de la biographie''
+* [[1928]] : ''Voyage au pays des Articoles'', conte et nouvelle
+* [[1929]] : ''[[Le Pays des trente-six mille volontés]]'', Illustrations d'[[Adrienne Ségur]], Librairie Hachette, Paris
+* [[1928]] : ''[[Raymond Woog]]'', essai
+* [[1930]] : ''[[Don Juan (Lord Byron)|Don Juan]] ou la vie de [[George Gordon Byron|Byron]]'', biographie
+* [[1930]] : ''Relativisme'', essai
+* [[1930]] : ''[[Patapoufs et Filifers]]'', livre pour enfants, illustré par [[Jean Bruller]].
+* [[1931]] : ''[[Hubert Lyautey|Lyautey]]'', biographie
+* [[1931]] : ''[[Ivan Tourgueniev|Tourgueniev]]'', biographie
+* [[1931]] : ''Le Peseur d'âmes'' évoque la [[Poids de l'âme|théorie du poids de l'âme]]
+* [[1932]] : ''Le Côté de Chelsea'', roman, Gallimard
+* [[1932]] : ''Mes songes que voici'', Paris, Grasset
+* [[1932]] : ''Le cercle de famille'', roman
+* [[1933]] : ''[[Chantiers américains]]'', Gallimard NRF, essais
+* [[1933]] : ''[[Édouard VII du Royaume-Uni|Édouard VII]] et son temps'', biographie
+* [[1934]] : ''L'Instinct du bonheur'', roman
+* [[1934]] : ''Sentiments et coutumes'', essai
+* [[1935]] : ''[[Voltaire]]'', biographie.
+* [[1935]] : ''Premiers contes'', contes, Rouen, H. Defontaine
+* [[1937]] : ''Histoire de l'Angleterre'', Histoire
+* [[1937]] : ''La machine à lire les pensées'', conte et nouvelle
+* [[1938]] : ''René ou la Vie de [[François-René de Chateaubriand|Châteaubriand]]'', biographie et étude littéraire<ref>{{Lien web|url=http://www.proverbes-citations.com/maurois.htm|titre= André Maurois biographie}}.</ref>
+* [[1939]] : ''[[Un art de vivre]]'', essai
+* [[1939]] : ''L’Empire français'', Librairie Hachette, illustrations par [[Auguste Leroux]]. Album pour enfants présentant l'[[Empire colonial français|Empire Colonial Français]]
+* [[1939]] : ''États-Unis 1939'', Paris, 1939
+* [[1939]] : ''Discours prononcé dans la séance publique de sa réception à l'Académie Française le jeudi 22 juin 1939'', Éd. Firmin Didot et Cie.
+* [[1942]] : "Mémoires - T.I Les années d'apprentissage - T.II Les années de travail", Éditions de la Maison Française, 1942.
+* [[1943]] : ''Toujours l'inattendu arrive''
+* [[1943]] : ''Histoire des États-Unis'', Histoire.
+* [[1946]] : ''Journal des États-Unis 1946'', Paris, 1946
+* [[1946]] : ''Terre promise'', roman
+* [[1946]] : ''Sept visages de l'amour'', essai
+* [[1947]] : ''Nouveaux discours du Docteur O'Grady'', cet ouvrage évoque, entre autres sujets, la guerre mondiale que se livrent entre elles deux espèces de fourmis, les ''Pheidoles'' et les '' Iridomyrmex''. Ce livre, qui fait suite à la Deuxième Guerre mondiale, marque quel chemin intellectuel a été parcouru depuis la première. Les idées de [[Jean-Paul Sartre]] comme la nouvelle donne apportée par la [[Bombe A|bombe atomique]] y sont évoquées
+* [[1947]] : ''Histoire de France'', Éditions Dominique Wapler, Histoire, 1947
+* [[1947]] : ''Des mondes impossibles'', conte et nouvelle
+* [[1947]] : ''Rouen dévasté'', essai, première édition bibliophilique avec eaux-fortes et lithographies d'[[Émile-Henry Tilmans]], Société normande des amis du livre, seconde édition Nagel, 1948
+* [[1949]] : ''À la recherche de [[Marcel Proust]]'', étude et biographie littéraire<ref>{{Lien web|url=http://www.sefarad.org/publication/kore/035/html/page7.html|titre= À la recherche de Marcel Proust}}.</ref>, Éditions Hachette
+* [[1950]] : ''[[Alain (philosophe)|Alain]]'', étude et biographie littéraire
+* [[1951]] : ''Ce que je crois'', essai, Éd. Grasset, 1951
+* [[1952]] : ''Lélia ou la Vie de [[George Sand]]'', étude et biographie littéraire
+* [[1952]] : ''Destins exemplaires'', essai
+* [[1954]] : ''Olympio ou la Vie de [[Victor Hugo]]'', étude historique et biographie
+* [[1954]] : ''Femmes de Paris'', Plon
+* [[1955]] : ''Paris Capitale'', dix lithographies originales de [[Maurice Utrillo]] avec culs-de-lampe de [[Lucie Valore]], Éditions J. Foret, Paris
+* [[1956]] : ''Lettres à l'inconnue''
+* [[1957]] : ''Lecture, mon doux plaisir'', essai
+* [[1957]] : ''Les Trois Dumas'', biographie
+* [[1957]] : ''Robert et Elizabeth [[Robert Browning|Browning]]'', biographie
+* [[1958 au théâtre|1958]] : ''L'Impromptu de Barentin'', Festival de [[Barentin (Seine-Maritime)|Barentin]]
+* [[1959]] : ''Histoire de la France'' (2 volumes), nouvelle édition mise à jour
+* [[1959]] : ''Portrait d'un ami qui s'appelait moi''
+* [[1960]] : ''Le Monde de Marcel Proust'', Éditions Hachette, étude historique et littéraire
+* [[1962]] : ''Les Deux Géants - Histoire des États-Unis et de l'U.R.S.S : De 1917 à nos jours'', avec Aragon, Robert Laffont
+* [[1965]] : ''Prométhée ou la Vie de [[Honoré de Balzac|Balzac]]'', étude historique et biographique
+* [[1956]] : ''Les Roses de septembre'', roman
+* [[1959]] : ''La Vie de sir [[Alexander Fleming]]'', biographie
+* [[1960]] : ''Pour piano seul'', conte et nouvelle
+* [[1961]] : ''Adrienne ou la Vie de [[Adrienne de La Fayette|{{Mme}} de La Fayette]]'', biographie
+* [[1964]] : ''La Conversation'', essai
+* [[1966]] : ''Au commencement était l'action'', essai
+* [[1967]] : ''Le Chapitre suivant'', {{2e|version}}
+* ''Un art de vivre''
+* ''Magiciens et logiciens''
+* ''Lettre ouverte à un jeune homme sur la conduite de la vie''
+* ''La Maison''
+* ''Snobisme dans l'art''
+* ''Aspect de la biographie''
+}}
+
+== En collaboration ==
+* [[1932]] : David Garnett, Jane-Simone Bussy, [[Jean Lébédeff]], ''La femme changée en renard'', Arthème Fayard
+* [[1956]] : [[Sacha Guitry]], [[Pierre Benoit]], André Maurois, [[Edmond Heuzé]], [[Fernand Crommelynck]] et [[Jean Cocteau]], ''[[Maurice Utrillo]] V'', lithographies originales de Maurice Utrillo, [[Suzanne Valadon]] et [[Lucie Valore]] (atelier [[Fernand Mourlot]]), Joseph Foret, Paris
+* ''Le Mémorial de St Hélène'', éd. La Pléiade
+* ''Mémoires posthumes de Bras Cubas''"""
+
+# text_7_serach_re = re.search(r'\{\{colonnes\|.*?\|\n', text_7, re.DOTALL)
+# while text_7_serach_re:
+#     nb_bracket = 0
+#     start_index = text_7_serach_re.span()[0]
+#     for index, caractere in enumerate(text_7[start_index:]):
+#         if caractere == '{':
+#             test_str = text_7[start_index:start_index + index + 1]
+#             nb_bracket += 1
+#         elif caractere == '}':
+#             test_str = text_7[start_index:start_index + index + 1]
+#             nb_bracket -= 1
+#         if nb_bracket == 0:
+#             test_7_1 = text_7[:start_index + index - 1]
+#             test_7_2 = text_7[start_index + index + 2:]
+#             text_7 = text_7[:start_index + index - 1] + text_7[start_index + index + 2:]
+#             text_7 = re.sub(r'\{\{colonnes\|.*?\|\n', '', text_7)
+#             break
+#     text_7_serach_re = re.search(r'\{\{colonnes\|.*?\|\n', text_7, re.DOTALL)
+#
+# parsed_text_7 = wtp.parse(text_7)
+# test = parsed_text_7.get_lists()
+
+text_8 = """
+== Œuvres ==
+*Œuvres écrites en français :
+**''Parmi les monstres'', éditions Millas-Martin, 1967
+**''Amer Eldorado'', Stock, 1974
+** ''Samuel Beckett, [[L'Herne|Les Cahiers de l’Herne]]'', 1976 (et 1985 en Livre de Poche)
+** ''La Flèche du Temps'', Circé, 1991 et 1998
+** ''La Fourrure de ma tante Rachel'', Circé, 1996
+** ''La Voix dans le débarras / The Voice in the closet'', Les Impressions nouvelles, 2002
+** ''Amer Eldorado 2/001'', Al dante/Léo Scheer, Paris, 2003
+** ''À qui de droit'', Éditions des écrivains, Paris, 2003 (et 2006 aux éd. Al dante)
+**''La Fourrure de ma tante Rachel'', Al Dante, 2003
+** ''Future concentration'', (poésie), [[Le Mot et le Reste|Le mot et le reste]], 2003
+**''Ici & Ailleurs'', (poésie), [[Le Mot et le Reste|Le mot et le reste]], 2003
+**''Le Crépuscule des clochards'' (avec Georges Chambers), [[Le Mot et le Reste|Le mot et le reste]], 2004
+**''Sonate d’amour insolite'', Point de Fuite (Montréal), 2004
+**''Moinous & Sucette'', Al Dante, 2004
+**''Mon corps en neuf parties'', Al dante/Léo Scheer, 2004
+**''Quitte ou double'', Al dante/Léo Scheer, 2004
+**''Retour au fumier'', Al Dante, 2005
+** ''L’Extatique de Jule et Juliette'', (poésie), [[Le Mot et le Reste|Le mot et le reste]], 2005
+**''Elle est là'', avec Mathias Pérez, Carte blanche, 2006
+**''Surfiction'', [[Le Mot et le Reste|Le mot et le reste]], 2006
+** ''Le Livre de Sam'' (ou) ''Des pierres à sucer plein les poches'', Al dante, 2006
+** ''À qui de droit'', Al dante, 2006
+**''Coups de pompe'', [[Le Mot et le Reste|Le mot et le reste]], 2007
+** ''Chair jaune'', avec Pierre Le Pilloüer, 2007, Le Bleu du ciel
+**''À la queue leu leu'', 2008, Cadex Éditions (édition bilingue français / anglais U.S.)
+**''Chut'', 2008, Léo Scheer
+**''La Voix dans le débarras'', 2008, Impressions nouvelles
+**''La Fourrure de ma tante Rachel'', 2009, Léo Scheer
+**''Godass'', 2009, œuvre épistolaire cohécrite avec Marie Delvigne, ED.ETGSO
+**''Les Carcasses'', 2009, Léo Scheer
+**''Quitte Ou Double'', 2011, Léo Scheer
+** ''Federman hors-limites'', Entretien avec Marie Delvigne, 2010, Paris, [[éditions Argol]]
+*Œuvres écrites en langue anglaise :
+**''Journey into Chaos: Samuel Beckett's Early Fiction'' (1965)
+**''Among the Beasts'' / ''Parmi Les Monstres'' (1967)
+**''Samuel Beckett, His Works and His Critics: An Essay in Bibliography'' (1970) avec John Fletcher
+**''Double or Nothing'' / ''Quitte ou double'' (1971)
+**''The Voice in the Closet'' / ''[http://www.lesimpressionsnouvelles.com/federman.html La voix dans le débarras]'' (1979) (édition bilingue chez [[Impressions Nouvelles]]).
+**''Me Too'' (1975)
+**''Surfiction: Fiction Now and Tomorrow'' (1975)
+**''Take It Or Leave It'' (1976)
+**''The Twofold Vibration'' (1982)
+**''To Whom It May Concern'' (1990)
+**''Now Then'' / ''Nun denn'' (1992), poèmes
+**''Critifiction: Postmodern Essays'' (1993)
+**''Smiles on Washington Square'' (1995)
+**''The Supreme Indecision of the Writer: The 1994 Lectures in Turkey'' (1995)
+**''Loose Shoes'' (2001)
+**''The Song of the Sparrow'' (2002)
+**''Here and Elsewhere: Poetic Cul de Sac'' (2003)
+**''The Precipice and Other Catastrophes'' (2003)
+**"On the Road Again." (2004)<ref>In: ''Homo Narrans: Texts and Essays in Honor of Jerome Klinkowitz''. Éd. Zygmunt Mazur et Richard Utz. Cracow: Jagiellonian University Press, 2004, 24-40.</ref>
+**''My Body in Nine Parts'' (2005)
+** ''Return to Manure'' (2006)
+**''The Twilight of the Bums'' avec [[George Chambers]]
+**''The Line'' (2008), “a tall skinny tall”, Cadex Éditions"""
+
+text_8 = re.sub(r'\*\*', '*', text_8)
+
+parsed_text_8 = wtp.parse(text_8)
+test = parsed_text_8.get_lists()
+
+
+
+text_9 = """* Romans grand public
+**2014 – ''L'absence'' dans ''Des nouvelles du père'' (collectif)'','' [[Québec Amérique]]
+**2014 – ''Écrire le mal'', [[Éditions Druide]]
+* Romans jeunesse
+**2006 – ''Le Peuple des profondeurs'', [[Éditions Trécarré]]
+**2006 – ''Les Démons de la Grande Bibliothèque'', [[Éditions Trécarré]]
+**2007 – ''Le Cri du chaman'', [[Éditions Trécarré|Éditions TrécarréClaude ChampagneClaude Champagne (auteur)BiographieNaissance 1966Nationalité CanadienActivité ÉcrivainAutres informationsSite web www.claude-champagne.commodifier - modifier le code - modifier Wikidata]]
+**2007 – ''Les Catacombes du stade olympique'', [[Éditions Trécarré]]
+**2008 – ''Tu me feras pas peur !'', [[Québec Amérique]]
+**2008 – ''Effrayons les montres !'', [[Québec Amérique]]
+**2009 – ''Amour et Jules'', [[Québec Amérique]]
+**2010 – ''L'école des monstres'', [[Québec Amérique]]
+**2011 –  ''Le Secret des crânes'' – ''La Prophétie'' (Tome 1), [[La courte échelle]]
+**2012 – ''Le Secret des crânes – Les Royaumes souterrains'' (Tome 2), [[La courte échelle]]
+* Théâtre
+**1996 – ''Les aut' mots'', Éd. Dramaturges Éditeurs
+**1998 – ''La Nuit où il s'est mis à chanter'', Éd. Dramaturges Éditeurs
+**1999 – ''L'Humoriste'', Éd. Dramaturges Éditeurs
+**2002 – ''Délit de fuite'', Éd. Dramaturges Éditeurs"""
 print('end')
 # page_dictionnary = {'undefined': [],
 #                     'anomaly': []}
@@ -327,7 +545,3 @@ print('end')
 #     elif len(split_paragraph) > 2:
 #         page_dictionnary['anomaly'].append(split_paragraph)
 # print(page_dictionnary)
-
-
-
-

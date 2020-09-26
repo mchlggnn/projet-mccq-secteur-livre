@@ -3,8 +3,7 @@ import rdflib
 import csv
 import json
 import time
-
-import requests as req
+import random
 
 def nettoyer_unicode(c):
     """
@@ -224,13 +223,18 @@ class Book:
             self.isbns.append(cleaned_isbn)
         self.isbns_raw.append(isbn)
 
+    def __bool__(self):
+        """ Verifie si au moins un id ou un titre est présent"""
+        return bool(self.title) or bool(self.id)
+
     def __str__(self):
-        return """BOOK {b.id} de {b.data_base}:
+        return """BOOK {b.id} de {b.data_base} {valide}:
     titre: {b.title_raw} => {b.title}
     auteur (x{len_authors}): {b.authors_raw} => {b.authors}
     isbn (x{len_isbns}): {b.isbns_raw} => {b.isbns}\n""".format(b=self,
-                                                              len_authors=len(self.authors),
-                                                              len_isbns=len(self.isbns))
+                                                                valide='Valide' if bool(self) else 'Invalide',
+                                                                len_authors=len(self.authors),
+                                                                len_isbns=len(self.isbns))
 
     def __repr__(self):
         return str(self)
@@ -245,7 +249,21 @@ class BookJSONEncoder(json.JSONEncoder):
             # Si c'est un Livre, on retourne le dictionnaire de ses attributs, plus un nouvel attribut "__class__"
             obj.__dict__.update(__class__ = 'Book')
             return obj.__dict__
+        elif isinstance(obj, set):
+            return list(obj)
         return json.JSONEncoder.default(self, obj)
+
+class BookJSONDecoder(json.JSONDecoder):
+    """
+    Permet de decoder le json en Book
+    """
+    def __init__(self, *args, **kwargs):
+        json.JSONDecoder.__init__(self, object_hook=self.object_hook, *args, **kwargs)
+
+    def object_hook(self, dct):
+        if '__class__' in dct and dct['__class__'] == 'Book':
+            return Book(dct)
+        return dct
 
 
 def get_ADP_books_from_graph(g_book, g_author):
@@ -380,7 +398,7 @@ def get_Hurtubise_books(csv_reader):
     Hurtubise_books = []
     header = next(csv_reader)
     for raw_book in csv_reader:
-        book = Book({"data_base": "Hurtubise",})
+        book = Book({"data_base": "Hurtubise"})
 
         for key, value in raw_book.items():
             if value:
@@ -395,7 +413,6 @@ def get_Hurtubise_books(csv_reader):
                     if key == 'ISBN Papier':
                         book.id = value
                     book.add_ISBN_from_raw(value)
-        Hurtubise_books.append(book)
 
     return Hurtubise_books
 
@@ -425,60 +442,42 @@ def get_Babelio_books(json):
 
                 elif key == 'url':
                     book.id = value
-
-        Babelio_books.append(book)
+        if book:
+            Babelio_books.append(book)
+        else:
+            print('Ce livre n\'est pas valide !\n', book)
 
     return Babelio_books
 
-
-if __name__ == '__main__':
+def generate_all_books(test=False, save=True):
     """
-    Phase de test du module
+    Parcour chaque base de donnée et en tire les livres
+    :param bool test: Si on veut afficher des exemples de chaque base de donnée
+    :param bool save: Si on veut sauvegarder "all_books" au format json
+    :return List[Book]: liste de livres
     """
-    test_book = Book({'id': 'test1', 'data_base':'db_test_1'})
-    print(test_book)
-
-    test_book.add_title_from_raw('Titre1 (data) $')
-    test_book.add_author_from_raw('   author1 (data) $ ')
-    test_book.add_ISBN_from_raw(' isbn : 123456789X')
-    test_book.add_title_from_raw('Titre2 (data) $')
-    test_book.add_author_from_raw('   author2 (data) $ ')
-    test_book.add_ISBN_from_raw(' isbn : 234567891X')
-    print(test_book)
-    print("Version JSON: ", json.dumps(test_book, cls=BookJSONEncoder))
-
-    test_book = Book({'id': 'test1', 'data_base': 'db_test_1', 'title': 'titre1'})
-    print(test_book)
-
-    test_book.add_author_from_raw('""')
-    print(test_book)
-
-    try:
-        test_book.add_title_from_raw(['titre 1', 'titre2'])
-    except TypeError as e:
-        print(e)
 
     start_loading_data_time = time.time()
 
-    # Loading des données sauvegardées dans la mémoire ram
+    # ADP
     g_book_ADP = rdflib.Graph()
     g_author_ADP = rdflib.Graph()
-    ADP_book_graph = g_book_ADP.parse("../Graphes/grapheADPLivres.rdf")
-    ADP_author_graph = g_author_ADP.parse("../Graphes/grapheADPAuteurs.rdf")
+    _ = g_book_ADP.parse("../Graphes/grapheADPLivres.rdf")
+    _ = g_author_ADP.parse("../Graphes/grapheADPAuteurs.rdf")
     ADP_books = get_ADP_books_from_graph(g_book_ADP, g_author_ADP)
     ADP_loading_time = time.time()
     print("ADP_loading_time: ", ADP_loading_time - start_loading_data_time)
+    if test:print(ADP_books[:3])
 
-    print(ADP_books[:3])
-
+    # Dépot légal
     g_item_DL = rdflib.Graph()
-    book_graph_DL = g_item_DL.parse("../Graphes/grapheDepotLegal.rdf")
+    _ = g_item_DL.parse("../Graphes/grapheDepotLegal.rdf")
     DL_books = get_depot_legal_books_from_graph(g_item_DL)
     DL_loading_time = time.time()
     print("DL_loading_time: ", DL_loading_time - ADP_loading_time)
+    if test:print(DL_books[:3])
 
-    print(DL_books[:3])
-
+    # ILE
     with open("./ILE/auteurs_ILE_comma_separated.csv", 'r', encoding='ISO-8859-1') as authors_ILE_file:
         csv_reader = csv.DictReader(authors_ILE_file, delimiter=',', fieldnames=[
             'uri', 'nom', 'bio', 'genres', 'site', 'pseudonyme'])
@@ -492,9 +491,9 @@ if __name__ == '__main__':
     ILE_books = get_ILE_books_from_csv(books_ILE_from_csv, authors_ILE_from_csv)
     ILE_loading_time = time.time()
     print("ILE_loading time: ", ILE_loading_time - DL_loading_time)
+    if test:print(ILE_books[:3])
 
-    print(ILE_books[:3])
-
+    # Hurtubise
     with open("./Hurtubise/Exportation-Hurtubise.csv", "r", encoding='ISO-8859-1') as books_Hurtubise_file:
         csv_reader = csv.DictReader(books_Hurtubise_file, delimiter=',', fieldnames=[
             "Editeur", "ISBN Papier", "ISBN PDF", "ISBN epub", "Titre", "Sous - titre", "Titre de la serie",
@@ -508,10 +507,63 @@ if __name__ == '__main__':
         Hurtubise_books = get_Hurtubise_books(csv_reader)
     Hurtubise_loading_time = time.time()
     print("Hurtubise_loading time: ", Hurtubise_loading_time - ILE_loading_time)
-    print(Hurtubise_books[:3])
+    if test:print(Hurtubise_books[:3])
 
+    # Babelio
     with open("./Babelio/babelio_livres.json", "r") as babelioJsonBooks:
         Babelio_books = get_Babelio_books(json.load(babelioJsonBooks))
     Babelio_loading_time = time.time()
     print("Babelio_loading_time time: ", Babelio_loading_time - Hurtubise_loading_time)
-    print(Babelio_books[:3])
+    if test:print(Babelio_books[:3])
+
+    all_books = ADP_books + ILE_books + Hurtubise_books + Babelio_books + DL_books
+    random.shuffle(all_books)
+
+    if save:
+        with open('all_books.json', 'w') as outfile:
+            json.dump(all_books, outfile, cls=BookJSONEncoder)
+
+    return all_books
+
+if __name__ == '__main__':
+    """
+    Phase de test du module
+    """
+    test_book = Book({})
+    print(test_book)
+
+    test_book = Book({'id': 'test1', 'data_base':'db_test_1'})
+    print(test_book)
+
+    test_book.add_title_from_raw('Titre1 (data) $')
+    test_book.add_author_from_raw('   author1 (data) $ ')
+    test_book.add_ISBN_from_raw(' isbn : 123456789X')
+    test_book.add_title_from_raw('Titre2 (data) $')
+    test_book.add_author_from_raw('   author2 (data) $ ')
+    test_book.add_ISBN_from_raw(' isbn : 234567891X')
+    print(test_book)
+
+    test_book_json = json.dumps(test_book, cls=BookJSONEncoder)
+    print("Version JSON: ", test_book_json)
+
+    with open('test_json', 'w') as f:
+        json.dump((test_book, test_book), f, cls=BookJSONEncoder)
+    with open('test_json', 'r') as f:
+        test_book = json.load(f, cls=BookJSONDecoder)
+    print("Version post json load pour un tuple de 2 livres: \n", test_book)
+
+    test_book = Book({'id': 'test1', 'data_base': 'db_test_1', 'title': 'titre1'})
+    print(test_book)
+
+    test_book.add_author_from_raw('""')
+    print(test_book)
+
+    print("test avec mauvais ajout de titre: ")
+    try:
+        test_book.add_title_from_raw(['titre 1', 'titre2'])
+    except TypeError as e:
+        print(e)
+
+    print()
+    all_books = generate_all_books(test=True, save=True)
+

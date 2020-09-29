@@ -54,7 +54,7 @@ class ExtractionbabelioPipeline:
             if edition_date:
                 item['edition_date'] = edition_date.group(1)
 
-            EAN = re.search(r'EAN[ :]+([\d]+)', ''.join(item['infos']))
+            EAN = re.search(r'EAN[ :]+([\d-]+)', ''.join(item['infos']))
             if EAN:
                 item['EAN'] = EAN.group(1)
 
@@ -64,31 +64,31 @@ class ExtractionbabelioPipeline:
 
         elif isinstance(item, BabelioAuthor):
 
-            nationnality = re.search(r'Nationalité[ :]+([ \S]+) Né', item['infos'])
+            nationnality = re.search(r'Nationalité[ :]+?([ \S]+?) Né', item['infos'])
             if nationnality:
                 item['nationnality'] = nationnality.group(1)
 
-            place_of_birth = re.search(r'Né\(e\)[à :]+([ \S]+?)[\(,]', item['infos'])
+            place_of_birth = re.search(r'Né\(e\)[à :]+?([ \S]+?)[\(,]', item['infos'])
             if place_of_birth:
                 item['place_of_birth'] = place_of_birth.group(1)
 
-            country_of_birth = re.search(r'Né\(e\)[à :]+[ \S]+ \(([ \S]+?)\)', item['infos'])
+            country_of_birth = re.search(r'Né\(e\)[à :]+?[ \S]+? \(([ \S]+?)\)', item['infos'])
             if country_of_birth:
                 item['country_of_birth'] = country_of_birth.group(1)
 
-            date_of_birth = re.search(r'Né\(e\)[à :]+[ \(\)\S]+le[ ]+(\d{0,2}/?\d{0,2}/?\d{4})', item['infos'])
+            date_of_birth = re.search(r'Né\(e\)[à :]+?[ \(\)\S]+?le[ ]+?(\d{0,2}/?\d{0,2}/?\d{4})', item['infos'])
             if date_of_birth:
                 item['date_of_birth'] = date_of_birth.group(1)
 
-            place_of_death = re.search(r'Mort\(e\)[à :]+([ \S]+?)[\(,]', item['infos'])
+            place_of_death = re.search(r'Mort\(e\)[à :]+?([ \S]+?)[\(,]', item['infos'])
             if place_of_death:
                 item['place_of_death'] = place_of_death.group(1)
 
-            country_of_death = re.search(r'Mort\(e\)[à :]+[ \S]+\(([ \S]+?)\)', item['infos'])
+            country_of_death = re.search(r'Mort\(e\)[à :]+?[ \S]+?\(([ \S]+?)\)', item['infos'])
             if country_of_death:
                 item['country_of_death'] = country_of_death.group(1)
 
-            date_of_death = re.search(r'Mort\(e\)[à :]+[ \(\)\S]+le[ ]+(\d{0,2}/?\d{0,2}/?\d{4})', item['infos'])
+            date_of_death = re.search(r'Mort\(e\)[à :]+?[ \(\)\S]+?le[ ]+?(\d{0,2}/?\d{0,2}/?\d{4})', item['infos'])
             if date_of_death:
                 item['date_of_death'] = date_of_death.group(1)
 

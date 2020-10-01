@@ -3,7 +3,6 @@ import json
 
 from ..parsing_module import ParsingModule
 
-
 class BabelioSpiderFromTagUrl(scrapy.Spider):
     """
     Spider scrapy qui scrappe le site à partir d'un résultat de recherche par tags
@@ -14,7 +13,7 @@ class BabelioSpiderFromTagUrl(scrapy.Spider):
     start_urls = [
         # Toujours masquer un des tags
         "https://www.babelio.com/livres-/quebecois/12642",
-        #"https://www.babelio.com/livres-/litterature-quebecoise/593",
+        # "https://www.babelio.com/livres-/litterature-quebecoise/593",
     ]
     root_url = "https://www.babelio.com/"
 
@@ -34,7 +33,6 @@ class BabelioSpiderFromTagUrl(scrapy.Spider):
         #                      callback=parsing_module.parse_author)
 
         # Module de test pour un livre en particulier
-
         # parsing_module = ParsingModule(self.root_url, self.start_urls)
         # yield scrapy.Request(url="https://www.babelio.com/livres/Werber-Les-Fourmis/4365",
         #                      callback=parsing_module.parse_book)
@@ -79,4 +77,3 @@ class BabelioSpiderFromTagUrl(scrapy.Spider):
                 meta={'i': str(i), 'max_i': str(max_i)},
                 dont_filter=True
             )
-

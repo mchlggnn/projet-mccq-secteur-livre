@@ -1,7 +1,6 @@
 import scrapy
 from .items import BabelioBook, BabelioAuthor, BabelioReview, BabelioExtract
 
-
 class ParsingModule():
     """
     Module comprenant les méthodes de scrapping des livres et autheur à partir de leur url dédiées sur Babélio
@@ -154,7 +153,7 @@ class ParsingModule():
                 author_first_name[author_i] if author_i < len(author_first_name) else '',
                 author_last_name[author_i] if author_i < len(author_last_name) else '']
             ))
-        book['author_id'] = response.css('span[itemprop="author"] a::attr(\'href\')').get()
+        book['author_id'] = response.css('span[itemprop="author"] a::attr(\'href\')').getall()
         book['infos'] = response.css('.livre_refs::text, .livre_refs a::text').extract()
         book['editor'] = response.css('.livre_refs a::text').extract_first()
         book['rating'] = response.css('.texte_t2[itemprop=ratingValue]::text').extract_first()

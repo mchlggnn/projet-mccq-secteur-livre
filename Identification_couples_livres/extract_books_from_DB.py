@@ -265,6 +265,7 @@ def normalize_isbn(isbn):
         - retire les informations entre parenthèse
         - supprime les caractères non numériques ou non 'X'
         - ajoute si besoin '978' en début de chaine de caractère pour obtenir 13 chiffres
+        - Pad la séquence jusqu'a 13 chiffres si il manque le dernier chiffre avec un "#"
     :param str isbn: chaine de caractère
     :return str: chaine de caratère
     :raise TypeError: si isbn n'est pas une chaine de caractère
@@ -274,6 +275,8 @@ def normalize_isbn(isbn):
         isbn = re.sub(r'[^\dX]', '', isbn)
         if len(isbn) == 10:
             isbn = '978' + isbn
+        if len(isbn) == 12:
+            isbn = isbn.ljust(13, '#')
         return isbn
     except TypeError:
         raise TypeError('Impossible de nettoyer l\'isbn: ' + isbn + ' car None/null ou n\'est pas str')
@@ -426,6 +429,8 @@ def get_Hurtubise_books(csv_reader):
                     if key == 'ISBN Papier':
                         book.id = value
                     book.add_ISBN_from_raw(value)
+        if book:
+            Hurtubise_books.append(book)
 
     return Hurtubise_books
 

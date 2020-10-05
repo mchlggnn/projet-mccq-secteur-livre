@@ -1,47 +1,11 @@
-import json
-import csv
-import rdflib
-import time
+"""
+Fonctions de références pour extraire des statistiques a partir des bases de données
+Fonction pour formater des statistiques
+Fonction pour collecter toutes les statistiques
+"""
 
 
-def nettoyer_unicode(c):
-    """
-    le but est de transformer les codes Unicode en leurs équivalents francais dans une chaine de caractère
-    :param str c: chaine de caractère
-    :return str: chaine de caractère nettoyée
-    """
-    liste_codes = {
-        'Ã\xa0': 'à',
-        'Ã€': 'À',
-        'Ã¢': 'â',
-        'Ã‚': 'Â',
-        'Ã©': 'é',
-        'Ã\x89': 'É',
-        'Ã\xa8': 'è',
-        'Ã\xaa': 'ê',
-        'Ã\x8a': 'Ê',
-        'Ã«': 'ë',
-        'Ã®': 'î',
-        'Ã\x8e': 'Î',
-        'Ã¯': 'ï',
-        'Ã´': 'ô',
-        'Ã\x94': 'Ô',
-        'Ã¹': 'ù',
-        'Ã»': 'û',
-        'Å\x93': 'œ',
-        'Â«': '«',
-        'Â»': '»',
-        'Ã§': 'ç',
-        'Ã\x87': 'Ç',
-        'Âº': 'º',
-        'â\x80\x99': '’',
-        'â\x80\xa6': '…',
-    }
-
-    for code in liste_codes:
-        c = c.replace(code, liste_codes[code])
-
-    return c
+from Identification_couples_livres.extract_books_from_DB import *
 
 
 def get_ILE_stats(g_item):
@@ -140,6 +104,7 @@ def get_ILE_stats(g_item):
 
     return stats_books_ILE, stats_authors_ILE
 
+
 def get_ADP_stats(g_book, g_author, g_editor):
     """
     Statistiques sur la base de donnée ADP
@@ -150,8 +115,6 @@ def get_ADP_stats(g_book, g_author, g_editor):
     :param g_editor: graphe des éditeurs d'ADP
     :return: statistiques d'ADP
     """
-
-    count_book = 0
 
     stats_books_ADP = {
         "total": 0,
@@ -169,9 +132,6 @@ def get_ADP_stats(g_book, g_author, g_editor):
         stats_books_ADP["total"] += 1
         ADP_book = g_book.predicate_objects(subj)
         for info in ADP_book:
-
-            if info[0] not in stats_books_ADP:
-                stats_books_ADP[info[0]] = 0
 
             if info[0] == rdflib.term.URIRef('https://schema.org/publisher'):
                 editor_ADP = g_editor.predicate_objects(info[1])
@@ -200,14 +160,17 @@ def get_ADP_stats(g_book, g_author, g_editor):
                 stats_books_ADP["sujet_by_value"][info[1].n3().replace("\"", "")] += 1
                 stats_books_ADP["sujet"] += 1
             else:
-                if info[0] + "_by_value" not in stats_books_ADP:
-                    stats_books_ADP[info[0] + "_by_value"] = {info[1]: 1}
+                key = str(info[0]).split("/")[-1]
+                value = str(info[1])
+                if key not in stats_books_ADP:
+                    stats_books_ADP[key] = 0
+                    stats_books_ADP[key + "_by_value"] = {value: 1}
                 else:
-                    if info[1] not in stats_books_ADP[info[0] + "_by_value"]:
-                        stats_books_ADP[info[0] + "_by_value"][info[1]] = 0
-                    stats_books_ADP[info[0] + "_by_value"][info[1]] += 1
+                    if value not in stats_books_ADP[key + "_by_value"]:
+                        stats_books_ADP[key + "_by_value"][value] = 0
+                    stats_books_ADP[key + "_by_value"][value] += 1
 
-                stats_books_ADP[info[0]] += 1
+                stats_books_ADP[key] += 1
 
     stats_books_ADP["auteurs_by_value"] = {k: v for k, v in
                                 sorted(stats_books_ADP["auteurs_by_value"].items(), key=lambda item: item[1], reverse=True)}
@@ -221,6 +184,7 @@ def get_ADP_stats(g_book, g_author, g_editor):
                                                  reverse=True)}
 
     return stats_books_ADP
+
 
 def get_depot_legal_stats_from_graph(g_item):
     """
@@ -373,36 +337,6 @@ def get_babelio_stats_from_items(items_ls):
     return stats
 
 
-def get_stats_from_csv_reader(csv_reader):
-    """
-    Statistiques sur un csv
-    On compte les valeurs non-nuls des champs de la base de donnée, et les occurences de leurs valeurs sous les
-    champs finissant par "_by_value"
-    :param csv_reader: itérable du csv (ligne par ligne)
-    :return: statistiques
-    """
-
-    stats_book = {"total": 0}
-    for book in csv_reader:
-        stats_book["total"] += 1
-        for key, value in book.items():
-            if key not in stats_book:
-                stats_book[key] = 0
-            if key + "_by_value" not in stats_book:
-                stats_book[key + "_by_value"] = {value: 1}
-            else:
-                if value not in stats_book[key + "_by_value"]:
-                    stats_book[key + "_by_value"][value] = 0
-                stats_book[key + "_by_value"][value] += 1
-            stats_book[key] += 1
-
-    for key, value in stats_book.items():
-        if isinstance(value, dict):
-            stats_book[key] = {k: v for k, v in sorted(stats_book[key].items(),
-                                                       key=lambda item: item[1], reverse=True)}
-
-    return stats_book
-
 def get_depot_legal_stats():
     """
     Statistiques sur la base de donnée Dépot-légal
@@ -446,6 +380,38 @@ def get_Hurtubise_Stats():
     books_Hurtubise_file.close()
     return stats
 
+
+def get_stats_from_csv_reader(csv_reader):
+    """
+    Statistiques sur un csv
+    On compte les valeurs non-nuls des champs de la base de donnée, et les occurences de leurs valeurs sous les
+    champs finissant par "_by_value"
+    :param csv_reader: itérable du csv (ligne par ligne)
+    :return: statistiques
+    """
+
+    stats_book = {"total": 0}
+    for book in csv_reader:
+        stats_book["total"] += 1
+        for key, value in book.items():
+            if key not in stats_book:
+                stats_book[key] = 0
+            if key + "_by_value" not in stats_book:
+                stats_book[key + "_by_value"] = {value: 1}
+            else:
+                if value not in stats_book[key + "_by_value"]:
+                    stats_book[key + "_by_value"][value] = 0
+                stats_book[key + "_by_value"][value] += 1
+            stats_book[key] += 1
+
+    for key, value in stats_book.items():
+        if isinstance(value, dict):
+            stats_book[key] = {k: v for k, v in sorted(stats_book[key].items(),
+                                                       key=lambda item: item[1], reverse=True)}
+
+    return stats_book
+
+
 def format_result(res):
     """
     limite le nombre de caractère des clefs D'un dictionnaire de stats et le nombre de valeurs affichée
@@ -474,6 +440,15 @@ def format_result(res):
 if __name__ == '__main__':
 
     start_loading_data_time = time.time()
+
+    g_book_ADP = rdflib.Graph()
+    g_book_ADP.parse("../Graphes/grapheADPLivres.rdf")
+    g_author_ADP = rdflib.Graph()
+    g_author_ADP.parse("../Graphes/grapheADPAuteurs.rdf")
+    g_editor_ADP = rdflib.Graph()
+    g_editor_ADP.parse("../Graphes/grapheADPEditeurs.rdf")
+    stats_books_ADP = get_ADP_stats(g_book_ADP, g_author_ADP, g_editor_ADP)
+    formated_stats_books_ADP = format_result(stats_books_ADP)
 
     g_book_DL = rdflib.Graph()
     g_book_DL.parse("../Graphes/grapheDepotLegal.rdf")
@@ -511,15 +486,6 @@ if __name__ == '__main__':
     formated_stats_book_babelio = format_result(stats_book_babelio)
     formated_stats_authors_babelio = format_result(stats_author_babelio)
 
-    g_book_ADP = rdflib.Graph()
-    g_book_ADP.parse("../Graphes/grapheADPLivres.rdf")
-    g_author_ADP = rdflib.Graph()
-    g_author_ADP.parse("../Graphes/grapheADPAuteurs.rdf")
-    g_editor_ADP = rdflib.Graph()
-    g_editor_ADP.parse("../Graphes/grapheADPEditeurs.rdf")
-    stats_books_ADP = get_ADP_stats(g_book_ADP, g_author_ADP, g_editor_ADP)
-    formated_stats_books_ADP = format_result(stats_books_ADP)
-
     global_res = {
         "DL_livres": formated_stats_books_DL,
         "DL_livres_csv": formated_stats_books_DL_csv,
@@ -530,5 +496,5 @@ if __name__ == '__main__':
         "Babelio_auteurs": formated_stats_authors_babelio,
         "ADP_livres": formated_stats_books_ADP
     }
-    with open('data.json', 'w') as outfile:
+    with open('./data.json', 'w') as outfile:
         json.dump(global_res, outfile, indent=2, ensure_ascii=False)

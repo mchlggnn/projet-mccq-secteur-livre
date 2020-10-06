@@ -60,7 +60,7 @@ class BabelioSpiderFromTagUrl(scrapy.Spider):
 
         # on lance le scrapping de chacun des livres et auteurs
         parsing_module = ParsingModule(self.root_url, self.start_urls)
-        yield from response.follow_all(list_book, callback=parsing_module.parse_book, dont_filter=True)
+        yield from response.follow_all(list_book, callback=parsing_module.parse_book)
         yield from response.follow_all(list_author, callback=parsing_module.parse_author)
 
         # si une page suivante exite, on s'y rend et on re-exécute la fonction
@@ -75,5 +75,4 @@ class BabelioSpiderFromTagUrl(scrapy.Spider):
                 },
                 callback=self.parse,
                 meta={'i': str(i), 'max_i': str(max_i)},
-                dont_filter=True
             )

@@ -28,3 +28,13 @@ python3 extraction_couples_livres.py
 ```
 cela génèrera deux fichiers: "pos_couples.csv" et "neg_couples.csv" dans "/Data"
 De plus, si ces fichiers n'existent pas déjà, il génèrera "all_books.json" qui est une liste de tout les objets "Book" extrait des bases de données; aussi dans le dossier "/Data"
+
+## Explication des heuristiques
+
+Le dossier "/Analyse_et_statistiques" contient un module et un notebook.
+
+Le module contient les fonctions qui permettent de tirer des statistiques à partir des champs des bases de données.
+
+Le notebook utilise ces fonctions pour afficher des statistiques sur ces champs, et quels sont les normalistions appliquées au titres, auteurs et isbns pour faciliter leurs comparaisons.
+
+Il contient aussi une explications des heuristiques de comparaison des titres. 

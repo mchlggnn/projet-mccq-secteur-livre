@@ -36,8 +36,8 @@ class ParsingModule():
         author = BabelioAuthor()
         author['url'] = response.url
         author['name'] = response.css('h1 a::text').extract_first()
-        author['infos'] = response.css('div.livre_resume::text, div.livre_resume span::text').extract()
-        author['bio'] = response.css('#d_bio::text').extract()
+        author['infos'] = " ".join(response.css('div.livre_resume::text, div.livre_resume span::text').extract())
+        author['bio'] = " ".join(response.css('#d_bio::text').extract())
         tags_selector = response.css('.tags a')
         author['tags'] = []
         for tag in tags_selector:
@@ -45,10 +45,13 @@ class ParsingModule():
                 'tag': tag.css('a::text').extract_first(),
                 'info': tag.css('a::attr("class")').extract_first()
             })
-        author['friends'] = response.css('.list_trombi h2::text').extract()
+        try:
+            author['friends'] = response.css('.list_trombi')[0].css('a::attr("href")').extract()
+        except IndexError:
+            pass
         author['rating'] = response.css('.rating::text').extract_first()
         author['nb_rating'] = response.css('span.votes[itemprop=ratingCount]::text').extract_first()
-        author['prices'] = response.css('div.livre_award + a::text').extract()
+        author['awards'] = response.css('div.livre_award + a::text').extract()
 
         # une fois les informations collectées, on poursuit le scrapping sur la page de bibliographie de l'auteur
         request_bibli = scrapy.Request(url=author['url'] + '/bibliographie', callback=self.parse_bibli)
@@ -106,7 +109,7 @@ class ParsingModule():
             media = {
                 'url': media_selector.css('a.actualite_media::attr("href")').extract_first(),
                 'date': media_selector.css('.actalite_post_head span::text').extract_first(),
-                'description': media_selector.css('.actualite_media + div::text').extract()
+                'description': " ".join(media_selector.css('.actualite_media + div::text').extract())
             }
             media_ls.append(media)
 
@@ -137,19 +140,25 @@ class ParsingModule():
         # On récupère depuis l'html l'url, le titre, le noms de l'auteur, l'identifiant de l'auteur,
         # les autres informations brutes du livre, l'éditeur, la note moyenne, le nombre de note, le résumé et les
         # étiquettes attachées au livre
+
         book = BabelioBook()
         book['url'] = response.url
         book['title'] = response.css('h1 a::text').extract_first()
         author = response.css('span[itemprop="author"] a span[itemprop="name"]')
         author_first_name = author.css('span[itemprop="name"]::text').extract()
         author_last_name = author.css('span[itemprop="name"] b::text').extract()
-        book['author'] = author_first_name + author_last_name
-        book['author_id'] = response.css('span[itemprop="author"] a::attr(\'href\')').get()
+        book['author'] = []
+        for author_i in range(len(author_last_name)):
+            book['author'].append(" ".join([
+                author_first_name[author_i] if author_i < len(author_first_name) else '',
+                author_last_name[author_i] if author_i < len(author_last_name) else '']
+            ))
+        book['author_id'] = response.css('span[itemprop="author"] a::attr(\'href\')').getall()
         book['infos'] = response.css('.livre_refs::text, .livre_refs a::text').extract()
         book['editor'] = response.css('.livre_refs a::text').extract_first()
         book['rating'] = response.css('.texte_t2[itemprop=ratingValue]::text').extract_first()
         book['nb_rating'] = response.css('.livre_con span[itemprop=ratingCount]::text').extract_first()
-        book['resume'] = response.css('#d_bio.livre_resume::text').extract()
+        book['resume'] = " ".join(response.css('#d_bio.livre_resume::text').extract())
         tags_selector = response.css('.tags a')
         book['tags'] = []
         for tag in tags_selector:
@@ -179,7 +188,7 @@ class ParsingModule():
             review['date'] = rev_selector.css(".no_img span.gris::text").extract_first()
             review['rating'] = rev_selector.css(".rateit::attr('data-rateit-value')").get()
             review['pop'] = rev_selector.css(".post_items_like span::text").extract_first()
-            review['content'] = rev_selector.css("div.text.row div:first-child::text").extract()[0:10]
+            review['content'] = " ".join(rev_selector.css("div.text.row div:first-child::text").extract()[0:10])
             reviews_ls.append(review)
         return reviews_ls
 
@@ -229,7 +238,7 @@ class ParsingModule():
             extract['author'] = extr.css(".author::text").extract_first()
             extract['date'] = extr.css(".no_img span.gris::text").extract_first()
             extract['pop'] = extr.css(".post_items_like span::text").extract_first()
-            extract['content'] = extr.css(".text.row div::text").extract()[0:10]
+            extract['content'] = " ".join(extr.css(".text.row div::text").extract()[0:10])
 
             extracts_ls.append(extract)
 

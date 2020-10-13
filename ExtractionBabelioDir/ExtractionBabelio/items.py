@@ -53,7 +53,7 @@ class BabelioAuthor(scrapy.Item):
     rating = scrapy.Field()
     nb_rating = scrapy.Field()
     media = scrapy.Field()
-    prices = scrapy.Field()
+    awards = scrapy.Field()
 
 class BabelioReview(scrapy.Item):
     """

@@ -47,7 +47,7 @@ Keras==2.4.3
 keras-metrics==1.1.0
 Keras-Preprocessing==1.1.2
 kiwisolver==1.2.0
-lxml==4.5.1
+lxml==4.6.5
 Markdown==3.2.2
 MarkupSafe==1.1.1
 matplotlib==3.3.0
